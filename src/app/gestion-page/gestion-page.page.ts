@@ -26,6 +26,7 @@ constructor( private modalController : ModalController, private storage : Storag
   async checkProfile(){
 
   let profile = await this.storage.get("IdRol")
+  
   console.log("this is the profile :"+profile)
   switch (profile){
     case "2" : this.abogado = true; break;

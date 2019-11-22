@@ -34,4 +34,14 @@ export class UsersFirebaseService {
       lastSync: fecha
     })
   }
+
+  subirLatLong(latitud,longitud){
+    const user = auth().currentUser
+    return this.db.collection('usersImplementta').doc(user.uid).update({
+      latitud : latitud,
+      longitud: longitud
+    })
+
+
+  }
 }

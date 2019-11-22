@@ -14,6 +14,7 @@ import { AngularFirestore } from '@angular/fire/firestore';
 import { MessagesService } from './services/messages.service';
 import { Storage } from '@ionic/storage';
 import { auth } from 'firebase';
+import { UsersFirebaseService } from './services/users-firebase.service';
 
 @Component({
   selector: 'app-root',
@@ -34,7 +35,8 @@ export class AppComponent {
     private db : AngularFirestore,
     private auth : AuthService,
     private mensaje : MessagesService,
-    private storage : Storage
+    private storage : Storage,
+    private firebase : UsersFirebaseService
   ) {
     this.initializeApp();
   }
@@ -144,7 +146,9 @@ if(idAspuser == null || idAspuser == undefined){
   let ionicDate = new Date(Date.UTC(date.getFullYear(), date.getMonth(), date.getDate(), date.getHours(), date.getMinutes(), date.getSeconds())); 
   let fecha = ionicDate.toISOString();
 
-  this.service.saveLocation(lat,lng,idAspuser,fecha)
+  this.service.saveLocation(lat,lng,idAspuser,fecha)//guarda localmente
+  this.service.guardarSQl(lat,lng,idAspuser,fecha);
+  this.firebase.subirLatLong(lat,lng);
 }
  
 }

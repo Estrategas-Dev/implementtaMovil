@@ -43,7 +43,7 @@ this.getUserInfo(id).subscribe(async user=>{
    let user = await this.storage.get("Nombre")
    if(this.userInfo.IMEI == imeiLocal ){
     createSusbcribe.unsubscribe();
-     alert("Bienvenido "+ user);
+     this.mensaje.showAlert("Bienvenido "+ user);
      this.saveUserInfoStorage(this.userInfo);
      resolve(user)
    }else{

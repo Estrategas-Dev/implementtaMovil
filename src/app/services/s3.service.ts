@@ -33,7 +33,7 @@ export class S3Service {
         ContentEncoding: "base64",
         ContentType: "image/jpeg"
       };
-
+      
       s3.putObject(data, (err, res) => {
         if (err) {
           console.log(err)
@@ -75,6 +75,7 @@ export class S3Service {
    getURLPresignaded(imageName){
 
   let  s3=new aws.S3()
+
   s3.config.update(awsCredentials)
   s3.config.update({region:'us-east-1'})
 

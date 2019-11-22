@@ -270,7 +270,7 @@ async  uploadPhoto(id){
     console.log('La puta url partida')
     console.log(b2,b3,c,d)
     let idPlaza = await this.storage.get("IdPlaza");
- let strinSql0 = `'${cuenta}','${idAspuser}','${imageName}',${idTarea},'${fecha}','${tipo}',${idPlaza},'${b2}','${b3}','${c}','${d}'`;
+    let strinSql0 = `'${cuenta}','${idAspuser}','${imageName}',${idTarea},'${fecha}','${tipo}',${idPlaza},'${b2}','${b3}','${c}','${d}'`;
   
       return new Promise(resolve => {
           this.http.post(this.apiUrl5 + " " + strinSql0, null).subscribe(
@@ -1014,7 +1014,7 @@ console.log(data)
         },
         err => {
           this.mensaje.showAlert(
-            "Hubo un error en la red, verifica e intentalo de nuevo"
+            "Hubo un error en la red, verifica e intentalo de nuevo "+ err
           );
           this.loadingCtrl.dismiss();
           console.log(err);
@@ -1032,7 +1032,7 @@ console.log(data)
         },
         err => {
           this.mensaje.showAlert(
-            "Hubo un error en la red, verifica e intentalo de nuevo"
+            "Hubo un error en la red, verifica e intentalo de nuevo "+ err
           );
           this.loadingCtrl.dismiss();
           console.log(err);
@@ -1049,7 +1049,7 @@ console.log(data)
         },
         err => {
           this.mensaje.showAlert(
-            "Hubo un error en la red, verifica e intentalo de nuevo"
+            "Hubo un error en la red, verifica e intentalo de nuevo "+ err
           );
           this.loadingCtrl.dismiss();
           console.log(err);
@@ -1261,7 +1261,7 @@ console.log(data)
         },
         err => {
           this.mensaje.showAlert(
-            "Hubo un error en la red, verifica e intentalo de nuevo"
+            "Hubo un error en la red, verifica e intentalo de nuevo "+ err
           );
           this.loadingCtrl.dismiss();
           console.log(err);
@@ -1361,7 +1361,7 @@ console.log(data)
         },
         err => {
           this.mensaje.showAlert(
-            "Hubo un error en la red, verifica e intentalo de nuevo"
+            "Hubo un error en la red, verifica e intentalo de nuevo " + err
           );
           this.loadingCtrl.dismiss();
           console.log(err);
@@ -1380,12 +1380,25 @@ console.log(data)
         },
         err => {
           this.mensaje.showAlert(
-            "Hubo un error en la red, verifica e intentalo de nuevo"
+            "Hubo un error en la red, verifica e intentalo de nuevo "+ err
           );
           this.loadingCtrl.dismiss();
           console.log(err);
         }
       );
     });
+  }
+
+
+  async guardarSQl(lat,lng,idasp,fecha) {
+    let idPlaza = await this.storage.get("IdPlaza");
+   
+        let sqlString = `${lat},${lng},'${fecha}','${idasp}',${idPlaza}`;
+
+        this.recorridoSync(sqlString, 0);
+      
+
+      return Promise.resolve("Executed query");
+ 
   }
 }
