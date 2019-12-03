@@ -6,6 +6,7 @@ import { GestionAbogadoPage } from '../gestion-abogado/gestion-abogado.page';
 import { GestionReductorPage } from '../gestion-reductor/gestion-reductor.page';
 import { GestionCallPage } from '../gestion-call/gestion-call.page';
 import { Router } from '@angular/router';
+import { UsersFirebaseService } from '../services/users-firebase.service';
 
 @Component({
   selector: 'app-gestion-page',
@@ -17,16 +18,27 @@ gestor :boolean = false;
 abogado: boolean = false;
 callcenter:boolean = false;
 reductor : boolean =false;
-constructor( private modalController : ModalController, private storage : Storage ,private platform :Platform,private router : Router ) { }
+constructor( private modalController : ModalController, private storage : Storage ,private platform :Platform,private router : Router, private firebase : UsersFirebaseService  ) { }
 
  async ngOnInit() {
   await this.platform.ready();
+
+  await this.checkRole();
+
   await this.checkProfile();
+  }
+  async checkRole(){
+    this.firebase.getUserInfoAccount().subscribe(user=>{
+console.log(user)
+
+    })
+  
+
   }
   async checkProfile(){
 
   let profile = await this.storage.get("IdRol")
-  
+ 
   console.log("this is the profile :"+profile)
   switch (profile){
     case "2" : this.abogado = true; break;

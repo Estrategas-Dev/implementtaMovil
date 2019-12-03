@@ -85,7 +85,7 @@ this.modalController.dismiss()
 
 }
 reDo(){
-  this.service.updateStatusLoadAgain()
+  this.service.updateStatusLoadAgain(this.rol)
   this.getAccounts(this.rol);
 
 }

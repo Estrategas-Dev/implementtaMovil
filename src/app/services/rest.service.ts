@@ -1057,10 +1057,18 @@ console.log(data)
       );
     });
   }
-  updateStatusLoadAgain(){
-    let sql = "UPDATE gestionGestor SET cargado = 0 where cargado = 1";
+  updateStatusLoadAgain(rol){
+    if(rol=='2'){
+      let sql = "UPDATE gestionAbogado SET cargado = 0 where cargado = 1";
+      return this.db.executeSql(sql,null);
+    }
+    else if(rol=='5'){
+      let sql = "UPDATE gestionGestor SET cargado = 0 where cargado = 1";
+      return this.db.executeSql(sql,null);
+    }else if(rol=='7'){
+    let sql = "UPDATE gestionReductor SET cargado = 0 where cargado = 1";
     return this.db.executeSql(sql,null);
- 
+    }
   }
   updateRecorridoSync(id) {
     let sql = "UPDATE recorrido SET cargado = 1 where id = ?";
