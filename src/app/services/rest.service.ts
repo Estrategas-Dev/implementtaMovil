@@ -203,7 +203,14 @@ async  uploadPhoto(id){
 
 
 }
- 
+ reloadAllPhotos(){
+   let sql ='UPDATE capturaFotos set cargado = 0'
+   return this.db.executeSql(sql,null)
+ }
+ reloadAllAddress(){
+  let sql ='UPDATE domicilios set cargado = 0'
+  return this.db.executeSql(sql,null)
+}
   async uploadPhotos() {
     let arrayImages = [];
     let sql = "SELECT * FROM capturaFotos where cargado = 0 LIMIT 20";
@@ -278,7 +285,7 @@ async  uploadPhoto(id){
             this.mensaje.showToast(data[0].mensaje+' '+cont)
             await this.updateLoadedItem(id);
              console.log('registroCargado al puto sql')
-             await this.deletePhotoFile(ruta);
+          //   await this.deletePhotoFile(ruta);
          //  console.log('se borro la puta foto')
             resolve(data);
           },
@@ -907,7 +914,7 @@ console.log(data)
           let id = result.rows.item(i).id;
           let sqlString = `'${account}',${idEstatus},'${observaciones}','${fechaPromesaPago}',${latitud},${longitud},'${fechaCaptura}','${idAspUser}',${idTarea},'${fechaAsignacion}','${fechaVencimiento}',${idMotivoNoPago},'${motivoNoPago}',${idSolucionPlanteada},${idExpectativasContribuyente},'${otraExpectativaContribuyente}',${idCaracteristicaPredio},'${otraCaracteristicaPredio}',${idServiciosNoPago},${idPlaza}`;
 
-          this.accountSyncGestor(sqlString, id);
+       await   this.accountSyncGestor(sqlString, id);
         }
        
         return Promise.resolve("Executed query");
@@ -947,7 +954,7 @@ console.log(data)
           let id = result.rows.item(i).id;
           let sqlString = `'${account}',${idResultado},${idPersona},'${observaciones}','${fechaPromesaPago}',${latitud},${longitud},'${fechaCaptura}','${idAspUser}',${idTarea},'${fechaVencimiento}','${horaVencimiento}',${idPlaza}`;
 
-          this.accountSyncAbogado(sqlString, id);
+       await   this.accountSyncAbogado(sqlString, id);
         }
     //    this.loading.dismiss();
         return Promise.resolve("Executed query");
@@ -993,7 +1000,7 @@ console.log(data)
       let id = result.rows.item(i).id;
           let sqlString = `'${account}',${idTarea},'${idObservacion}','${idDescripcion}','${idAspUser}','${lectura}','${conclusiones}','${personaContacto}','${telefonoContacto}','${fechaPromesa}','${fechaCaptura}','${fechaProximaVisita}','${latitud}','${longitud}',${idNiple},'${horaIni}','${horaFin}',${idPlaza}`;
 
-          this.accountSyncReductor(sqlString, id);
+     await     this.accountSyncReductor(sqlString, id);
         }
       //  this.loading.dismiss();
         return Promise.resolve("Executed query");

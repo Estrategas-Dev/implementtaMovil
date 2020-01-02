@@ -158,5 +158,11 @@
 <ion-footer>
     <ion-toolbar>
       <ion-button color="secondary" expand = "block" (click)="sincronizar()">Sincronizar todo</ion-button>
+      <div *ngIf="isHide">
+        <ion-button color="danger" (click)="reDo()">
+            <ion-icon name="refresh"></ion-icon> Volver a cargar Info
+          </ion-button>
+    </div>
+
     </ion-toolbar>
   </ion-footer>

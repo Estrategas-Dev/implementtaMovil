@@ -290,6 +290,45 @@ console.log(version, fecha)
     
  
   }
+  async goPhotosWithParameters(){
+  this.usersFirebase.getUserInfoAccount().subscribe(async user=>{
+    this.data = user
+    console.log('entra por la info del firebase')
+    console.log(this.data)
+    this.isHide = this.data.isHide
+
+      })
+
+      const modal = await this.modalController.create({
+        component: SyncPhotosPage,
+        componentProps: {
+          isHide: this.isHide
+        }
+      });
+      await modal.present();
+}
+
+async goUpdateInfoWithParameters() {
+
+  this.usersFirebase.getUserInfoAccount().subscribe(async user=>{
+    this.data = user
+    console.log('entra por la info del firebase')
+    console.log(this.data)
+    this.isHide = this.data.isHide
+
+      })
+
+      const modal = await this.modalController.create({
+        component: SyncUpdatePage,
+        componentProps: {
+          isHide: this.isHide
+        }
+      });
+      await modal.present();
+
+
+
+}
 
 
   async goUpdateInfo() {

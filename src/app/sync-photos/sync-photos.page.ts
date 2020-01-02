@@ -2,7 +2,8 @@ import { Component, OnInit } from "@angular/core";
 import { RestService } from "../services/rest.service";
 import {
   LoadingController,
-  ModalController
+  ModalController,
+  NavParams
 } from "@ionic/angular";
 import { MessagesService } from "../services/messages.service";
 import { ImagePreviewPage } from '../image-preview/image-preview.page';
@@ -21,18 +22,21 @@ export class SyncPhotosPage implements OnInit {
   isSelected: boolean;
   contadorFotos: number = 0;
   totalFotos : number = 0;
+  isHide : boolean= false
+
 
   constructor(
     private service: RestService,
     private loadingCtrl: LoadingController,
     private mensaje: MessagesService,
     private modalController: ModalController,
-    private router : Router
+    private router : Router,
+    private navParams : NavParams,
   ) {}
 
   ngOnInit() {
     this.getInfo();
-  
+  this.getStatus();
   }
  
   async getInfo() {
@@ -81,4 +85,15 @@ this.modalController.getTop().then(res=>{
   this.getInfo();
 })
   }
+  getStatus(){
+    this.isHide = this.navParams.get('isHide');
+    console.log('se trajo el parametro', this.isHide)
+ console.log(this.isHide)
+ 
+   }
+   reDo(){
+    this.service.reloadAllPhotos().then(res=>{
+      this.getInfo();
+    })
+   }
 }

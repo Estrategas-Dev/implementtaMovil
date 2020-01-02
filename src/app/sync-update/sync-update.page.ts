@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { RestService } from '../services/rest.service';
-import { LoadingController, ModalController } from '@ionic/angular';
+import { LoadingController, ModalController, NavParams } from '@ionic/angular';
 import { MessagesService } from '../services/messages.service';
 
 @Component({
@@ -16,10 +16,11 @@ predio : boolean = true
 propietarioA : any
 address :any
 loading: any;
-  constructor(private service : RestService, private loadingCtrl : LoadingController, private modal : ModalController, private mensaje : MessagesService) { }
+isHide : boolean = false;
+  constructor(private service : RestService, private loadingCtrl : LoadingController, private modal : ModalController, private mensaje : MessagesService, private navParams : NavParams) { }
 
    ngOnInit() {
-  
+  this.getStatus();
   }
   ionViewDidEnter(){
     this.getInfo();
@@ -63,4 +64,16 @@ delete (id, type){
   console.log('entra a borrar el id :: '+id + 'en el tipo :: '+type)
   if(type == 1 ){this.service.deleteDataUpdatedAddress(id);this.getInfo()}else{this.service.deleteDataUpdatedUser(id);this.getInfo()}
 }
+reDo()
+{
+this.service.reloadAllAddress().then(res=>{
+  this.getInfo();
+})
+}
+getStatus(){
+  this.isHide = this.navParams.get('isHide');
+  console.log('se trajo el parametro', this.isHide)
+console.log(this.isHide)
+
+ }
 }

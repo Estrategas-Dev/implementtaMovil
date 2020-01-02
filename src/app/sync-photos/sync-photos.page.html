@@ -4,13 +4,18 @@
  
   <ion-buttons slot ="end">
     <ion-button color ="tertiary" (click)="uploadPhotos()"> <ion-icon name ="cloud-upload"></ion-icon></ion-button>
+    <div *ngIf="isHide">
+      <ion-button color="danger" (click)="reDo()">
+          <ion-icon name="refresh"></ion-icon>
+        </ion-button>
+  </div>
   </ion-buttons> 
   <ion-buttons slot ="start">
       <ion-button color ="danger" (click)="exit()"> <ion-icon name ="close"></ion-icon></ion-button>
     </ion-buttons>
   </ion-toolbar>
 </ion-header>
-
+ 
 <ion-content>
 
 
