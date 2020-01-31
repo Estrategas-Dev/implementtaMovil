@@ -1067,7 +1067,9 @@ console.log(data)
   updateStatusLoadAgain(rol){
     if(rol=='2'){
       let sql = "UPDATE gestionAbogado SET cargado = 0 where cargado = 1";
-      return this.db.executeSql(sql,null);
+      let sql2 = "UPDATE gestionGestor SET cargado = 0 where cargado = 1";
+      this.db.executeSql(sql, null);
+      this.db.executeSql(sql2, null);
     }
     else if(rol=='5'){
       let sql = "UPDATE gestionGestor SET cargado = 0 where cargado = 1";
