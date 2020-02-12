@@ -50,6 +50,10 @@ mapa : boolean = false
   entreCalle1Notificacion: string;
   entreCalle2Notificacion: string;
   isChanges: boolean;
+  fechaActual: string = "";
+  idaspUser: string;
+  user_role: string;
+  
   constructor(private loadingCtrl : LoadingController, private storage :Storage, private service : RestService, 
    private geolocation : Geolocation, private modalController : ModalController, private iab : InAppBrowser,
    private nativeGeocoder: NativeGeocoder, private alertController : AlertController,private mensaje : MessagesService) { 
@@ -58,6 +62,8 @@ mapa : boolean = false
 
   async ngOnInit() {
    await this.getAccountNumber();
+   await this.getCrendentials();
+    this.getFechaActual();
    this.isChanges = false
   }
   ionViewDidEnter(){
@@ -137,16 +143,18 @@ mapa : boolean = false
     }
 
 goMapsModal(){
-  let position = {lat : this.latitud, lng : this.longitud}
-  this.modalController.create({
-    component: AccountMapPage,
-    componentProps: {
-      position: position
-    }
-  }).then(modal => {
-    modal.present();
-  });
-}
+               let position = { lat: this.latitud, lng: this.longitud };
+               this.modalController
+                 .create({
+                   component: AccountMapPage,
+                   componentProps: {
+                     position: position
+                   }
+                 })
+                 .then(modal => {
+                   modal.present();
+                 });
+             }
 
 async openLink(){
   this.loading = await this.loadingCtrl.create({
@@ -223,6 +231,28 @@ numero :result[0].subThoroughfare
 
 }
 
+
+getFechaActual() {
+  var dateDay = new Date().toISOString();
+  let date: Date = new Date(dateDay);
+  let ionicDate = new Date(
+    Date.UTC(date.getFullYear(), date.getMonth(), date.getDate())
+  );
+
+  this.fechaActual = ionicDate.toISOString();
+  let fecha = this.fechaActual.split("T");
+  this.fechaActual = fecha[0];
+  console.log("Esta es la fecha Actual :::::::::::" + this.fechaActual);
+}
+
+async getCrendentials() {
+  this.user_role = await this.storage.get("IdRol");
+  this.idaspUser = await this.storage.get("IdAspUser");
+}
+
+
+
+
 async presentResult(data,type) {
   
   const alert = await this.alertController.create({
@@ -290,6 +320,9 @@ setNewAddress(data,type){
       lote : this.lotePredio,
       manzana : this.manzanaPredio,
       referencia : this.referenciaPredio,
+      fechaCaptura: this.fechaActual,
+      idaspUser: this.idaspUser,
+      idRol: this.user_role,
       type : 1
           }
   
@@ -309,6 +342,9 @@ setNewAddress(data,type){
       lote : this.loteNotificacion,
       manzana : this.manzanaNotificacion,
       referencia : this.referenciaNotificacion,
+      fechaCaptura: this.fechaActual,
+      idaspUser: this.idaspUser,
+      idRol: this.user_role,
       type : 2
           }
   

@@ -1307,10 +1307,13 @@ console.log(data)
           let celular = result.rows.item(i).celular;
           let correo =  result.rows.item(i).correo;
           let fecha = result.rows.item(i).fecha;
+          let fechaCaptura = result.rows.item(i).fechaCaptura;
+          let idaspUser = result.rows.item(i).idaspUser;
+          let idRol = result.rows.item(i).idRol;
           let type = result.rows.item(i).type;
 
           let id = result.rows.item(i).id;
-          let sqlString = `'${account}','${nombre}','${telefono}','${celular}','${correo}','${fecha}',${type},${idPlaza}`;
+          let sqlString = `'${account}','${nombre}','${telefono}','${celular}','${correo}','${fecha}','${fechaCaptura}','${idaspUser}','${idRol}',${type},${idPlaza}`;
 
           this.accountSyncDatosPropietario(sqlString, id);
         }
@@ -1349,12 +1352,15 @@ console.log(data)
           let calle1 = result.rows.item(i).entreCalle1;
           let calle2 = result.rows.item(i).entreCalle2;
           let referencia = result.rows.item(i).referencia;
+          let fechaCaptura = result.rows.item(i).fechaCaptura;
+          let idaspUser = result.rows.item(i).idaspUser;
+          let idRol = result.rows.item(i).idRol;
           let type =  result.rows.item(i).type;
           let id = result.rows.item(i).id;
         
            calle = calle.replace("#", "No.");
         //   console.log(calle)
-          let sqlString = `'${account}','${calle}','${manzana}','${lote}','${numExt}','${numInt}','${colonia}','${poblacion}','${cp}','${calle1}','${calle2}','${referencia}',${type} ,${idPlaza}`;
+        let sqlString = `'${account}','${calle}','${manzana}','${lote}','${numExt}','${numInt}','${colonia}','${poblacion}','${cp}','${calle1}','${calle2}','${referencia}','${fechaCaptura}','${idaspUser}','${idRol}',${type} ,${idPlaza}`;
 
           this.accountSyncDomicilios(sqlString, id);
         }

@@ -40,6 +40,7 @@ export class AccountDetailPage implements OnInit {
   isChange: boolean= false;
 
   fechaActual : string=''
+  idaspUser: string;
 
   constructor(
     private mensaje : MessagesService,
@@ -73,6 +74,7 @@ export class AccountDetailPage implements OnInit {
   async getCrendentials() {
     this.userName = await this.storage.get("UserName");
     this.user_role = await this.storage.get("IdRol");
+    this.idaspUser = await this.storage.get("IdAspUser");
   }
   async getAccountNumber() {
     this.loading = await this.loadingCtrl.create({
@@ -218,18 +220,24 @@ else{
         celular: this.celularUsuario,
         correo: this.correoUsuario,
         fecha: newDate,
+        fechaCaptura: this.fechaActual,
+        idaspUser: this.idaspUser,
+        idRol: this.user_role,
         type: type
       };
     }else{
      data = {
-      cuenta: this.accountNumber,
-      nombre: this.nombrePropietario,
-      telefono: this.telefonoPropietario,
-      celular: this.celularPropietario,
-      correo: this.correoPropietario,
-      fecha: newDate,
-      type: type
-    };}
+       cuenta: this.accountNumber,
+       nombre: this.nombrePropietario,
+       telefono: this.telefonoPropietario,
+       celular: this.celularPropietario,
+       correo: this.correoPropietario,
+       fecha: newDate,
+       fechaCaptura: this.fechaActual,
+       idaspUser: this.idaspUser,
+       idRol: this.user_role,
+       type: type
+     };}
     console.log(data);
     this.service.setPropietario(data);
   }
