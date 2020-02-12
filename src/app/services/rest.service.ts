@@ -1161,7 +1161,7 @@ console.log(data)
 
   setPropietario(data) {
     let sql =
-      "INSERT INTO propietario (cuenta,nombre,telefono,celular,correo,fecha,type) values(?,?,?,?,?,?,?,?,?,?)";
+      "INSERT INTO propietario (cuenta,nombre,telefono,celular,correo,fecha, fechaCaptura, idaspUser, idRol, type) values(?,?,?,?,?,?,?,?,?,?)";
     return this.db.executeSql(sql, [
       data.cuenta,
       data.nombre,
@@ -1180,7 +1180,7 @@ console.log(data)
     console.log(data)
     
     let sql =
-      "INSERT INTO domicilios(cuenta ,calle , manzana , lote,numExt , numInterior , colonia, poblacion , cp , entreCalle1 , entreCalle2,referencia,type) values(?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)";
+      "INSERT INTO domicilios(cuenta ,calle , manzana , lote,numExt , numInterior , colonia, poblacion , cp , entreCalle1 , entreCalle2,referencia,fechaCaptura, idaspUser, idRol,type) values(?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)";
     return this.db.executeSql(sql, [
       data.cuenta,
       data.calle,
