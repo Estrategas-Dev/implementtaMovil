@@ -236,12 +236,17 @@ getFechaActual() {
   var dateDay = new Date().toISOString();
   let date: Date = new Date(dateDay);
   let ionicDate = new Date(
-    Date.UTC(date.getFullYear(), date.getMonth(), date.getDate())
+    Date.UTC(
+      date.getFullYear(),
+      date.getMonth(),
+      date.getDate(),
+      date.getHours(),
+      date.getMinutes(),
+      date.getSeconds()
+    )
   );
 
   this.fechaActual = ionicDate.toISOString();
-  let fecha = this.fechaActual.split("T");
-  this.fechaActual = fecha[0];
   console.log("Esta es la fecha Actual :::::::::::" + this.fechaActual);
 }
 
