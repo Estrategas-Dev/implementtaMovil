@@ -66,8 +66,12 @@ delete (id, type){
 }
 reDo()
 {
-this.service.reloadAllAddress().then(res=>{
+this.service.reloadAllAddress().then(res => {
   this.getInfo();
+});
+
+this.service.reloadallPropietario().then(res => {
+  this.getInfo()
 })
 }
 getStatus(){

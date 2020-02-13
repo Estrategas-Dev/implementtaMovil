@@ -211,6 +211,12 @@ async  uploadPhoto(id){
   let sql ='UPDATE domicilios set cargado = 0'
   return this.db.executeSql(sql,null)
 }
+
+reloadallPropietario() {
+  let sql = 'UPDATE propietario set cargado = 0'
+  return this.db.executeSql(sql, null);
+}
+
   async uploadPhotos() {
     let arrayImages = [];
     let sql = "SELECT * FROM capturaFotos where cargado = 0 LIMIT 20";
