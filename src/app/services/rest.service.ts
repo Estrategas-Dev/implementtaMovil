@@ -1325,7 +1325,7 @@ console.log(data)
           let type = result.rows.item(i).type;
 
           let id = result.rows.item(i).id;
-          let sqlString = `'${account}','${nombre}','${telefono}','${celular}','${correo}','${fecha}','${fechaCaptura}','${idaspUser}','${idRol}',${type},${idPlaza}`;
+          let sqlString = `'${account}','${nombre}','${telefono}','${celular}','${correo}','${fecha}',${type},${idPlaza},'${fechaCaptura}','${idaspUser}','${idRol}'`;
 
           this.accountSyncDatosPropietario(sqlString, id);
         }
@@ -1372,7 +1372,7 @@ console.log(data)
         
            calle = calle.replace("#", "No.");
         //   console.log(calle)
-        let sqlString = `'${account}','${calle}','${manzana}','${lote}','${numExt}','${numInt}','${colonia}','${poblacion}','${cp}','${calle1}','${calle2}','${referencia}','${fechaCaptura}','${idaspUser}','${idRol}',${type} ,${idPlaza}`;
+        let sqlString = `'${account}','${calle}','${manzana}','${lote}','${numExt}','${numInt}','${colonia}','${poblacion}','${cp}','${calle1}','${calle2}','${referencia}',${type} ,${idPlaza},'${fechaCaptura}','${idaspUser}','${idRol}'`;
 
           this.accountSyncDomicilios(sqlString, id);
         }
