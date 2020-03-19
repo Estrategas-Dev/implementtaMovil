@@ -9,6 +9,7 @@ import { SyncPagePage } from './sync-page.page';
 import { SyncPhotosPage } from '../sync-photos/sync-photos.page';
 import { SyncGestorPage } from '../sync-gestor/sync-gestor.page';
 import { ImagePreviewPage } from '../image-preview/image-preview.page';
+import { ReloadPhotosDatePage } from '../reload-photos-date/reload-photos-date.page';
 
 
 const routes: Routes = [
@@ -28,6 +29,10 @@ const routes: Routes = [
     path: '',
     component: SyncGestorPage
   },
+  {
+    path: '',
+    component: ReloadPhotosDatePage
+  },
 ];
 
 @NgModule({
@@ -37,6 +42,6 @@ const routes: Routes = [
     IonicModule,
     RouterModule.forChild(routes)
   ],
-  declarations: [SyncPagePage,SyncPhotosPage,SyncGestorPage,ImagePreviewPage]
+  declarations: [SyncPagePage,SyncPhotosPage,SyncGestorPage,ImagePreviewPage,ReloadPhotosDatePage]
 })
 export class SyncPagePageModule {}

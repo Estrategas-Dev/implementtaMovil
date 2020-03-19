@@ -8,6 +8,7 @@ import {
 import { MessagesService } from "../services/messages.service";
 import { ImagePreviewPage } from '../image-preview/image-preview.page';
 import { Router } from '@angular/router';
+import { ReloadPhotosDatePage } from '../reload-photos-date/reload-photos-date.page';
 
 
 
@@ -91,9 +92,34 @@ this.modalController.getTop().then(res=>{
  console.log(this.isHide)
  
    }
-   reDo(){
-    this.service.reloadAllPhotos().then(res=>{
+   async reDo(){
+    
+    /*this.service.reloadAllPhotos().then(res=>{
       this.getInfo();
     })
+    */
+
+   console.log("esta es la imagen que se va al modal: ")
+   /*this.modalController.create({
+     component: ReloadPhotosDatePage
+   }).then(modal => {
+     modal.present();
+   });
+*/
+   const modal = await this.modalController.create( {
+     component: ReloadPhotosDatePage
+   });
+
+   await modal.present();
+
+   const { data } = await modal.onDidDismiss();
+
+   this.service.reloadPhotosDate( data.fechaInicio, data.fechaFinal).then( res => {
+     this.getInfo();
+   });
+
    }
+
+
+
 }

@@ -47,12 +47,14 @@ export class GestionAbogadoPage implements OnInit {
   fechaActual : string=''
   detectedChanges: boolean= false; 
   isObservacion: boolean= false;
+  takePhoto: boolean;
 
  
   
 
   constructor(private mensaje : MessagesService, private camera : Camera,private storage : Storage, private webview : WebView ,
      private modalController : ModalController, private service : RestService, private loadingController : LoadingController, private geolocation : Geolocation ) {
+       this.takePhoto = false;
       this.imgs = [{imagen:'assets/img/imgs.jpg'}]
       }
       sliderOpts = {
@@ -133,6 +135,7 @@ console.log('Esta es la fecha Actual :::::::::::' + this.fechaActual)
         let rutaBase64= imageData
        this.image = this.webview.convertFileSrc(imageData);
        this.isPhoto=false
+       this.takePhoto = true;
        this.imgs.push({imagen:this.image})
        if (this.indicadorImagen == 1 ){ this.imgs.splice(0,1)}
         this.saveImage(this.image,this.cuenta,fecha,rutaBase64,this.idAspuser, this.idTareaAbogado ,tipo);   
@@ -165,6 +168,11 @@ console.log('Esta es la fecha Actual :::::::::::' + this.fechaActual)
   
     async validaDatosAbogado(){
      
+      if( this.takePhoto == false) {
+        this.mensaje.showAlert("Verifica que minimo haya una foto capturada");
+        this.loading.dismiss();
+      } else {
+
       if(this.observacion == ''){this.isObservacion = true}
       else{      
       let account = this.cuenta
@@ -217,6 +225,7 @@ console.log('Esta es la fecha Actual :::::::::::' + this.fechaActual)
                   this.exit();
 
       }
+    }
       }
     
  async gestionAbogado(data){

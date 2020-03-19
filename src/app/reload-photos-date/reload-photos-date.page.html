@@ -1,0 +1,31 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-title>Recuperación de fotos</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content>
+  <ion-item>
+
+    <ion-label>
+      <p>Fecha inicio</p>
+      <ion-datetime placeholder="1999-09-09" min = "{{fechaMinima}}" [(ngModel)]="fechaInicio"
+      ></ion-datetime>
+    </ion-label>
+
+  </ion-item>
+
+  <ion-item>
+
+    <ion-label>
+      <p>Fecha fin</p>
+      <ion-datetime placeholder="1999-09-09" min = "{{fechaMinima}}" [(ngModel)]="fechaFinal"
+      ></ion-datetime>
+    </ion-label>
+
+  </ion-item>
+
+
+  <ion-button color = "success" expand = "block" (click)="mandarFechas()">Aceptar</ion-button>
+
+</ion-content>

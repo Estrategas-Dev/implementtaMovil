@@ -207,6 +207,15 @@ async  uploadPhoto(id){
    let sql ='UPDATE capturaFotos set cargado = 0'
    return this.db.executeSql(sql,null)
  }
+
+reloadPhotosDate( fechaInicio, fechaFinal) {
+  let sql = `UPDATE capturaFotos set cargado = 0 where DATE( substr(fecha,1,4) || '-' || substr(fecha,6,2) || '-' || substr(fecha,9,2) ) BETWEEN '${fechaInicio}' AND '${fechaFinal}'`
+  //let sql = `UPDATE capturaFotos set cargado = 0 where DATE( substr(fecha,1,4) || '-' || substr(fecha,6,2) || '-' || substr(fecha,9,2) ) BETWEEN DATE( substr(${fechaInicio},1,4) || '-' || substr(${fechaInicio},6,2) || '-' || substr(${fechaInicio},9,2) )  AND DATE( substr(${fechaFinal},1,4) || '-' || substr(${fechaFinal},6,2) || '-' || substr(${fechaFinal},9,2) )`;
+  //let sql = `UPDATE capturaFotos set cargado = 0 where fecha BETWEEN '${fechaInicio}' and '${fechaFinal}'`
+  //this.mensaje.showAlert(sql);
+  return this.db.executeSql(sql, null);
+}
+
  reloadAllAddress(){
   let sql ='UPDATE domicilios set cargado = 0'
   return this.db.executeSql(sql,null)
@@ -1325,7 +1334,7 @@ console.log(data)
           let type = result.rows.item(i).type;
 
           let id = result.rows.item(i).id;
-          let sqlString = `'${account}','${nombre}','${telefono}','${celular}','${correo}','${fecha}',${type},${idPlaza},'${fechaCaptura}','${idaspUser}','${idRol}'`;
+          let sqlString = `'${account}','${nombre}','${telefono}','${celular}','${correo}','${fecha}','${fechaCaptura}','${idaspUser}','${idRol}',${type},${idPlaza}`;
 
           this.accountSyncDatosPropietario(sqlString, id);
         }
@@ -1372,7 +1381,7 @@ console.log(data)
         
            calle = calle.replace("#", "No.");
         //   console.log(calle)
-        let sqlString = `'${account}','${calle}','${manzana}','${lote}','${numExt}','${numInt}','${colonia}','${poblacion}','${cp}','${calle1}','${calle2}','${referencia}',${type} ,${idPlaza},'${fechaCaptura}','${idaspUser}','${idRol}'`;
+        let sqlString = `'${account}','${calle}','${manzana}','${lote}','${numExt}','${numInt}','${colonia}','${poblacion}','${cp}','${calle1}','${calle2}','${referencia}','${fechaCaptura}','${idaspUser}','${idRol}',${type} ,${idPlaza}`;
 
           this.accountSyncDomicilios(sqlString, id);
         }

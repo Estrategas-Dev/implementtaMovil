@@ -59,6 +59,8 @@ export class GestionGestorPage implements OnInit {
   loading: any;
   userInfo: any;
   imgs: any;
+  takePhoto: boolean;
+
   constructor(
     private storage: Storage,
     private service: RestService,
@@ -76,6 +78,7 @@ export class GestionGestorPage implements OnInit {
     
   ) {
     this.imgs = [{ imagen: "assets/img/imgs.jpg" }];
+    this.takePhoto = false;
   }
   ionViewWillLeave() {
     if (this.detectedChanges) {
@@ -169,6 +172,7 @@ export class GestionGestorPage implements OnInit {
         this.image = this.webview.convertFileSrc(imageData);
         console.log(rutaBase64, this.image);
         this.isPhoto = false;
+        this.takePhoto = true;
         this.imgs.push({ imagen: this.image });
         if (this.indicadorImagen == 1) {
           this.imgs.splice(0, 1);
@@ -213,6 +217,7 @@ export class GestionGestorPage implements OnInit {
       this.idMotivoNoPago = 100;
       this.motivoNoPago = "X";
       this.image = "X";
+      this.takePhoto = true;
     } else {
       this.idMotivoNoPago == 0;
       this.motivoNoPago == "";
@@ -256,7 +261,7 @@ export class GestionGestorPage implements OnInit {
       this.idMotivoNoPago == 0 ||
       this.motivoNoPago == "" ||
       (this.fechaPromesaPago != "1999-09-09" &&
-        this.idExpectativasContribuyente == 0)
+        this.idExpectativasContribuyente == 0) || this.takePhoto == false
     ) {
       if (this.idMotivoNoPago == 0) {
         this.isMotive = true;
@@ -268,7 +273,7 @@ export class GestionGestorPage implements OnInit {
         this.isExpectativa = true;
       }
 
-      this.mensaje.showAlert("Verifica los campos marcados con *");
+      this.mensaje.showAlert("Verifica los campos marcados con * y que minimo haya una foto capturada");
       this.loading.dismiss();
     } else {
    /*    this.loading = await this.loadingController.create({
