@@ -30,7 +30,7 @@ export class ConfigPagePage implements OnInit {
 
   async ngOnInit() {
     this.role = await this.storage.get('IdRol');
-    console.log("Este es el puto rol::  ",this.role)
+    console.log("Este es el rol::  ",this.role)
   }
   async ModalPerfil() {
    
@@ -77,7 +77,7 @@ await this. getDataCellphone(idFireBase)
 
 async getDataCellphone(id){
          this.uniqueDeviceID.get().then((uuid: any) => {
-           console.log("genera el puto ID::::")
+           console.log("genera el ID::::")
            console.log(uuid)
           let idCell = uuid
           this.saveDataCellPhone(idCell,id)

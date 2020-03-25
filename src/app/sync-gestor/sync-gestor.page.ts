@@ -40,7 +40,7 @@ console.log(this.isHide)
 
   }
   async getAccounts(rol){
-    console.log('el puto rol a cargar' , rol)
+    console.log('el rol a cargar' , rol)
   if(rol=='2'){
     this.accounts = await this.service.getAccountsReadyToSyncAbogado()
     console.log(this.accounts)

@@ -26,7 +26,7 @@ mapEle : HTMLElement;
 
 
    loadMap(data){
-console.log("Entra a cargar los putos puntos::::::::")
+console.log("Entra a cargar los puntos::::::::")
     const position = new google.maps.LatLng(parseFloat(data[0].latitud),parseFloat(data[0].longitud));
     this.mapEle = document.getElementById('mapa-route');
   
@@ -45,7 +45,7 @@ console.log("Entra a cargar los putos puntos::::::::")
    
   }
   getMarkers(data) {
-  console.log("entra a cargar los putos markesr:::::::::")
+  console.log("entra a cargar los markesr:::::::::")
     for (let i = 0; i < data.length; i++) {
       if (i > 0) {
         this.addMarkersToMap(data[i]);

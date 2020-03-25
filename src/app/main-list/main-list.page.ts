@@ -139,7 +139,7 @@ console.log('Entra a el didenter')
 
   async refresh() {
     this.account = null
-    console.log('Se trata de refrescar la puta lista')
+    console.log('Se trata de refrescar la lista')
     this.loading = await this.loadingCtrl.create({
       message: "Cargando lista..."
     });

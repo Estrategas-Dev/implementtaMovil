@@ -279,7 +279,7 @@ reloadallPropietario() {
     }
   }
 
-  ///////////////////////////////////////continuar aqui para la carga de las putas fotos
+  ///////////////////////////////////////continuar aqui para la carga de las fotos
 
   async saveSqlServer(cuenta,idAspuser,imageName, idTarea, fecha,tipo, id,url,ruta,cont ) {    
     let a = url.split("&");
@@ -289,7 +289,7 @@ reloadallPropietario() {
     let b3 = b1[1];
     let c = a[1];
     let d = a[2];
-    console.log('La puta url partida')
+    console.log('La url partida')
     console.log(b2,b3,c,d)
     let idPlaza = await this.storage.get("IdPlaza");
     let strinSql0 = `'${cuenta}','${idAspuser}','${imageName}',${idTarea},'${fecha}','${tipo}',${idPlaza},'${b2}','${b3}','${c}','${d}'`;
@@ -299,9 +299,9 @@ reloadallPropietario() {
           async data => {
             this.mensaje.showToast(data[0].mensaje+' '+cont)
             await this.updateLoadedItem(id);
-             console.log('registroCargado al puto sql')
+             console.log('registroCargado al sql')
           //   await this.deletePhotoFile(ruta);
-         //  console.log('se borro la puta foto')
+         //  console.log('se borro la foto')
             resolve(data);
           },
           err => {
@@ -326,9 +326,9 @@ finalLoad(){
       async data => {
         console.log(data)
         await this.updateLoadedItem(this.arrayUrls[i].id);
-         console.log('registroCargado al puto sql')
+         console.log('registroCargado al sql')
       // await this.deletePhotoFile(this.arrayUrls[i].ruta);
-     //  console.log('se borro la puta foto')
+     //  console.log('se borro la foto')
         resolve(data);
       },
       err => {
@@ -767,7 +767,7 @@ console.log(data)
   }
   gestionReductor(data) {
     this.updateAccountGestionada(data.id);
-    console.log("llego el puto query string");
+    console.log("llego el query string");
 
     let sql =
     `INSERT INTO gestionReductor(account ,idTarea ,idDescripcion , idObservaciones , idaspuser,lectura ,conclusiones , personaContacto , telefonoContacto ,fechaPromesa , fechaCaptura , fechaProximaRev , latitud , longitud , niple , horaIni , horaFin)
@@ -794,7 +794,7 @@ console.log(data)
   }
   gestionGestor(data) {
     this.updateAccountGestionada(data.id);
-    console.log("llego el puto query string");
+    console.log("llego el query string");
 
     let sql =
       "INSERT INTO gestionGestor(account,idEstatus,observaciones,fechaPromesaPago,latitud,longitud,fechaCaptura,idAspuser,idTarea,fechaAsignacion,fechaVencimiento,idMotivoNoPago,motivoNoPago,idSolucionPlanteada,idExpectativasContribuyente,otraExpectativaContribuyente,idCaracteristicaPredio,otraCaracteristicaPredio,idServiciosNoPago)" +
