@@ -48,7 +48,7 @@ export class S3Service {
    
   }
   uploadS3(image,imageName) {
-
+    return new Promise((resolve) => {
     let  s3=new aws.S3()
     s3.config.update(awsCredentials)
     s3.config.update({region:'us-east-1'})
@@ -64,13 +64,14 @@ export class S3Service {
     s3.putObject(data,(err, res) => {
       if (err) {
         console.log(err);
-        return err
+        resolve(false);
+        // return err
       } else {
         console.log(res);
-        return res
+        resolve(true);
       }
     });
-   
+  });
   }
    getURLPresignaded(imageName){
 

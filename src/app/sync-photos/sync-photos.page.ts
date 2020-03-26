@@ -59,10 +59,12 @@ export class SyncPhotosPage implements OnInit {
   }
   async uploadPhotos() {
 
-    await this.service.uploadPhotos();
-    this.modalController.getTop().then(res=>{
-      this.getInfo();
-    })
+    await this.service.uploadPhotos().then( () => {
+      this.exit();
+    });
+    // this.modalController.getTop().then(res=>{
+    //   this.getInfo();
+    // });
   }
 
   deletePhoto(id,rutaBase64){

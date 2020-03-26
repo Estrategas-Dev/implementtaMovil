@@ -3,7 +3,7 @@
     <ion-title>Fotos a sincronizar <strong>{{totalFotos}}</strong></ion-title>
  
   <ion-buttons slot ="end">
-    <ion-button color ="tertiary" (click)="uploadPhotos()"> <ion-icon name ="cloud-upload"></ion-icon></ion-button>
+    <ion-button color ="tertiary" (click)="uploadPhotos()" [disabled]="totalFotos === 0 ? true: false"> <ion-icon name ="cloud-upload"></ion-icon></ion-button>
     <div *ngIf="isHide">
       <ion-button color="danger" (click)="reDo()">
           <ion-icon name="refresh"></ion-icon>

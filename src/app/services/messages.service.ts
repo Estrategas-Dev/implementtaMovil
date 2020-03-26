@@ -65,4 +65,13 @@ export class MessagesService {
     });
     toast.present();
   }
+
+  async showToastLarge(message : string) {
+    let toast = await this.toastCtrl.create({
+      message: message,
+      duration: 7000,
+      position: 'bottom'
+    });
+    toast.present();
+  }
 }

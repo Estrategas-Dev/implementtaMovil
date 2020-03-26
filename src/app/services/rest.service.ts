@@ -17,10 +17,10 @@ export interface Dev {
   nombre_propietario: string,
   latitud: string,
   longitud: string,
-  calle_predio : string,
+  calle_predio: string,
   adeudo: string,
   gestionada: string,
-  colonia_predio : string
+  colonia_predio: string
 }
 
 @Injectable({
@@ -29,10 +29,10 @@ export interface Dev {
 
 
 export class RestService {
-  
+
   list = new BehaviorSubject([]);
   private dbReady: BehaviorSubject<boolean> = new BehaviorSubject(false);
-  arrayUrls : any
+  arrayUrls: any
   array: any;
   db: SQLiteObject = null;
   apiUrl0 =
@@ -57,11 +57,11 @@ export class RestService {
     "https://implementta.net/andro/ImplementtaMovil.aspx?query=sp_registroRecorridoMovil";
   apiUrl8 =
     "https://implementta.net/andro/ImplementtaMovil.aspx?query=sp_registroAbogadoMovil";
-    apiUrl10 =
+  apiUrl10 =
     "https://implementta.net/andro/ImplementtaMovil.aspx?query=sp_actualizaDirecciones";
-    apiUrl11 =
+  apiUrl11 =
     "https://implementta.net/andro/ImplementtaMovil.aspx?query=sp_actualizaDomicilios";
-    apiUrl12=
+  apiUrl12 =
     "https://implementta.net/andro/ImplementtaMovil.aspx?query=sp_actualizaDatos";
   loading: any;
   lista: any[];
@@ -76,7 +76,7 @@ export class RestService {
     private toastCtrl: ToastController
   ) {
 
-    this.arrayUrls= [];
+    this.arrayUrls = [];
   }
 
   setDatabase(db: SQLiteObject) {
@@ -84,65 +84,65 @@ export class RestService {
       this.db = db;
     }
   }
-////////////////getdalalist con observable
-getList(){
-this.loadList();
-console.log('si hizo este pedo')
-console.log(this.list)
-  return this.list.asObservable()
-}
-   loadList(){
+  ////////////////getdalalist con observable
+  getList() {
+    this.loadList();
+    console.log('si hizo este pedo')
+    console.log(this.list)
+    return this.list.asObservable()
+  }
+  loadList() {
     let sql = `SELECT id,gestionada, 'CUENTA: '||cuenta||','||'PROPIETARIO: '||nombre_propietario||','||'DIRECCION: '||calle_predio||','||'NUM: '||num_exterior_predio||','||colonia_predio||','||'DEUDA: '||adeudo as full, cuenta,nombre_propietario,latitud,longitud,calle_predio,num_exterior_predio,colonia_predio,poblacion_predio,cp_predio,adeudo FROM implementta where nombre_propietario NOT NULL order by nombre_propietario`;
-     this.db.executeSql(sql, []).then(data => {
+    this.db.executeSql(sql, []).then(data => {
       let list: Dev[] = [];
- 
+
       if (data.rows.length > 0) {
         for (var i = 0; i < data.rows.length; i++) {
 
-          list.push({ 
+          list.push({
             id: data.rows.item(i).id,
-            cuenta: data.rows.item(i).cuenta, 
-            full:data.rows.item(i).full, 
-            nombre_propietario:data.rows.item(i).nombre_propietario, 
-            latitud:data.rows.item(i).latitud, 
+            cuenta: data.rows.item(i).cuenta,
+            full: data.rows.item(i).full,
+            nombre_propietario: data.rows.item(i).nombre_propietario,
+            latitud: data.rows.item(i).latitud,
             longitud: data.rows.item(i).longitud,
             calle_predio: data.rows.item(i).calle_predio,
-            adeudo : data.rows.item(i).adeudo,
-            gestionada : data.rows.item(i).gestionada,
-            colonia_predio : data.rows.item(i).colonia_predio
-           });
+            adeudo: data.rows.item(i).adeudo,
+            gestionada: data.rows.item(i).gestionada,
+            colonia_predio: data.rows.item(i).colonia_predio
+          });
         }
       }
       this.list.next(list);
     });
-}
-getDataVisitListObservable() {
-   let sql = `SELECT gestionada, 'CUENTA: '||cuenta||','||'PROPIETARIO: '||nombre_propietario||','||'DIRECCION: '||calle_predio||','||'NUM: '||num_exterior_predio||','||colonia_predio||','||'DEUDA: '||adeudo as full, cuenta,nombre_propietario,latitud,longitud,calle_predio,num_exterior_predio,colonia_predio,poblacion_predio,cp_predio,adeudo FROM implementta where nombre_propietario NOT NULL order by nombre_propietario`;
-
-  return this.db
-    .executeSql(sql, [])
-    .then(response => {
-      let arrayCuentas = [];
-
-      for (let index = 0; index < response.rows.length; index++) {
-        arrayCuentas.push(response.rows.item(index));
-      }
-
-      return Promise.resolve(arrayCuentas);
-    })
-    .catch(error => Promise.reject(error));
-}
-
-  async getTotalPhotos(){
-    let sql =
-    "SELECT count(*)as total FROM capturaFotos where cargado = 0";
-  try {
-    const response = await this.db.executeSql(sql, []);
-    let result = response.rows.item(0).total;
-    return Promise.resolve(result);
-  } catch (error) {
-    return await Promise.reject(error);
   }
+  getDataVisitListObservable() {
+    let sql = `SELECT gestionada, 'CUENTA: '||cuenta||','||'PROPIETARIO: '||nombre_propietario||','||'DIRECCION: '||calle_predio||','||'NUM: '||num_exterior_predio||','||colonia_predio||','||'DEUDA: '||adeudo as full, cuenta,nombre_propietario,latitud,longitud,calle_predio,num_exterior_predio,colonia_predio,poblacion_predio,cp_predio,adeudo FROM implementta where nombre_propietario NOT NULL order by nombre_propietario`;
+
+    return this.db
+      .executeSql(sql, [])
+      .then(response => {
+        let arrayCuentas = [];
+
+        for (let index = 0; index < response.rows.length; index++) {
+          arrayCuentas.push(response.rows.item(index));
+        }
+
+        return Promise.resolve(arrayCuentas);
+      })
+      .catch(error => Promise.reject(error));
+  }
+
+  async getTotalPhotos() {
+    let sql =
+      "SELECT count(*)as total FROM capturaFotos where cargado = 0";
+    try {
+      const response = await this.db.executeSql(sql, []);
+      let result = response.rows.item(0).total;
+      return Promise.resolve(result);
+    } catch (error) {
+      return await Promise.reject(error);
+    }
   }
   deletePhoto(id, url) {
     this.db.executeSql("delete from  capturaFotos where id = ?", [id]);
@@ -165,66 +165,74 @@ getDataVisitListObservable() {
         console.log(err);
       });
   }
-async  uploadPhoto(id){
-  let arrayImages = [];
-  let sql = "SELECT * FROM capturaFotos where cargado = 0 and id = ?";
-  let response = await this.db.executeSql(sql, [id]);
-  for (let i = 0; i < response.rows.length; i++) {
-    arrayImages.push(response.rows.item(i));
+  async  uploadPhoto(id) {
+    return new Promise(async (resolve) => {
+      let arrayImages = [];
+      let sql = "SELECT * FROM capturaFotos where cargado = 0 and id = ?";
+      let response = await this.db.executeSql(sql, [id]);
+      for (let i = 0; i < response.rows.length; i++) {
+        arrayImages.push(response.rows.item(i));
+      }
+      await this.base64.encodeFile(arrayImages[0].rutaBase64).then(async (base64File: string) => {
+        let imageName = arrayImages[0].cuenta + arrayImages[0].fecha;
+        let imagen64 = base64File.split(",");
+        let imagenString = imagen64[1];
+        let idTarea = arrayImages[0].idTarea;
+        if (idTarea == null) { idTarea = 0; }
+        // await this.uploadPhotoS3V1(item.cuenta,item.idAspUser, idTarea, item.fecha,item.tipo, imagenString,imageName, item.id,item.rutaBase64);
+        try {
+          this.s3Service.uploadS3(imagenString, imageName).then(async uploadResponse => {
+            if (uploadResponse) {
+              let UrlOriginal: any;
+              UrlOriginal = this.s3Service.getURLPresignaded(imageName);
+              console.log('La url::::::')
+              console.log(UrlOriginal)
+              await this.saveSqlServer(arrayImages[0].cuenta, arrayImages[0].idAspUser, imageName, idTarea, arrayImages[0].fecha, arrayImages[0].tipo, arrayImages[0].id, UrlOriginal, arrayImages[0].ruta, 1);
+              resolve(true);
+            }
+            else {
+              this.uploadPhoto(id);
+            }
+          });
+
+        } catch (err_1) {
+          alert(err_1)
+          console.log(err_1);
+          resolve(false);
+        }
+
+
+      },
+        err => {
+          alert(err)
+          console.log(err);
+        }
+      );
+
+    });
   }
-  await this.base64.encodeFile(arrayImages[0].rutaBase64).then(async (base64File: string) => {
-    let imageName = arrayImages[0].cuenta + arrayImages[0].fecha;
-    let imagen64 = base64File.split(",");
-    let imagenString = imagen64[1];
-    let idTarea = arrayImages[0].idTarea;
-    if (idTarea == null) { idTarea = 0; }
-   // await this.uploadPhotoS3V1(item.cuenta,item.idAspUser, idTarea, item.fecha,item.tipo, imagenString,imageName, item.id,item.rutaBase64);
-    try {
-     this.s3Service.uploadS3(imagenString, imageName);
-      let UrlOriginal: any;
-      UrlOriginal =  this.s3Service.getURLPresignaded(imageName);
-      console.log('La url::::::')
-      console.log(UrlOriginal)
-       await  this.saveSqlServer(arrayImages[0].cuenta,arrayImages[0].idAspUser,imageName,idTarea,arrayImages[0].fecha,arrayImages[0].tipo,arrayImages[0].id,UrlOriginal,arrayImages[0].ruta,1);
-
-    } catch (err_1) {
-      alert(err_1)
-      return console.log(err_1);
-    }
-
-
-  },
-  err => {
-    alert(err)
-    console.log(err);
-
+  reloadAllPhotos() {
+    let sql = 'UPDATE capturaFotos set cargado = 0'
+    return this.db.executeSql(sql, null)
   }
-);
 
+  reloadPhotosDate(fechaInicio, fechaFinal) {
+    let sql = `UPDATE capturaFotos set cargado = 0 where DATE( substr(fecha,1,4) || '-' || substr(fecha,6,2) || '-' || substr(fecha,9,2) ) BETWEEN '${fechaInicio}' AND '${fechaFinal}'`
+    //let sql = `UPDATE capturaFotos set cargado = 0 where DATE( substr(fecha,1,4) || '-' || substr(fecha,6,2) || '-' || substr(fecha,9,2) ) BETWEEN DATE( substr(${fechaInicio},1,4) || '-' || substr(${fechaInicio},6,2) || '-' || substr(${fechaInicio},9,2) )  AND DATE( substr(${fechaFinal},1,4) || '-' || substr(${fechaFinal},6,2) || '-' || substr(${fechaFinal},9,2) )`;
+    //let sql = `UPDATE capturaFotos set cargado = 0 where fecha BETWEEN '${fechaInicio}' and '${fechaFinal}'`
+    //this.mensaje.showAlert(sql);
+    return this.db.executeSql(sql, null);
+  }
 
-}
- reloadAllPhotos(){
-   let sql ='UPDATE capturaFotos set cargado = 0'
-   return this.db.executeSql(sql,null)
- }
+  reloadAllAddress() {
+    let sql = 'UPDATE domicilios set cargado = 0'
+    return this.db.executeSql(sql, null)
+  }
 
-reloadPhotosDate( fechaInicio, fechaFinal) {
-  let sql = `UPDATE capturaFotos set cargado = 0 where DATE( substr(fecha,1,4) || '-' || substr(fecha,6,2) || '-' || substr(fecha,9,2) ) BETWEEN '${fechaInicio}' AND '${fechaFinal}'`
-  //let sql = `UPDATE capturaFotos set cargado = 0 where DATE( substr(fecha,1,4) || '-' || substr(fecha,6,2) || '-' || substr(fecha,9,2) ) BETWEEN DATE( substr(${fechaInicio},1,4) || '-' || substr(${fechaInicio},6,2) || '-' || substr(${fechaInicio},9,2) )  AND DATE( substr(${fechaFinal},1,4) || '-' || substr(${fechaFinal},6,2) || '-' || substr(${fechaFinal},9,2) )`;
-  //let sql = `UPDATE capturaFotos set cargado = 0 where fecha BETWEEN '${fechaInicio}' and '${fechaFinal}'`
-  //this.mensaje.showAlert(sql);
-  return this.db.executeSql(sql, null);
-}
-
- reloadAllAddress(){
-  let sql ='UPDATE domicilios set cargado = 0'
-  return this.db.executeSql(sql,null)
-}
-
-reloadallPropietario() {
-  let sql = 'UPDATE propietario set cargado = 0'
-  return this.db.executeSql(sql, null);
-}
+  reloadallPropietario() {
+    let sql = 'UPDATE propietario set cargado = 0'
+    return this.db.executeSql(sql, null);
+  }
 
   async uploadPhotos() {
     let arrayImages = [];
@@ -234,54 +242,100 @@ reloadallPropietario() {
       arrayImages.push(response.rows.item(i));
     }
     if (arrayImages.length == 0) {
-    this.mensaje.showToast('Sin fotos')
+      this.mensaje.showToast('Sin fotos')
     } else {
       this.loading = await this.loadingCtrl.create({
         message: "Por favor espere, se estan sincronizando sus fotos...."
       });
       await this.loading.present();
 
-      for (let i = 0;i< arrayImages.length;i++) {
-       await this.base64.encodeFile(arrayImages[i].rutaBase64).then(async (base64File: string) => {
-         
-            let imageName = arrayImages[i].cuenta + arrayImages[i].fecha;
-            let imagen64 = base64File.split(",");
-            let imagenString = imagen64[1];
-            let idTarea = arrayImages[i].idTarea;
-            if (idTarea == null) { idTarea = 0; }
-            await this.uploadPhotoS3V1(arrayImages[i].cuenta,arrayImages[i].idAspUser, idTarea, arrayImages[i].fecha,arrayImages[i].tipo, imagenString,imageName, arrayImages[i].id,arrayImages[i].rutaBase64,i+1);
-
-          },
-          err => {
-            alert(err)
-            console.log(err);
-            this.loading.dismiss();
-          }
-        );
-      }
-  
-      this.loading.dismiss();
+      // for (let i = 0; i < arrayImages.length; i++) {
+      //   await this.base64.encodeFile(arrayImages[i].rutaBase64).then(async (base64File: string) => {
+      //     let imageName = arrayImages[i].cuenta + arrayImages[i].fecha;
+      //     let imagen64 = base64File.split(",");
+      //     let imagenString = imagen64[1];
+      //     let idTarea = arrayImages[i].idTarea;
+      //     if (idTarea == null) { idTarea = 0; }
+      //     await this.uploadPhotoS3V1(arrayImages[i].cuenta, arrayImages[i].idAspUser, idTarea, arrayImages[i].fecha, arrayImages[i].tipo, imagenString, imageName, arrayImages[i].id, arrayImages[i].rutaBase64, i + 1);
+      //   },
+      //     err => {
+      //       alert(err)
+      //       console.log(err);
+      //       this.loading.dismiss();
+      //     }
+      //   );
+      // }
+      this.avanceImagenes = 0;
+      this.envioDatos(arrayImages);
     }
   }
 
-  async uploadPhotoS3V1(cuenta,idAspuser,idTarea,fecha,tipo,base64File,imageName,id,ruta,cont) {
-    try {
-      this.s3Service.uploadS3(base64File, imageName);
-      let UrlOriginal: any;
-      UrlOriginal =  this.s3Service.getURLPresignaded(imageName);
-      console.log('La url::::::')
-      console.log(UrlOriginal)
-       await  this.saveSqlServer(cuenta,idAspuser,imageName,idTarea,fecha,tipo,id,UrlOriginal,ruta,cont);
-
-    } catch (err_1) {
-      alert(err_1)
-      return console.log(err_1);
+  avanceImagenes = 0;
+  envioDatos(arrayImages) {
+    if (this.avanceImagenes === arrayImages.length) {
+      this.loading.dismiss();
+      this.mensaje.showToastLarge('Se subieron correctamente las fotos');
+    } else {
+      this.sendImage(this.avanceImagenes, arrayImages).then(respEnvio => {
+        if (respEnvio) {
+          this.avanceImagenes++;
+          this.envioDatos(arrayImages);
+        } else {
+          this.envioDatos(arrayImages);
+        }
+      });
     }
+  }
+
+
+  async sendImage(i, arrayImages) {
+    return new Promise(async (resolve) => {
+      await this.base64.encodeFile(arrayImages[i].rutaBase64).then(async (base64File: string) => {
+        let imageName = arrayImages[i].cuenta + arrayImages[i].fecha;
+        let imagen64 = base64File.split(",");
+        let imagenString = imagen64[1];
+        let idTarea = arrayImages[i].idTarea;
+        if (idTarea == null) { idTarea = 0; }
+        this.uploadPhotoS3V1(arrayImages[i].cuenta, arrayImages[i].idAspUser, idTarea, arrayImages[i].fecha, arrayImages[i].tipo, imagenString, imageName, arrayImages[i].id, arrayImages[i].rutaBase64, i + 1).then( respImagen =>{
+          resolve(respImagen);
+        });
+      },
+        err => {
+          console.log(err);
+          resolve(false);
+        }
+      );
+    });
+  }
+
+
+  async uploadPhotoS3V1(cuenta, idAspuser, idTarea, fecha, tipo, base64File, imageName, id, ruta, cont) {
+    return new Promise( async (resolve) => {
+      try {
+        this.s3Service.uploadS3(base64File, imageName).then(async uploadResponse => {
+          if (uploadResponse) {
+            let UrlOriginal: any;
+            UrlOriginal = this.s3Service.getURLPresignaded(imageName);
+            console.log('La url::::::')
+            console.log(UrlOriginal)
+            await this.saveSqlServer(cuenta, idAspuser, imageName, idTarea, fecha, tipo, id, UrlOriginal, ruta, cont);
+            resolve(true);
+          }
+          else {
+            this.uploadPhotoS3V1(cuenta, idAspuser, idTarea, fecha, tipo, base64File, imageName, id, ruta, cont);
+          }
+        });
+      } catch (err_1) {
+        alert(err_1)
+        console.log(err_1);
+        resolve(false);
+      }
+    });
   }
 
   ///////////////////////////////////////continuar aqui para la carga de las fotos
 
-  async saveSqlServer(cuenta,idAspuser,imageName, idTarea, fecha,tipo, id,url,ruta,cont ) {    
+  async saveSqlServer(cuenta, idAspuser, imageName, idTarea, fecha, tipo, id, url, ruta, cont) {
     let a = url.split("&");
     let b = a[0];
     let b1 = b.split(":");
@@ -290,65 +344,66 @@ reloadallPropietario() {
     let c = a[1];
     let d = a[2];
     console.log('La url partida')
-    console.log(b2,b3,c,d)
+    console.log(b2, b3, c, d)
     let idPlaza = await this.storage.get("IdPlaza");
     let strinSql0 = `'${cuenta}','${idAspuser}','${imageName}',${idTarea},'${fecha}','${tipo}',${idPlaza},'${b2}','${b3}','${c}','${d}'`;
-  
-      return new Promise(resolve => {
-          this.http.post(this.apiUrl5 + " " + strinSql0, null).subscribe(
-          async data => {
-            this.mensaje.showToast(data[0].mensaje+' '+cont)
-            await this.updateLoadedItem(id);
-             console.log('registroCargado al sql')
+
+    return new Promise(resolve => {
+      this.http.post(this.apiUrl5 + " " + strinSql0, null).subscribe(
+        async data => {
+          this.mensaje.showToast(data[0].mensaje + ' ' + cont)
+          await this.updateLoadedItem(id);
+          console.log('registroCargado al sql')
           //   await this.deletePhotoFile(ruta);
-         //  console.log('se borro la foto')
+          //  console.log('se borro la foto')
+          resolve(data);
+        },
+        err => {
+          this.mensaje.showAlert(
+            "Existe un error con la red, verifica y vuelve a intentar :( " + err
+          );
+          console.log(err);
+        }
+      );
+    });
+  }
+
+  finalLoad() {
+    console.log('Ahora si ya todas las fotos estan en el s3 y ya solo se manda las urls al sql')
+    console.log('Numero de veces que debe entrar el ciclo::' + this.arrayUrls.length)
+    for (let i = 0; i < this.arrayUrls.length; i++) {
+      return new Promise(resolve => {
+        console.log('numero de veces que entra el ciclo: ' + i)
+        console.log('Aqui se muestra la url pero en ciclo')
+        console.log(this.arrayUrls[i + 1].url)
+        this.http.post(this.apiUrl5 + " " + this.arrayUrls[i + 1].url, null).subscribe(
+          async data => {
+            console.log(data)
+            await this.updateLoadedItem(this.arrayUrls[i].id);
+            console.log('registroCargado al sql')
+            // await this.deletePhotoFile(this.arrayUrls[i].ruta);
+            //  console.log('se borro la foto')
             resolve(data);
           },
           err => {
             this.mensaje.showAlert(
-              "Existe un error con la red, verifica y vuelve a intentar :( "+err
+              "Existe un error con la red, verifica y vuelve a intentar :("
             );
             console.log(err);
           }
         );
-  });
-}
+      });
+    }
+  }
 
-finalLoad(){
-  console.log('Ahora si ya todas las fotos estan en el s3 y ya solo se manda las urls al sql')
-  console.log('Numero de veces que debe entrar el ciclo::'+ this.arrayUrls.length)
-  for(let i = 0; i < this.arrayUrls.length; i++){
-  return new Promise(resolve => {
-    console.log('numero de veces que entra el ciclo: '+i)
-    console.log('Aqui se muestra la url pero en ciclo')
-    console.log(this.arrayUrls[i+1].url)
-    this.http.post(this.apiUrl5 + " " + this.arrayUrls[i+1].url, null).subscribe(
-      async data => {
-        console.log(data)
-        await this.updateLoadedItem(this.arrayUrls[i].id);
-         console.log('registroCargado al sql')
-      // await this.deletePhotoFile(this.arrayUrls[i].ruta);
-     //  console.log('se borro la foto')
-        resolve(data);
-      },
-      err => {
-        this.mensaje.showAlert(
-          "Existe un error con la red, verifica y vuelve a intentar :("
-        );
-        console.log(err);
-      }
-    );
-  });}
-}
-
-async showToast(mensaje) {
-  let toast = await this.toastCtrl.create({
-    message: mensaje,
-    duration: 1500,
-    position: "middle"
-  });
-  toast.present();
-}
+  async showToast(mensaje) {
+    let toast = await this.toastCtrl.create({
+      message: mensaje,
+      duration: 1500,
+      position: "middle"
+    });
+    toast.present();
+  }
 
 
   updateLoadedItem(id) {
@@ -399,7 +454,7 @@ async showToast(mensaje) {
           .subscribe(
             data => {
               // hay que agregar posteriormente el id de la plaza
-console.log(data)
+              console.log(data)
               resolve(data);
             },
             err => {
@@ -770,14 +825,14 @@ console.log(data)
     console.log("llego el query string");
 
     let sql =
-    `INSERT INTO gestionReductor(account ,idTarea ,idDescripcion , idObservaciones , idaspuser,lectura ,conclusiones , personaContacto , telefonoContacto ,fechaPromesa , fechaCaptura , fechaProximaRev , latitud , longitud , niple , horaIni , horaFin)
+      `INSERT INTO gestionReductor(account ,idTarea ,idDescripcion , idObservaciones , idaspuser,lectura ,conclusiones , personaContacto , telefonoContacto ,fechaPromesa , fechaCaptura , fechaProximaRev , latitud , longitud , niple , horaIni , horaFin)
      values(?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)`;
     return this.db.executeSql(sql, [
       data.account,
-      data.idtarea,    
+      data.idtarea,
       data.idDescripcion,
       data.idObservacion,
-      data.idAspUser, 
+      data.idAspUser,
       data.lectura,
       data.conclusiones,
       data.personaContacto,
@@ -859,7 +914,7 @@ console.log(data)
       .catch(error => Promise.reject(error));
   }
   getAccountsReadyToSyncAbogado() {
-    let sql =`SELECT account, fechaCaptura, idTarea, 'Gestor' as rol from gestionGestor where cargado = 0
+    let sql = `SELECT account, fechaCaptura, idTarea, 'Gestor' as rol from gestionGestor where cargado = 0
     UNION SELECT account, fechaCaptura, idTarea, 'Abogado' as rol  from gestionAbogado where cargado = 0
     UNION SELECT account, fechaCaptura, idTarea, 'Reductor' as rol  from gestionReductor where cargado = 0 `;
     return this.db
@@ -874,7 +929,7 @@ console.log(data)
       .catch(error => Promise.reject(error));
   }
   getAccountsReadyToSyncReductor() {
-    let sql =`SELECT account, fechaCaptura, idTarea, 'Gestor' as rol from gestionGestor where cargado = 0
+    let sql = `SELECT account, fechaCaptura, idTarea, 'Gestor' as rol from gestionGestor where cargado = 0
     UNION SELECT account, fechaCaptura, idTarea, 'Abogado' as rol  from gestionAbogado where cargado = 0
     UNION SELECT account, fechaCaptura, idTarea, 'Reductor' as rol  from gestionReductor where cargado = 0 `;
     return this.db
@@ -890,14 +945,14 @@ console.log(data)
   }
   ///////////////////////////////////Sincronizacion al servidor SQL Server
   async getAccoutsToSyncGestor() {
- 
+
 
     let idPlaza = await this.storage.get("IdPlaza");
     try {
       let sql = "SELECT * FROM gestionGestor where cargado = 0";
       const result = await this.db.executeSql(sql, []);
       if (result.rows.length === 0) {
-       this.mensaje.showToastSync("No hay registros para sincronizar");
+        this.mensaje.showToastSync("No hay registros para sincronizar");
       } else {
         console.log(result);
         for (let i = 0; i < result.rows.length; i++) {
@@ -929,13 +984,13 @@ console.log(data)
           let id = result.rows.item(i).id;
           let sqlString = `'${account}',${idEstatus},'${observaciones}','${fechaPromesaPago}',${latitud},${longitud},'${fechaCaptura}','${idAspUser}',${idTarea},'${fechaAsignacion}','${fechaVencimiento}',${idMotivoNoPago},'${motivoNoPago}',${idSolucionPlanteada},${idExpectativasContribuyente},'${otraExpectativaContribuyente}',${idCaracteristicaPredio},'${otraCaracteristicaPredio}',${idServiciosNoPago},${idPlaza}`;
 
-       await   this.accountSyncGestor(sqlString, id);
+          await this.accountSyncGestor(sqlString, id);
         }
-       
+
         return Promise.resolve("Executed query");
       }
     } catch (error_1) {
-      
+
       return Promise.reject(error_1);
     }
   }
@@ -947,7 +1002,7 @@ console.log(data)
       const result = await this.db.executeSql(sql, []);
       if (result.rows.length === 0) {
         this.mensaje.showToastSync("No hay registros para sincronizar");
-      //  this.loading.dismiss();
+        //  this.loading.dismiss();
       } else {
         console.log(result);
         for (let i = 0; i < result.rows.length; i++) {
@@ -969,13 +1024,13 @@ console.log(data)
           let id = result.rows.item(i).id;
           let sqlString = `'${account}',${idResultado},${idPersona},'${observaciones}','${fechaPromesaPago}',${latitud},${longitud},'${fechaCaptura}','${idAspUser}',${idTarea},'${fechaVencimiento}','${horaVencimiento}',${idPlaza}`;
 
-       await   this.accountSyncAbogado(sqlString, id);
+          await this.accountSyncAbogado(sqlString, id);
         }
-    //    this.loading.dismiss();
+        //    this.loading.dismiss();
         return Promise.resolve("Executed query");
       }
     } catch (error_1) {
-  //    this.loading.dismiss();
+      //    this.loading.dismiss();
       return Promise.reject(error_1);
     }
   }
@@ -988,16 +1043,16 @@ console.log(data)
       const result = await this.db.executeSql(sql, []);
       if (result.rows.length === 0) {
         this.mensaje.showToastSync("No hay registros para sincronizar");
-    //    this.loading.dismiss();
+        //    this.loading.dismiss();
       } else {
         console.log(result);
         for (let i = 0; i < result.rows.length; i++) {
           //this.sicronizadoUpdate(result.rows.item(i).id);
 
           let account = result.rows.item(i).account;
-          let idTarea = result.rows.item(i).idTarea;  
+          let idTarea = result.rows.item(i).idTarea;
           let idDescripcion = result.rows.item(i).idDescripcion;
-          let idObservacion =  result.rows.item(i).idDescripcion;
+          let idObservacion = result.rows.item(i).idDescripcion;
           let idAspUser = result.rows.item(i).idaspuser;
           let lectura = result.rows.item(i).lectura
           let conclusiones = result.rows.item(i).conclusiones;
@@ -1009,34 +1064,34 @@ console.log(data)
           let latitud = result.rows.item(i).latitud
           let longitud = result.rows.item(i).longitud;
           let idNiple = result.rows.item(i).niple;
-          let horaIni= result.rows.item(i).horaIni;
+          let horaIni = result.rows.item(i).horaIni;
           let horaFin = result.rows.item(i).horaFin;
 
-      let id = result.rows.item(i).id;
+          let id = result.rows.item(i).id;
           let sqlString = `'${account}',${idTarea},'${idObservacion}','${idDescripcion}','${idAspUser}','${lectura}','${conclusiones}','${personaContacto}','${telefonoContacto}','${fechaPromesa}','${fechaCaptura}','${fechaProximaVisita}','${latitud}','${longitud}',${idNiple},'${horaIni}','${horaFin}',${idPlaza}`;
 
-     await     this.accountSyncReductor(sqlString, id);
+          await this.accountSyncReductor(sqlString, id);
         }
-      //  this.loading.dismiss();
+        //  this.loading.dismiss();
         return Promise.resolve("Executed query");
       }
     } catch (error_1) {
-    //  this.loading.dismiss();
-      return Promise.reject(error_1); 
+      //  this.loading.dismiss();
+      return Promise.reject(error_1);
     }
   }
   async accountSyncGestor(query, id) {
     return new Promise(resolve => {
       this.http.post(this.apiUrl6 + " " + query, null).subscribe(
         async data => {
-         
+
           await this.updateAccountSyncGestor(id);
-      //    console.log(data)
+          //    console.log(data)
           resolve(data);
         },
         err => {
           this.mensaje.showAlert(
-            "Hubo un error en la red, verifica e intentalo de nuevo "+ err
+            "Hubo un error en la red, verifica e intentalo de nuevo " + err
           );
           this.loadingCtrl.dismiss();
           console.log(err);
@@ -1054,7 +1109,7 @@ console.log(data)
         },
         err => {
           this.mensaje.showAlert(
-            "Hubo un error en la red, verifica e intentalo de nuevo "+ err
+            "Hubo un error en la red, verifica e intentalo de nuevo " + err
           );
           this.loadingCtrl.dismiss();
           console.log(err);
@@ -1071,7 +1126,7 @@ console.log(data)
         },
         err => {
           this.mensaje.showAlert(
-            "Hubo un error en la red, verifica e intentalo de nuevo "+ err
+            "Hubo un error en la red, verifica e intentalo de nuevo " + err
           );
           this.loadingCtrl.dismiss();
           console.log(err);
@@ -1079,19 +1134,19 @@ console.log(data)
       );
     });
   }
-  updateStatusLoadAgain(rol){
-    if(rol=='2'){
+  updateStatusLoadAgain(rol) {
+    if (rol == '2') {
       let sql = "UPDATE gestionAbogado SET cargado = 0 where cargado = 1";
       let sql2 = "UPDATE gestionGestor SET cargado = 0 where cargado = 1";
       this.db.executeSql(sql, null);
       this.db.executeSql(sql2, null);
     }
-    else if(rol=='5'){
+    else if (rol == '5') {
       let sql = "UPDATE gestionGestor SET cargado = 0 where cargado = 1";
-      return this.db.executeSql(sql,null);
-    }else if(rol=='7'){
-    let sql = "UPDATE gestionReductor SET cargado = 0 where cargado = 1";
-    return this.db.executeSql(sql,null);
+      return this.db.executeSql(sql, null);
+    } else if (rol == '7') {
+      let sql = "UPDATE gestionReductor SET cargado = 0 where cargado = 1";
+      return this.db.executeSql(sql, null);
     }
   }
   updateRecorridoSync(id) {
@@ -1109,16 +1164,16 @@ console.log(data)
   updateAccountSyncDomicilios(id) {
     let sql = "UPDATE domicilios SET cargado = 1 where id = ?";
     return this.db.executeSql(sql, [id]);
-  } 
-   updateAccountSyncDatosPropietario(id) {
+  }
+  updateAccountSyncDatosPropietario(id) {
     let sql = "UPDATE propietario SET cargado = 1 where id = ?";
     return this.db.executeSql(sql, [id]);
   }
-  deleteDataUpdatedAddress(id){
+  deleteDataUpdatedAddress(id) {
     let sql = "DELETE FROM domicilios where id = ?";
     return this.db.executeSql(sql, [id]);
   }
-  deleteDataUpdatedUser(id){
+  deleteDataUpdatedUser(id) {
     let sql = "DELETE FROM propietario where id = ?";
     return this.db.executeSql(sql, [id]);
   }
@@ -1193,7 +1248,7 @@ console.log(data)
 
   setDireccion(data) {
     console.log(data)
-    
+
     let sql =
       "INSERT INTO domicilios(cuenta ,calle , manzana , lote,numExt , numInterior , colonia, poblacion , cp , entreCalle1 , entreCalle2,referencia,fechaCaptura, idaspUser, idRol,type) values(?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)";
     return this.db.executeSql(sql, [
@@ -1213,7 +1268,7 @@ console.log(data)
       data.idaspUser,
       data.idRol,
       data.type
-    ]).then(data=>{
+    ]).then(data => {
       console.log(data)
     });
   }
@@ -1248,7 +1303,7 @@ console.log(data)
       })
       .catch(error => Promise.reject(error));
   }
-  
+
   async getDireccion() {
     let sql = "SELECT * from domicilios where cargado = 0";
     try {
@@ -1299,7 +1354,7 @@ console.log(data)
         },
         err => {
           this.mensaje.showAlert(
-            "Hubo un error en la red, verifica e intentalo de nuevo "+ err
+            "Hubo un error en la red, verifica e intentalo de nuevo " + err
           );
           this.loadingCtrl.dismiss();
           console.log(err);
@@ -1307,7 +1362,7 @@ console.log(data)
       );
     });
   }
-  
+
   async syncActualizacionDatosPropietario() {
 
     let idPlaza = await this.storage.get("IdPlaza");
@@ -1315,18 +1370,18 @@ console.log(data)
       let sql = "SELECT * FROM propietario where cargado = 0";
       const result = await this.db.executeSql(sql, []);
       if (result.rows.length === 0) {
-       console.log('No hay nada')
+        console.log('No hay nada')
       } else {
         console.log(result);
-       
+
         for (let i = 0; i < result.rows.length; i++) {
           //this.sicronizadoUpdate(result.rows.item(i).id);
-        
+
           let account = result.rows.item(i).cuenta;
-          let nombre =  result.rows.item(i).nombre;
-          let telefono =result.rows.item(i).telefono;
+          let nombre = result.rows.item(i).nombre;
+          let telefono = result.rows.item(i).telefono;
           let celular = result.rows.item(i).celular;
-          let correo =  result.rows.item(i).correo;
+          let correo = result.rows.item(i).correo;
           let fecha = result.rows.item(i).fecha;
           let fechaCaptura = result.rows.item(i).fechaCaptura;
           let idaspUser = result.rows.item(i).idaspUser;
@@ -1338,29 +1393,29 @@ console.log(data)
 
           this.accountSyncDatosPropietario(sqlString, id);
         }
-      
+
         return Promise.resolve("Executed query");
       }
     } catch (error_1) {
-     
+
       return Promise.reject(error_1);
     }
   }
   async syncActualizacionDatosDomicilios() {
-  
+
 
     let idPlaza = await this.storage.get("IdPlaza");
     try {
       let sql = "SELECT * FROM domicilios where cargado = 0";
       const result = await this.db.executeSql(sql, []);
       if (result.rows.length === 0) {
-       console.log('No hay nada para sincronizar')
+        console.log('No hay nada para sincronizar')
       } else {
         console.log(result);
-      
+
         for (let i = 0; i < result.rows.length; i++) {
           //this.sicronizadoUpdate(result.rows.item(i).id);
-          
+
           let account = result.rows.item(i).cuenta;
           let calle = result.rows.item(i).calle;
           let manzana = result.rows.item(i).manzana;
@@ -1376,24 +1431,24 @@ console.log(data)
           let fechaCaptura = result.rows.item(i).fechaCaptura;
           let idaspUser = result.rows.item(i).idaspUser;
           let idRol = result.rows.item(i).idRol;
-          let type =  result.rows.item(i).type;
+          let type = result.rows.item(i).type;
           let id = result.rows.item(i).id;
-        
-           calle = calle.replace("#", "No.");
-        //   console.log(calle)
-        let sqlString = `'${account}','${calle}','${manzana}','${lote}','${numExt}','${numInt}','${colonia}','${poblacion}','${cp}','${calle1}','${calle2}','${referencia}','${fechaCaptura}','${idaspUser}','${idRol}',${type} ,${idPlaza}`;
+
+          calle = calle.replace("#", "No.");
+          //   console.log(calle)
+          let sqlString = `'${account}','${calle}','${manzana}','${lote}','${numExt}','${numInt}','${colonia}','${poblacion}','${cp}','${calle1}','${calle2}','${referencia}','${fechaCaptura}','${idaspUser}','${idRol}',${type} ,${idPlaza}`;
 
           this.accountSyncDomicilios(sqlString, id);
         }
-        
+
         return Promise.resolve("Executed query");
       }
     } catch (error_1) {
-     
+
       return Promise.reject(error_1);
     }
   }
-  
+
   async accountSyncDomicilios(query, id) {
     console.log(query);
     return new Promise(resolve => {
@@ -1424,7 +1479,7 @@ console.log(data)
         },
         err => {
           this.mensaje.showAlert(
-            "Hubo un error en la red, verifica e intentalo de nuevo "+ err
+            "Hubo un error en la red, verifica e intentalo de nuevo " + err
           );
           this.loadingCtrl.dismiss();
           console.log(err);
@@ -1434,15 +1489,15 @@ console.log(data)
   }
 
 
-  async guardarSQl(lat,lng,idasp,fecha) {
+  async guardarSQl(lat, lng, idasp, fecha) {
     let idPlaza = await this.storage.get("IdPlaza");
-   
-        let sqlString = `${lat},${lng},'${fecha}','${idasp}',${idPlaza}`;
 
-        this.recorridoSync(sqlString, 0);
-      
+    let sqlString = `${lat},${lng},'${fecha}','${idasp}',${idPlaza}`;
 
-      return Promise.resolve("Executed query");
- 
+    this.recorridoSync(sqlString, 0);
+
+
+    return Promise.resolve("Executed query");
+
   }
 }
