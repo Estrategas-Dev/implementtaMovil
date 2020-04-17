@@ -1,33 +1,33 @@
 <ion-header>
-  <ion-toolbar color ="dark" >
-    <ion-title>Implementta Movil <small> {{version}} </small></ion-title>
-  </ion-toolbar>
+    <ion-toolbar color="dark">
+        <ion-title>Implementta Movil <small> {{version}} </small></ion-title>
+    </ion-toolbar>
 </ion-header>
 
 <ion-content padding>
-<div  style="text-align: center">
-    <img src="../../../assets/img/implementta_logo.jpg" alt="" style="height: 50%; width :50%">
-</div>
-  
-  
-  <ion-item>
-      <ion-label position="floating">Email</ion-label>
-      <ion-input name="email"[(ngModel)]="email" type ="email"></ion-input>
-  </ion-item>
-  <ion-item>
-      <ion-label position="floating">Contraseña</ion-label>
+    <div style="text-align: center">
+        <img src="../../../assets/img/implementta_logo.jpg" alt="" style="height: 50%; width :50%">
+    </div>
 
 
-      <ion-input  #passwordEyeRegister  [type]="passwordTypeInput"  [(ngModel)]="password" name ="contraseña"></ion-input>
-      <button  item-end  class="btn_eye_icon"  (click)="togglePasswordMode()">
+    <ion-item>
+        <ion-label position="floating">Email</ion-label>
+        <ion-input name="email" [(ngModel)]="email" type="email"></ion-input>
+    </ion-item>
+    <ion-item>
+        <ion-label position="floating">Contraseña</ion-label>
+
+
+        <ion-input #passwordEyeRegister [type]="passwordTypeInput" [(ngModel)]="password" name="contraseña"></ion-input>
+        <button item-end class="btn_eye_icon" (click)="togglePasswordMode()">
           <ion-icon  [name]="iconpassword"></ion-icon>
       </button>
-     <!--  <ion-input name="contraseña" [(ngModel)]="password" type="password"></ion-input> -->
-  </ion-item>
-  <br>
-  <br>
-  <br>
-<ion-button expand= "block" color ="dark" (click)="OnSubmitLogin()">Entrar</ion-button>
-<br/>
+        <!--  <ion-input name="contraseña" [(ngModel)]="password" type="password"></ion-input> -->
+    </ion-item>
+    <br>
+    <br>
+    <br>
+    <ion-button expand="block" color="dark" (click)="OnSubmitLogin()">Entrar</ion-button>
+    <br/>
 
 </ion-content>

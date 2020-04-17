@@ -138,8 +138,10 @@ export class GestionGestorPage implements OnInit {
     let tipo;
     if (type == 1) {
       tipo = "Evidencia";
-    } else {
+    } else if(type == 2) {
       tipo = "Predio";
+    } else if (type == 3) {
+      tipo = "Acta circunstanciada"
     }
     var dateDay = new Date().toISOString();
     let date: Date = new Date(dateDay);

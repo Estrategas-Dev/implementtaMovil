@@ -150,44 +150,58 @@
                   </ion-label>
                   <ion-textarea rows="5" [(ngModel)]="otraCaracteristicaPredio"></ion-textarea>
                 </ion-item>
-                
-                <ion-item>
-                  <ion-label><p>
-                      Observaciones:
-                  </p></ion-label>
-                  <ion-textarea rows="5" [(ngModel)]="observaciones"></ion-textarea>
-                </ion-item>
           </ion-card-content>
         </ion-card>
       
-        <ion-slides [options]="sliderOpts">
-            <ion-slide *ngFor="let img of imgs">
-              <img src={{img.imagen}} class="imagen">
-            </ion-slide>
-          </ion-slides>
+</div> <!-- activatedResult -->
 
-
-      <ion-item text-center>
+<ion-card>
+  <ion-card-content>
+    <ion-item>
       <ion-label><p>
-          Fotos de la visita
-      </p>
-     
-        <ion-grid>
-          <ion-row>
-                <ion-col text-center>
-                  <ion-button expand ="block" color ="tertiary" (click)="takePic(1)"><ion-icon name = "camera"></ion-icon></ion-button>
-                  <ion-label>Evidencia</ion-label>
-                </ion-col>
-                <ion-col text-center>
-                    <ion-button expand = "block"  color ="secondary" (click)="takePic(2)"><ion-icon name = "camera"></ion-icon></ion-button>
-                    <ion-label>Predio</ion-label>
-                  </ion-col>
-          </ion-row>
-      
-        </ion-grid>
-      </ion-label>
-      </ion-item>
-</div>
+          Observaciones:
+      </p></ion-label>
+      <ion-textarea rows="5" [(ngModel)]="observaciones"></ion-textarea>
+    </ion-item> 
+  </ion-card-content>
+</ion-card>
+
+
+<ion-slides [options]="sliderOpts">
+  <ion-slide *ngFor="let img of imgs">
+    <img src={{img.imagen}} class="imagen">
+  </ion-slide>
+</ion-slides>
+
+
+<ion-item text-center>
+<ion-label><p>
+Fotos de la visita
+</p>
+
+<ion-grid>
+<ion-row>
+      <ion-col text-center>
+        <ion-button expand ="block" color ="tertiary" (click)="takePic(1)"><ion-icon name = "camera"></ion-icon></ion-button>
+        <ion-label>Evidencia</ion-label>
+      </ion-col>
+      <ion-col text-center>
+          <ion-button expand = "block"  color ="secondary" (click)="takePic(2)"><ion-icon name = "camera"></ion-icon></ion-button>
+          <ion-label>Predio</ion-label>
+        </ion-col>
+</ion-row>
+
+<ion-row>
+  <ion-col text-center>
+    <ion-button expand ="block" color ="warning" (click)="takePic(3)"><ion-icon name = "camera"></ion-icon></ion-button>
+    <ion-label>Acta circunstanciada</ion-label>
+  </ion-col>
+</ion-row>
+
+
+</ion-grid>
+</ion-label>
+</ion-item>
 
 <ion-button color = "success" expand = "block" (click)="validaDatosGestion()">Realizar la visita</ion-button>
 </ion-content>
