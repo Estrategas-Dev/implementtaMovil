@@ -60,6 +60,7 @@ export class GestionGestorPage implements OnInit {
   userInfo: any;
   imgs: any;
   takePhoto: boolean;
+  resultVisitValidation : boolean = false
 
   constructor(
     private storage: Storage,
@@ -212,6 +213,7 @@ export class GestionGestorPage implements OnInit {
   }
   resultVisit(event) {
     this.detectedChanges = true;
+    this.resultVisitValidation = false
     console.log(event.detail.value);
     if (event.detail.value == 1) {
       this.activateResult = false;
@@ -263,7 +265,7 @@ export class GestionGestorPage implements OnInit {
       this.idMotivoNoPago == 0 ||
       this.motivoNoPago == "" ||
       (this.fechaPromesaPago != "1999-09-09" &&
-        this.idExpectativasContribuyente == 0) || this.takePhoto == false
+        this.idExpectativasContribuyente == 0) || this.takePhoto == false || this.idCaracteristicaPredio == 0
     ) {
       if (this.idMotivoNoPago == 0) {
         this.isMotive = true;
@@ -273,6 +275,8 @@ export class GestionGestorPage implements OnInit {
       }
       if (this.idExpectativasContribuyente == 0) {
         this.isExpectativa = true;
+      }if( this.idCaracteristicaPredio == 0  ) {
+        this.resultVisitValidation = true;
       }
 
       this.mensaje.showAlert("Verifica los campos marcados con * y que minimo haya una foto capturada");
@@ -330,7 +334,7 @@ export class GestionGestorPage implements OnInit {
       this.loading.dismiss();
       this.exit(); 
     }
-  }
+  }  // validaDatosGestion
 
   async gestionGestor(data) {
     await this.service.gestionGestor(data);

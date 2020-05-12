@@ -3,6 +3,7 @@ import { RestService } from '../services/rest.service';
 import { ModalController, LoadingController, NavParams } from '@ionic/angular';
 import { Storage } from '@ionic/storage';
 import { UsersFirebaseService } from '../services/users-firebase.service';
+import { MessagesService } from '../services/messages.service';
 
 @Component({
   selector: 'app-sync-gestor',
@@ -21,6 +22,7 @@ isHide : boolean= false
     private modalController : ModalController, 
     private storage : Storage, 
     private loadingCtrl : LoadingController,
+    private mensaje: MessagesService,
     private firebaseService : UsersFirebaseService) { 
     
   }
@@ -63,12 +65,14 @@ console.log(this.isHide)
     console.log('entra gestor')
    await this.service.getAccoutsToSyncGestor();
    this.loading.dismiss()
+   //this.mensaje.showToast('Gestiones sincronizadas correctamente')
   }
   else if(this.rol=='2'){
     console.log('entra Abogado')
     await this.service.getAccoutsToSyncAbogado();
     await this.service.getAccoutsToSyncGestor();
     this.loading.dismiss()
+    //this.mensaje.showToast('Gestiones legales sicronizadas correctamente')
   }
   else if(this.rol=='7'){
     console.log('entra Reductor')

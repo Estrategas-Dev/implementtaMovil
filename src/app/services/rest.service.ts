@@ -946,94 +946,168 @@ export class RestService {
   ///////////////////////////////////Sincronizacion al servidor SQL Server
   async getAccoutsToSyncGestor() {
 
+    console.log("getAccoutsToSyncGestor")
 
-    let idPlaza = await this.storage.get("IdPlaza");
     try {
+      let arrayGestiones = [];
       let sql = "SELECT * FROM gestionGestor where cargado = 0";
+      
       const result = await this.db.executeSql(sql, []);
-      if (result.rows.length === 0) {
-        this.mensaje.showToastSync("No hay registros para sincronizar");
-      } else {
-        console.log(result);
-        for (let i = 0; i < result.rows.length; i++) {
-          //this.sicronizadoUpdate(result.rows.item(i).id);
 
-          let account = result.rows.item(i).account;
-          let idEstatus = result.rows.item(i).idEstatus;
-          let observaciones = result.rows.item(i).observaciones;
-          let fechaPromesaPago = result.rows.item(i).fechaPromesaPago;
-          let latitud = result.rows.item(i).latitud;
-          let longitud = result.rows.item(i).longitud;
-          let fechaCaptura = result.rows.item(i).fechaCaptura;
-          let idAspUser = result.rows.item(i).idAspuser;
-          let idTarea = result.rows.item(i).idTarea;
-          let fechaAsignacion = result.rows.item(i).fechaAsignacion;
-          let fechaVencimiento = result.rows.item(i).fechaVencimiento;
-          let idMotivoNoPago = result.rows.item(i).idMotivoNoPago;
-          let motivoNoPago = result.rows.item(i).motivoNoPago;
-          let idSolucionPlanteada = result.rows.item(i).idSolucionPlanteada;
-          let idExpectativasContribuyente = result.rows.item(i)
-            .idExpectativasContribuyente;
-          let otraExpectativaContribuyente = result.rows.item(i)
-            .otraExpectativaContribuyente;
-          let idCaracteristicaPredio = result.rows.item(i)
-            .idCaracteristicaPredio;
-          let otraCaracteristicaPredio = result.rows.item(i)
-            .otraCaracteristicaPredio;
-          let idServiciosNoPago = result.rows.item(i).idServiciosNoPago;
-          let id = result.rows.item(i).id;
-          let sqlString = `'${account}',${idEstatus},'${observaciones}','${fechaPromesaPago}',${latitud},${longitud},'${fechaCaptura}','${idAspUser}',${idTarea},'${fechaAsignacion}','${fechaVencimiento}',${idMotivoNoPago},'${motivoNoPago}',${idSolucionPlanteada},${idExpectativasContribuyente},'${otraExpectativaContribuyente}',${idCaracteristicaPredio},'${otraCaracteristicaPredio}',${idServiciosNoPago},${idPlaza}`;
 
-          await this.accountSyncGestor(sqlString, id);
-        }
-
-        return Promise.resolve("Executed query");
+      for( let i=0; i<result.rows.length; i++) {
+        arrayGestiones.push(result.rows.item(i));
       }
+
+      console.log(arrayGestiones);
+
+      if(arrayGestiones.length == 0) {
+        this.mensaje.showToast('Sin gestiones para sincronizar');
+      } else {
+        this.avanceGestiones = 0;
+        this.envioGestiones(arrayGestiones);
+      }
+
     } catch (error_1) {
 
       return Promise.reject(error_1);
     }
+  } // getAccoutsToSyncGestor
+
+  avanceGestiones = 0;
+
+  envioGestiones( arrayGestiones) {
+    console.log("envioGestiones");
+    console.log(this.avanceGestiones);
+
+    if(this.avanceGestiones === arrayGestiones.length) {
+      this.mensaje.showToastLarge('Sincronizacion de sus gestiones correctas');
+    } else {
+      this.sendGestiones(this.avanceGestiones, arrayGestiones).then( resp => {
+        if( resp ) {
+          this.avanceGestiones ++;
+          this.envioGestiones(arrayGestiones);
+        } else {
+          this.envioGestiones(arrayGestiones);
+        }
+      })
+    }
+
+
   }
+
+ async sendGestiones( i, arrayGestiones) {
+    let idPlaza = await this.storage.get("IdPlaza");
+
+    return new Promise( async (resolve) => {
+          let account = arrayGestiones[i].account;
+          let idEstatus = arrayGestiones[i].idEstatus;
+          let observaciones = arrayGestiones[i].observaciones;
+          let fechaPromesaPago = arrayGestiones[i].fechaPromesaPago;
+          let latitud = arrayGestiones[i].latitud;
+          let longitud = arrayGestiones[i].longitud;
+          let fechaCaptura = arrayGestiones[i].fechaCaptura;
+          let idAspUser = arrayGestiones[i].idAspuser;
+          let idTarea = arrayGestiones[i].idTarea;
+          let fechaAsignacion = arrayGestiones[i].fechaAsignacion;
+          let fechaVencimiento =arrayGestiones[i].fechaVencimiento;
+          let idMotivoNoPago = arrayGestiones[i].idMotivoNoPago;
+          let motivoNoPago = arrayGestiones[i].motivoNoPago;
+          let idSolucionPlanteada = arrayGestiones[i].idSolucionPlanteada;
+          let idExpectativasContribuyente = arrayGestiones[i]
+            .idExpectativasContribuyente;
+          let otraExpectativaContribuyente = arrayGestiones[i]
+            .otraExpectativaContribuyente;
+          let idCaracteristicaPredio = arrayGestiones[i]
+            .idCaracteristicaPredio;
+          let otraCaracteristicaPredio = arrayGestiones[i]
+            .otraCaracteristicaPredio;
+          let idServiciosNoPago = arrayGestiones[i].idServiciosNoPago;
+          let id = arrayGestiones[i].id;
+          let sqlString = `'${account}',${idEstatus},'${observaciones}','${fechaPromesaPago}',${latitud},${longitud},'${fechaCaptura}','${idAspUser}',${idTarea},'${fechaAsignacion}','${fechaVencimiento}',${idMotivoNoPago},'${motivoNoPago}',${idSolucionPlanteada},${idExpectativasContribuyente},'${otraExpectativaContribuyente}',${idCaracteristicaPredio},'${otraCaracteristicaPredio}',${idServiciosNoPago},${idPlaza}`;
+
+          await this.accountSyncGestor(sqlString, id);
+
+        resolve('Execute Query successfully');
+
+    })
+  }
+
+
+
   async getAccoutsToSyncAbogado() {
 
-    let idPlaza = await this.storage.get("IdPlaza");
     try {
+      let arrayGestionesAbogado = [];
       let sql = "SELECT * FROM gestionAbogado where cargado = 0";
       const result = await this.db.executeSql(sql, []);
-      if (result.rows.length === 0) {
-        this.mensaje.showToastSync("No hay registros para sincronizar");
-        //  this.loading.dismiss();
-      } else {
-        console.log(result);
-        for (let i = 0; i < result.rows.length; i++) {
-          //this.sicronizadoUpdate(result.rows.item(i).id);
 
-          let account = result.rows.item(i).account;
-          let idResultado = result.rows.item(i).idResultado;
-          let idPersona = result.rows.item(i).idPersona;
-          let observaciones = result.rows.item(i).observaciones;
-          let fechaPromesaPago = result.rows.item(i).fechaPromesaPago;
-          let latitud = result.rows.item(i).latitud;
-          let longitud = result.rows.item(i).longitud;
-          let fechaCaptura = result.rows.item(i).fechaCaptura;
-          let idAspUser = result.rows.item(i).idAspuser;
-          let idTarea = result.rows.item(i).idTarea;
-          let fechaVencimiento = result.rows.item(i).fechaVencimiento;
-          let horaVencimiento = result.rows.item(i).fechaVencimiento;
-
-          let id = result.rows.item(i).id;
-          let sqlString = `'${account}',${idResultado},${idPersona},'${observaciones}','${fechaPromesaPago}',${latitud},${longitud},'${fechaCaptura}','${idAspUser}',${idTarea},'${fechaVencimiento}','${horaVencimiento}',${idPlaza}`;
-
-          await this.accountSyncAbogado(sqlString, id);
-        }
-        //    this.loading.dismiss();
-        return Promise.resolve("Executed query");
+      for (let i =0; i<result.rows.length; i++) {
+        arrayGestionesAbogado.push(result.rows.item(i));
       }
+      console.log(arrayGestionesAbogado);
+
+      if ( arrayGestionesAbogado.length == 0) {
+        this.mensaje.showToast('Sin registros para sincronizar');
+      } else {
+        this.avanceGestionesAbogado = 0;
+        this.envioGestionesAbogado(arrayGestionesAbogado);
+      }
+
     } catch (error_1) {
       //    this.loading.dismiss();
       return Promise.reject(error_1);
     }
   }
+
+  avanceGestionesAbogado = 0;
+
+  envioGestionesAbogado(arrayGestionesAbogado) {
+    console.log(this.avanceGestionesAbogado);
+    if(this.avanceGestionesAbogado == arrayGestionesAbogado.length) {
+      this.mensaje.showToastLarge('Sincronizacion de gestiones legales correctas');
+    } else {
+      this.sendGestionesAbogado(this.avanceGestionesAbogado, arrayGestionesAbogado).then( resp => {
+        if (resp) {
+          this.avanceGestionesAbogado ++;
+          this.envioGestionesAbogado(arrayGestionesAbogado);
+        } else {
+          this.envioGestionesAbogado(arrayGestionesAbogado);
+        }
+      })
+    }
+  }
+
+ async sendGestionesAbogado(i, arrayGestionesAbogado) {
+
+    let idPlaza = await this.storage.get("IdPlaza");
+
+      return new Promise( async (resolve) => {
+        let account = arrayGestionesAbogado[i].account;
+        let idResultado = arrayGestionesAbogado[i].idResultado;
+        let idPersona = arrayGestionesAbogado[i].idPersona;
+        let observaciones = arrayGestionesAbogado[i].observaciones;
+        let fechaPromesaPago = arrayGestionesAbogado[i].fechaPromesaPago;
+        let latitud = arrayGestionesAbogado[i].latitud;
+        let longitud = arrayGestionesAbogado[i].longitud;
+        let fechaCaptura = arrayGestionesAbogado[i].fechaCaptura;
+        let idAspUser = arrayGestionesAbogado[i].idAspuser;
+        let idTarea = arrayGestionesAbogado[i].idTarea;
+        let fechaVencimiento = arrayGestionesAbogado[i].fechaVencimiento;
+        let horaVencimiento = arrayGestionesAbogado[i].fechaVencimiento;
+
+        let id = arrayGestionesAbogado[i].id;
+        let sqlString = `'${account}',${idResultado},${idPersona},'${observaciones}','${fechaPromesaPago}',${latitud},${longitud},'${fechaCaptura}','${idAspUser}',${idTarea},'${fechaVencimiento}','${horaVencimiento}',${idPlaza}`;
+
+        await this.accountSyncAbogado(sqlString, id);
+
+        resolve('Execute Query successfully');
+      })
+
+  }
+
+
+
   async getAccoutsToSyncReductor() {
 
 
@@ -1365,92 +1439,166 @@ export class RestService {
 
   async syncActualizacionDatosPropietario() {
 
-    let idPlaza = await this.storage.get("IdPlaza");
     try {
+      let arrayPropietarios = [];
       let sql = "SELECT * FROM propietario where cargado = 0";
       const result = await this.db.executeSql(sql, []);
-      if (result.rows.length === 0) {
-        console.log('No hay nada')
-      } else {
-        console.log(result);
 
-        for (let i = 0; i < result.rows.length; i++) {
-          //this.sicronizadoUpdate(result.rows.item(i).id);
-
-          let account = result.rows.item(i).cuenta;
-          let nombre = result.rows.item(i).nombre;
-          let telefono = result.rows.item(i).telefono;
-          let celular = result.rows.item(i).celular;
-          let correo = result.rows.item(i).correo;
-          let fecha = result.rows.item(i).fecha;
-          let fechaCaptura = result.rows.item(i).fechaCaptura;
-          let idaspUser = result.rows.item(i).idaspUser;
-          let idRol = result.rows.item(i).idRol;
-          let type = result.rows.item(i).type;
-
-          let id = result.rows.item(i).id;
-          let sqlString = `'${account}','${nombre}','${telefono}','${celular}','${correo}','${fecha}','${fechaCaptura}','${idaspUser}','${idRol}',${type},${idPlaza}`;
-
-          this.accountSyncDatosPropietario(sqlString, id);
-        }
-
-        return Promise.resolve("Executed query");
+      for( let i=0; i< result.rows.length; i++ ) {
+        arrayPropietarios.push(result.rows.item(i));
       }
+
+      console.log(arrayPropietarios);
+
+      if( arrayPropietarios.length == 0) {
+        this.mensaje.showToast("Sin datos para sincronizar");
+      } else {
+        this.loading = await this.loadingCtrl.create({
+          message: 'Espere mientras se sincronizan sus Datos'
+        });
+        await this.loading.present();
+        this.avancePropietarios = 0;
+        this.envioDatosPropietarios(arrayPropietarios);
+
+      }
+
     } catch (error_1) {
 
       return Promise.reject(error_1);
     }
   }
+
+  avancePropietarios = 0;
+  envioDatosPropietarios(arrayPropietarios) {
+    console.log('Avance propietarios', this.avancePropietarios);
+    if(this.avancePropietarios === arrayPropietarios.length) {
+      this.loading.dismiss();
+      this.mensaje.showAlert("Se subio correctamente la informacion");
+    } else {
+      this.sendPropietario(this.avancePropietarios, arrayPropietarios).then( resp => {
+        if(resp) {
+          this.avancePropietarios++;
+          this.envioDatosPropietarios(arrayPropietarios);
+        } else {
+          this.envioDatosPropietarios(arrayPropietarios);
+        }
+      })
+    }
+  }
+
+
+ async sendPropietario(i, arrayPropietarios) {
+
+  let idPlaza = await this.storage.get("IdPlaza");
+
+    return new Promise( async (resolve) => {
+    
+      let account = arrayPropietarios[i].cuenta;
+      let nombre = arrayPropietarios[i].nombre;
+      let telefono = arrayPropietarios[i].telefono;
+      let celular = arrayPropietarios[i].celular;
+      let correo = arrayPropietarios[i].correo;
+      let fecha = arrayPropietarios[i].fecha;
+      let fechaCaptura = arrayPropietarios[i].fechaCaptura;
+      let idaspUser = arrayPropietarios[i].idaspUser;
+      let idRol = arrayPropietarios[i].idRol;
+      let type = arrayPropietarios[i].type;
+
+      let id = arrayPropietarios[i].id;
+      let sqlString = `'${account}','${nombre}','${telefono}','${celular}','${correo}','${fecha}','${fechaCaptura}','${idaspUser}','${idRol}',${type},${idPlaza}`;
+
+       this.accountSyncDatosPropietario(sqlString, id);
+
+      await resolve("Execute Query")
+
+    });
+  }
+
+
   async syncActualizacionDatosDomicilios() {
 
-
-    let idPlaza = await this.storage.get("IdPlaza");
     try {
+      console.log("Entrando a SyncActualizaDomicilios");
       let sql = "SELECT * FROM domicilios where cargado = 0";
       const result = await this.db.executeSql(sql, []);
-      if (result.rows.length === 0) {
-        console.log('No hay nada para sincronizar')
+      let arrayDomicilios = [];
+
+      for (let i = 0; i< result.rows.length; i++) {
+        arrayDomicilios.push(result.rows.item(i));
+      }
+
+      console.log(arrayDomicilios);
+
+      if( arrayDomicilios.length == 0) {
+        this.mensaje.showToast('Sin domicilios para sincronizar');
       } else {
-        console.log(result);
+        this.loading = await this.loadingCtrl.create({
+          message: 'Espere se estan sicronizando sus domicilios'
+        });
+        await this.loading.present();
+        this.avanceDomicilios = 0;
+        this.envioDatosDomicilios(arrayDomicilios);
 
-        for (let i = 0; i < result.rows.length; i++) {
-          //this.sicronizadoUpdate(result.rows.item(i).id);
+      }
 
-          let account = result.rows.item(i).cuenta;
-          let calle = result.rows.item(i).calle;
-          let manzana = result.rows.item(i).manzana;
-          let lote = result.rows.item(i).lote;
-          let numExt = result.rows.item(i).numExt;
-          let numInt = result.rows.item(i).numInterior;
-          let colonia = result.rows.item(i).colonia;
-          let poblacion = result.rows.item(i).poblacion;
-          let cp = result.rows.item(i).cp;
-          let calle1 = result.rows.item(i).entreCalle1;
-          let calle2 = result.rows.item(i).entreCalle2;
-          let referencia = result.rows.item(i).referencia;
-          let fechaCaptura = result.rows.item(i).fechaCaptura;
-          let idaspUser = result.rows.item(i).idaspUser;
-          let idRol = result.rows.item(i).idRol;
-          let type = result.rows.item(i).type;
-          let id = result.rows.item(i).id;
+    } catch (error_1) {
+
+      return Promise.reject(error_1);
+    }
+  }
+  avanceDomicilios = 0;
+
+  envioDatosDomicilios( arrayDomicilios) {
+    console.log('Avance domicilios', this.avanceDomicilios)
+    if(this.avanceDomicilios === arrayDomicilios.length) {
+      this.loading.dismiss();
+      this.mensaje.showAlert("Se subieron correctamente los domicilios");
+    } else {
+      this.sendDomicilio(this.avanceDomicilios, arrayDomicilios).then( resp => {
+        if( resp ) {
+          this.avanceDomicilios++
+          this.envioDatosDomicilios(arrayDomicilios);
+        } else {
+          this.envioDatosDomicilios(arrayDomicilios);
+        }
+      })
+    }
+  }
+
+ async sendDomicilio( i, arrayDomicilios) {
+    let idPlaza = await this.storage.get("IdPlaza");
+    return new Promise( async  (resolve) => {
+          let account = arrayDomicilios[i].cuenta
+          let calle = arrayDomicilios[i].calle;
+          let manzana = arrayDomicilios[i].manzana;
+          let lote = arrayDomicilios[i].lote;
+          let numExt = arrayDomicilios[i].numExt;
+          let numInt = arrayDomicilios[i].numInterior;
+          let colonia = arrayDomicilios[i].colonia;
+          let poblacion = arrayDomicilios[i].poblacion;
+          let cp = arrayDomicilios[i].cp;
+          let calle1 = arrayDomicilios[i].entreCalle1;
+          let calle2 = arrayDomicilios[i].entreCalle2;
+          let referencia =arrayDomicilios[i].referencia;
+          let fechaCaptura = arrayDomicilios[i].fechaCaptura;
+          let idaspUser = arrayDomicilios[i].idaspUser;
+          let idRol = arrayDomicilios[i].idRol;
+          let type = arrayDomicilios[i].type;
+          let id = arrayDomicilios[i].id;
 
           calle = calle.replace("#", "No.");
           //   console.log(calle)
           let sqlString = `'${account}','${calle}','${manzana}','${lote}','${numExt}','${numInt}','${colonia}','${poblacion}','${cp}','${calle1}','${calle2}','${referencia}','${fechaCaptura}','${idaspUser}','${idRol}',${type} ,${idPlaza}`;
 
-          this.accountSyncDomicilios(sqlString, id);
-        }
-
-        return Promise.resolve("Executed query");
-      }
-    } catch (error_1) {
-
-      return Promise.reject(error_1);
-    }
+         await this.accountSyncDomicilios(sqlString, id);
+          
+          resolve("Execute Query");
+    });
   }
 
+
   async accountSyncDomicilios(query, id) {
-    console.log(query);
+    //console.log(query);
     return new Promise(resolve => {
       this.http.post(this.apiUrl11 + " " + query, null).subscribe(
         async data => {
@@ -1469,7 +1617,7 @@ export class RestService {
     });
   }
   async accountSyncDatosPropietario(query, id) {
-    console.log(query);
+    //console.log(query);
     return new Promise(resolve => {
       this.http.post(this.apiUrl12 + " " + query, null).subscribe(
         async data => {
