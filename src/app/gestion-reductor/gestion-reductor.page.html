@@ -1,210 +1,293 @@
 <ion-header>
-  <ion-toolbar>
-    <ion-title>Reductor</ion-title>
-    <ion-buttons slot ="end">
-    
-        <ion-button color ="tertiary" (click)="exit()"><ion-icon name="close"></ion-icon></ion-button>
-      </ion-buttons>
-  </ion-toolbar>
+    <ion-toolbar>
+        <ion-title>Reductor</ion-title>
+        <ion-buttons slot="end">
+
+            <ion-button color="tertiary" (click)="exit()">
+                <ion-icon name="close"></ion-icon>
+            </ion-button>
+        </ion-buttons>
+    </ion-toolbar>
 </ion-header>
 
 <ion-content padding>
-  <ion-card>
-    <ion-card-content>
-        <ion-item>
-            <ion-label>
-              <p>Acción a realizar:</p>
-              <p><strong>{{tareaAsignada}}</strong></p>
-            </ion-label>
-         
-        </ion-item>
-      <ion-item>
-          <ion-label><p> Cambiar acción</p>
-          <p>
-              <ion-select  class="myCustomSelect"  interface="popover" placeholder ="Selecciona uno" (ionChange)="activateAction($event,0)" [(ngModel)]="idTarea">
-                  <ion-select-option value ="68">Colocación de reductor</ion-select-option>
-                  <ion-select-option value ="69">Retiró reductor</ion-select-option>
-                  <ion-select-option value ="70">Supervisión de reductores</ion-select-option>
-                  <ion-select-option value ="71">Taponeo de drenaje</ion-select-option>
-                </ion-select>
-          </p>
-        </ion-label>
-          
-      </ion-item>
-      <ion-item>
-        <ion-label><p>Descripción de acción*</p> 
-          <p *ngIf="isDescription" style="color :red">Campo obligatorio</p>
-          <p>
-              <ion-select interface="popover" placeholder ="Selecciona uno" (ionChange)="activateDescription($event)" [(ngModel)]="idDescripcion">
-                <div *ngIf="opcion68">
-                    <ion-select-option value="1">Si instaló niple reductor</ion-select-option>
-                    <ion-select-option value="2">No instaló niple reductor</ion-select-option>
-                </div>
-               <div *ngIf="opcion69">
-                    <ion-select-option value="3">Si retiró niple reductor</ion-select-option>
-                    <ion-select-option value="4">No retiró niple reductor</ion-select-option>
-                </div>
-              <div *ngIf="opcion70">
-                  <ion-select-option value="5">Si supervisó</ion-select-option>
-                  <ion-select-option value="6">No supervisó</ion-select-option>
-              </div>
-              <div *ngIf="opcion71">
-                  <ion-select-option value="7">Si se realizó taponeo</ion-select-option>
-                  <ion-select-option value="8">No se realizó taponeo</ion-select-option>
-              </div>
-    
-                </ion-select>
-          </p>
-          
-        </ion-label>
-      </ion-item>
-    
-    <ion-item>
-      <ion-label><p>Observaciones*</p>
-        <p *ngIf="isObservacion" style="color :red">Campo obligatorio</p>
-    <p><ion-select class="myCustomSelect"  interface ="popover" placeholder = "Selecciona uno" [(ngModel)]="idObservacion" (ionChange)="activateObservacion()">
-      
+    <ion-card>
+        <ion-card-content>
+            <ion-item>
+                <ion-label>
+                    <p>Acción a realizar:</p>
+                    <p><strong>{{tareaAsignada}}</strong></p>
+                </ion-label>
 
-      
-      <div *ngIf="noInstalo" >
-        <ion-select-option value="1">Se encontró toma directa</ion-select-option>
-        <ion-select-option value="2">Reductor ya instalado en buen estado</ion-select-option>
-        <ion-select-option value="3">Medidor dentro del predio</ion-select-option>
-        <ion-select-option value="4">Usuario no permitio realizar corte</ion-select-option>
-        <ion-select-option value="5">Usuario realizo promesa de pago</ion-select-option>
-        <ion-select-option value="6">No se encontro la toma</ion-select-option>
-        <ion-select-option value="7">Predio no ubicado</ion-select-option>
-        <ion-select-option value="8">Medidor obstruido</ion-select-option>
-        <ion-select-option value="9">Llave de paso dañada</ion-select-option>
-        <ion-select-option value="10">Otros</ion-select-option>
-      </div>
-      <div *ngIf="noRetiro">
-          <ion-select-option value="11">Llave de paso dañada</ion-select-option>
-          <ion-select-option value="12">Toma desconectada sin medidor</ion-select-option>
-          <ion-select-option value="13">No se ubico el predio</ion-select-option>
-          <ion-select-option value="14">Toma directa</ion-select-option>
-          <ion-select-option value="15">Otros</ion-select-option>
-      </div >
-    <div *ngIf="noSuperviso">
-        <ion-select-option value="16">Restricción infringida</ion-select-option>
-        <ion-select-option value="17">Restricción correcta</ion-select-option>
-        <ion-select-option value="18">Medidor dentro del predio</ion-select-option>
-        <ion-select-option value="19">Usuario no permitió</ion-select-option>
-        <ion-select-option value="20">Cuenta al corriente</ion-select-option>
-        <ion-select-option value="21">Predio no ubicado</ion-select-option>
-        <ion-select-option value="22">No se encontró la toma</ion-select-option>
-        <ion-select-option value="23">Medidor obstruido</ion-select-option>
-        <ion-select-option value="24">Otros</ion-select-option>
-    </div>
-    <div *ngIf="noTaponeo">
-        <ion-select-option value="25">Descarga dentro del predio</ion-select-option>
-        <ion-select-option value="26">Usuario no permitió</ion-select-option>
-        <ion-select-option value="27">Usuario realiza promesa de pago</ion-select-option>
-        <ion-select-option value="28">Cuenta en jurídico</ion-select-option>
-        <ion-select-option value="29">Descarga obstruida</ion-select-option>
-        <ion-select-option value="30">Cuenta al corriente</ion-select-option>
-        <ion-select-option value="31">Predio no ubicado</ion-select-option>
-        <ion-select-option value="32">No se encontró descarga</ion-select-option>
-        <ion-select-option value="33">Otros</ion-select-option>
-    </div>
-  
-    </ion-select></p>
-  </ion-label>
-    </ion-item>
-    <ion-item>
-        <ion-label> <p>Lectura</p></ion-label>
-        <ion-input type = "number"></ion-input>
-      </ion-item>
-      <div *ngIf="niple">
-          <ion-item>
-              <ion-label> <p>Niple</p>
-                <p>
-                    <ion-select  class="myCustomSelect"  interface="popover" placeholder ="Selecciona uno" [(ngModel)]="idNiple">
-                        <ion-select-option value="71">3/4 x 1 1/2</ion-select-option>
-                        <ion-select-option value="72">3/4 x 2 1/2</ion-select-option>
-                        <ion-select-option value="73">1/2 x 1/2</ion-select-option>
-                        <ion-select-option value="74">1/2 x 2 1/2</ion-select-option>
-                        <ion-select-option value="70">Sin especificar</ion-select-option>
-                      </ion-select>
-                </p>
-              
-            </ion-label>
-            </ion-item>
-      </div>
-
-    </ion-card-content>
-  </ion-card>
-   
-  <ion-card>
-    <ion-card-content>
-
-        <ion-item>
-            <ion-label><p>
-                Conclusiones
-            </p></ion-label>
-            <ion-textarea rows ="5" [(ngModel)]="conclusiones"></ion-textarea>
-          </ion-item>
-          <ion-item>
-              <ion-label position="floating" ><p>Persona de contacto</p> </ion-label>
-              <ion-input type="text" placeholder ="Nombre de la persona" [(ngModel)]="personaContacto"></ion-input>
-           
             </ion-item>
             <ion-item>
-                <ion-label position="floating"> <p>Telefóno de contacto</p></ion-label>
-                <ion-input type = "number" maxlength="10" placeholder= "Número de telefóno" [(ngModel)]="telefonoContacto"></ion-input>
-              
-              </ion-item>
-              <ion-item>
-                <ion-label><p>Fecha promesa de pago</p>
-                <ion-datetime placeholder="1999-09-09" min={{fechaActual}} [(ngModel)]="fechaPromesa"></ion-datetime>
-              </ion-label>
-              </ion-item>
-              <ion-item>
-                  <ion-label> <p>Próxima revisión*</p>
-                    <p *ngIf="isFecha" style="color :red">Campo obligatorio</p>
-                  <ion-datetime placeholder="1999-09-09" [(ngModel)]="fechaProximaVisita" min={{fechaActual}} (ionChange)="activateFecha()"></ion-datetime>
+                <ion-label>
+                    <p> Cambiar acción</p>
+                    <p>
+                        <ion-select class="myCustomSelect" interface="popover" placeholder="Selecciona uno" (ionChange)="activateAction($event,0)" [(ngModel)]="idTarea">
+                            <ion-select-option value="68">Colocación de reductor</ion-select-option>
+                            <ion-select-option value="69">Retiró reductor</ion-select-option>
+                            <ion-select-option value="70">Supervisión de reductores</ion-select-option>
+                            <ion-select-option value="71">Taponeo de drenaje</ion-select-option>
+                        </ion-select>
+                    </p>
                 </ion-label>
-                </ion-item>
-                <div *ngIf="horas">
-                    <ion-item>
-                        <ion-label> <p>Hora inicial de instalación*</p>
-                        <ion-datetime displayFormat="HH:mm" placeholder="12:00:00"  [(ngModel)]="horaIni"></ion-datetime>
-                      </ion-label>
-                      </ion-item>
-                      <ion-item>
-                          <ion-label> <p>Hora final instalación*</p>
-                          <ion-datetime displayFormat="HH:mm" placeholder="12:00:00" [(ngModel)]="horaFin"></ion-datetime>
-                        </ion-label>
-                        </ion-item>
-                </div>
-          
-    </ion-card-content>
-  </ion-card>
 
-  <ion-slides [options]="sliderOpts">
-      <ion-slide *ngFor="let img of imgs">
-        <img src={{img.imagen}} class="imagen">
-      </ion-slide>
-    </ion-slides> 
-          <ion-item text-center>
-              <ion-label><p>
-                  Fotos de la visita
-              </p>
-           
-              
-                <ion-grid>
-                  <ion-row>
-                        <ion-col text-center>
-                          <ion-button expand ="block" color ="tertiary" (click)="takePic(1)"><ion-icon name = "camera"></ion-icon></ion-button>
-                          <ion-label>Evidencia</ion-label>
-                        </ion-col>
-                   
-                  </ion-row>
-              
-                </ion-grid>
-              </ion-label>
-              </ion-item>
-          <ion-button expand="block" color ="tertiary" (click)="Verify()">Terminar</ion-button>
+            </ion-item>
+            <ion-item>
+                <ion-label>
+                    <p>Descripción de acción*</p>
+                    <p *ngIf="isDescription" style="color :red">Campo obligatorio</p>
+                    <p>
+                        <ion-select interface="popover" placeholder="Selecciona uno" (ionChange)="activateDescription($event)" [(ngModel)]="idDescripcion">
+                            <div *ngIf="opcion68">
+                                <ion-select-option value="1">Si instaló niple reductor</ion-select-option>
+                                <ion-select-option value="2">No instaló niple reductor</ion-select-option>
+                            </div>
+                            <div *ngIf="opcion69">
+                                <ion-select-option value="3">Si retiró niple reductor</ion-select-option>
+                                <ion-select-option value="4">No retiró niple reductor</ion-select-option>
+                            </div>
+                            <div *ngIf="opcion70">
+                                <ion-select-option value="5">Si supervisó</ion-select-option>
+                                <ion-select-option value="6">No supervisó</ion-select-option>
+                            </div>
+                            <div *ngIf="opcion71">
+                                <ion-select-option value="7">Si se realizó taponeo</ion-select-option>
+                                <ion-select-option value="8">No se realizó taponeo</ion-select-option>
+                            </div>
+
+                        </ion-select>
+                    </p>
+
+                </ion-label>
+            </ion-item>
+
+
+            <ion-item>
+                <ion-label>
+                    <p>Observaciones*</p>
+                    <p *ngIf="isObservacion" style="color :red">Campo obligatorio</p>
+                    <p>
+                        <ion-select class="myCustomSelect" interface="popover" placeholder="Selecciona uno" [(ngModel)]="idObservacion" (ionChange)="activateObservacion()">
+
+
+
+                            <div *ngIf="noInstalo">
+                                <ion-select-option value="1">Se encontró toma directa</ion-select-option>
+                                <ion-select-option value="2">Reductor ya instalado en buen estado</ion-select-option>
+                                <ion-select-option value="3">Medidor dentro del predio</ion-select-option>
+                                <ion-select-option value="4">Usuario no permitio realizar corte</ion-select-option>
+                                <ion-select-option value="5">Usuario realizo promesa de pago</ion-select-option>
+                                <ion-select-option value="6">No se encontro la toma</ion-select-option>
+                                <ion-select-option value="7">Predio no ubicado</ion-select-option>
+                                <ion-select-option value="8">Medidor obstruido</ion-select-option>
+                                <ion-select-option value="9">Llave de paso dañada</ion-select-option>
+                                <ion-select-option value="10">Otros</ion-select-option>
+                            </div>
+                            <div *ngIf="noRetiro">
+                                <ion-select-option value="11">Llave de paso dañada</ion-select-option>
+                                <ion-select-option value="12">Toma desconectada sin medidor</ion-select-option>
+                                <ion-select-option value="13">No se ubico el predio</ion-select-option>
+                                <ion-select-option value="14">Toma directa</ion-select-option>
+                                <ion-select-option value="15">Otros</ion-select-option>
+                            </div>
+                            <div *ngIf="noSuperviso">
+                                <ion-select-option value="16">Restricción infringida</ion-select-option>
+                                <ion-select-option value="17">Restricción correcta</ion-select-option>
+                                <ion-select-option value="18">Medidor dentro del predio</ion-select-option>
+                                <ion-select-option value="19">Usuario no permitió</ion-select-option>
+                                <ion-select-option value="20">Cuenta al corriente</ion-select-option>
+                                <ion-select-option value="21">Predio no ubicado</ion-select-option>
+                                <ion-select-option value="22">No se encontró la toma</ion-select-option>
+                                <ion-select-option value="23">Medidor obstruido</ion-select-option>
+                                <ion-select-option value="24">Otros</ion-select-option>
+                            </div>
+                            <div *ngIf="noTaponeo">
+                                <ion-select-option value="25">Descarga dentro del predio</ion-select-option>
+                                <ion-select-option value="26">Usuario no permitió</ion-select-option>
+                                <ion-select-option value="27">Usuario realiza promesa de pago</ion-select-option>
+                                <ion-select-option value="28">Cuenta en jurídico</ion-select-option>
+                                <ion-select-option value="29">Descarga obstruida</ion-select-option>
+                                <ion-select-option value="30">Cuenta al corriente</ion-select-option>
+                                <ion-select-option value="31">Predio no ubicado</ion-select-option>
+                                <ion-select-option value="32">No se encontró descarga</ion-select-option>
+                                <ion-select-option value="33">Otros</ion-select-option>
+                            </div>
+
+                        </ion-select>
+                    </p>
+                </ion-label>
+            </ion-item>
+            <ion-item>
+                <ion-label>
+                    <p>Lectura</p>
+                </ion-label>
+                <ion-input type="number"></ion-input>
+            </ion-item>
+            <div *ngIf="niple">
+                <ion-item>
+                    <ion-label>
+                        <p>Niple</p>
+                        <p>
+                            <ion-select class="myCustomSelect" interface="popover" placeholder="Selecciona uno" [(ngModel)]="idNiple">
+                                <ion-select-option value="71">3/4 x 1 1/2</ion-select-option>
+                                <ion-select-option value="72">3/4 x 2 1/2</ion-select-option>
+                                <ion-select-option value="73">1/2 x 1/2</ion-select-option>
+                                <ion-select-option value="74">1/2 x 2 1/2</ion-select-option>
+                                <ion-select-option value="70">Sin especificar</ion-select-option>
+                            </ion-select>
+                        </p>
+
+                    </ion-label>
+                </ion-item>
+            </div>
+
+        </ion-card-content>
+    </ion-card>
+
+
+    <!-- Tipo de servicio solo en agua -->
+    <div *ngIf="isAgua">
+        <ion-card>
+            <ion-card-content>
+                <ion-item>
+                    <ion-label>
+                        <p>Tipo de servicio</p>
+                        <p>
+                            <ion-select interface="popover" placeholder="Selecciona uno" [(ngModel)]="idTipoServicio">
+                                <ion-select-option value='1'>Comercial</ion-select-option>
+                                <ion-select-option value='2'>Residencial</ion-select-option>
+                                <ion-select-option value='3'>Industrial</ion-select-option>
+                                <ion-select-option value='4'>Gobierno</ion-select-option>
+                            </ion-select>
+                        </p>
+                    </ion-label>
+                </ion-item>
+            </ion-card-content>
+        </ion-card>
+
+        <!-- Estatus de la toma solo en agua  -->
+        <ion-card>
+            <ion-card-content>
+                <ion-item>
+                    <ion-label>
+                        <p>Estatus de la toma <strong>*</strong> </p>
+                        <p *ngIf="isEstatusToma" style="color :red">Campo obligatorio</p>
+                        <p>
+                            <ion-select interface="popover" placeholder="Selecciona uno" (ionChange)="activateEstatusToma($event)" [(ngModel)]="idEstatusToma">
+                                <ion-select-option value='1'>Normal</ion-select-option>
+                                <ion-select-option value='2'>Clandestino</ion-select-option>
+                            </ion-select>
+                        </p>
+                    </ion-label>
+                </ion-item>
+                <div *ngIf="activaEstatusToma">
+                    <ion-item>
+                        <ion-label>
+                            <p>Tipo de toma <strong>*</strong> </p>
+                            <p *ngIf="isTipoToma" style="color :red">Campo obligatorio</p>
+                            <p>
+                                <ion-select interface="popover" placeholder="Selecciona uno" (ionChange)="activateTipoToma()" [(ngModel)]="idTipoToma">
+                                    <ion-select-option value='1'>Toma directa</ion-select-option>
+                                    <ion-select-option value='2'>Derivación de toma</ion-select-option>
+                                    <ion-select-option value='3'>Restricción infringida</ion-select-option>
+                                    <ion-select-option value='4'>Manipulación de medidor</ion-select-option>
+                                    <ion-select-option value='5'>Medidor invertido</ion-select-option>
+                                    <ion-select-option value='6'>Medidor obstruido</ion-select-option>
+                                </ion-select>
+                            </p>
+                        </ion-label>
+                    </ion-item>
+                </div>
+            </ion-card-content>
+        </ion-card>
+    </div>
+
+
+    <ion-card>
+        <ion-card-content>
+
+            <ion-item>
+                <ion-label>
+                    <p>
+                        Conclusiones
+                    </p>
+                </ion-label>
+                <ion-textarea rows="5" [(ngModel)]="conclusiones"></ion-textarea>
+            </ion-item>
+            <!-- <ion-item>
+                <ion-label position="floating">
+                    <p>Persona de contacto</p>
+                </ion-label>
+                <ion-input type="text" placeholder="Nombre de la persona" [(ngModel)]="personaContacto"></ion-input>
+
+            </ion-item>
+            <ion-item>
+                <ion-label position="floating">
+                    <p>Telefóno de contacto</p>
+                </ion-label>
+                <ion-input type="number" maxlength="10" placeholder="Número de telefóno" [(ngModel)]="telefonoContacto"></ion-input>
+
+            </ion-item> -->
+            <ion-item>
+                <ion-label>
+                    <p>Fecha promesa de pago</p>
+                    <ion-datetime placeholder="1999-09-09" min={{fechaActual}} [(ngModel)]="fechaPromesa"></ion-datetime>
+                </ion-label>
+            </ion-item>
+            <ion-item>
+                <ion-label>
+                    <p>Próxima revisión*</p>
+                    <p *ngIf="isFecha" style="color :red">Campo obligatorio</p>
+                    <ion-datetime placeholder="1999-09-09" [(ngModel)]="fechaProximaVisita" min={{fechaActual}} (ionChange)="activateFecha()"></ion-datetime>
+                </ion-label>
+            </ion-item>
+            <div *ngIf="horas">
+                <ion-item>
+                    <ion-label>
+                        <p>Hora inicial de instalación*</p>
+                        <ion-datetime displayFormat="HH:mm" placeholder="12:00:00" [(ngModel)]="horaIni"></ion-datetime>
+                    </ion-label>
+                </ion-item>
+                <ion-item>
+                    <ion-label>
+                        <p>Hora final instalación*</p>
+                        <ion-datetime displayFormat="HH:mm" placeholder="12:00:00" [(ngModel)]="horaFin"></ion-datetime>
+                    </ion-label>
+                </ion-item>
+            </div>
+
+        </ion-card-content>
+    </ion-card>
+
+    <ion-slides [options]="sliderOpts">
+        <ion-slide *ngFor="let img of imgs">
+            <img src={{img.imagen}} class="imagen">
+        </ion-slide>
+    </ion-slides>
+    <ion-item text-center>
+        <ion-label>
+            <p>
+                Fotos de la visita
+            </p>
+
+
+            <ion-grid>
+                <ion-row>
+                    <ion-col text-center>
+                        <ion-button expand="block" color="tertiary" (click)="takePic(1)">
+                            <ion-icon name="camera"></ion-icon>
+                        </ion-button>
+                        <ion-label>Evidencia</ion-label>
+                    </ion-col>
+
+                </ion-row>
+
+            </ion-grid>
+        </ion-label>
+    </ion-item>
+    <ion-button expand="block" color="tertiary" (click)="Verify()">Terminar</ion-button>
 
 
 </ion-content>

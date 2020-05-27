@@ -60,8 +60,18 @@ export class GestionGestorPage implements OnInit {
   userInfo: any;
   imgs: any;
   takePhoto: boolean;
-  resultVisitValidation : boolean = false
+  resultVisitValidation: boolean = false
+  nCaracteristica: boolean = false;
+  
+  isAgua: boolean = false;
+  idTipoServicio: number = 0;
+  idTipoToma: number = 0;
+  idEstatusToma: number = 0;
+  activaEstatusToma: boolean = false;
+  isEstatusToma: boolean = false;
+  isTipoToma: boolean = false;
 
+  
   constructor(
     private storage: Storage,
     private service: RestService,
@@ -76,7 +86,7 @@ export class GestionGestorPage implements OnInit {
     private loadingController: LoadingController,
     private db: AngularFirestore,
     private usersFirebase: UsersFirebaseService,
-    
+
   ) {
     this.imgs = [{ imagen: "assets/img/imgs.jpg" }];
     this.takePhoto = false;
@@ -99,6 +109,7 @@ export class GestionGestorPage implements OnInit {
     await this.getInfoAccount();
     this.getTotals();
     this.getFechaActual();
+    this.getIdPlaza();
   }
   getFechaActual() {
     var dateDay = new Date().toISOString();
@@ -123,7 +134,7 @@ export class GestionGestorPage implements OnInit {
     this.idTareaGestor = this.infoAccount[0].id_tarea;
     let gestionada = this.infoAccount[0].gestionada;
     this.tareaAsignada = this.infoAccount[0].tareaAsignada;
-    if(idRol == '2'){
+    if (idRol == '2') {
       this.idTareaGestor = 47;
       this.tareaAsignada = "Notificar adeudo a domicilio 3ra Carta"
     }
@@ -139,7 +150,7 @@ export class GestionGestorPage implements OnInit {
     let tipo;
     if (type == 1) {
       tipo = "Evidencia";
-    } else if(type == 2) {
+    } else if (type == 2) {
       tipo = "Predio";
     } else if (type == 3) {
       tipo = "Acta circunstanciada"
@@ -222,6 +233,10 @@ export class GestionGestorPage implements OnInit {
       this.motivoNoPago = "X";
       this.image = "X";
       this.takePhoto = true;
+      this.isEstatusToma = false;
+      this.isTipoToma = false;
+      this.idEstatusToma = 100;
+      this.idTipoToma = 100;
     } else {
       this.idMotivoNoPago == 0;
       this.motivoNoPago == "";
@@ -242,12 +257,35 @@ export class GestionGestorPage implements OnInit {
       this.activateMotivo = false;
     }
   }
+
+  activateEstatusToma(event) {
+    this.isEstatusToma = false;
+    this.detectedChanges = true;
+    console.log(event.detail.value);
+    if (event.detail.value == 2) {
+      this.activaEstatusToma = true;
+    } else {
+      this.idTipoToma = 100;
+      this.activaEstatusToma = false;
+    }
+  }
+
+  activateTipoToma() {
+    this.isTipoToma = false;
+  }
+
+
   activateExpectativa() {
     this.isExpectativa = false;
   }
   activateDescripcion() {
     this.isDescripcion = false;
   }
+
+  otraCaracteristicaValidate() {
+    this.nCaracteristica = false;
+  }
+
   async validaDatosGestion() {
     let account = this.account;
     this.loading = await this.loadingController.create({
@@ -255,37 +293,49 @@ export class GestionGestorPage implements OnInit {
     });
     await this.loading.present();
     const position = await this.geolocation.getCurrentPosition();
-    
-   // this.loading.dismiss();
+
+    // this.loading.dismiss();
     console.log(position);
     this.latitud = position.coords.latitude;
     this.longitud = position.coords.longitude;
 
     if (
       this.idMotivoNoPago == 0 ||
-      this.motivoNoPago == "" ||
+      //this.motivoNoPago == "" ||
+      this.otraCaracteristicaPredio == "" ||
+      this.idEstatusToma == 0 ||
+      this.idTipoToma == 0 ||
       (this.fechaPromesaPago != "1999-09-09" &&
         this.idExpectativasContribuyente == 0) || this.takePhoto == false || this.idCaracteristicaPredio == 0
     ) {
       if (this.idMotivoNoPago == 0) {
         this.isMotive = true;
       }
-      if (this.motivoNoPago == "") {
-        this.isDescripcion = true;
+      if (this.otraCaracteristicaPredio == "") {
+        this.nCaracteristica = true;
       }
+      if (this.idEstatusToma == 0) {
+        this.isEstatusToma = true;
+      }
+      if (this.idTipoToma == 0) {
+        this.isTipoToma = true;
+      }
+      // if (this.motivoNoPago == "") {
+      //   this.isDescripcion = true;
+      // }
       if (this.idExpectativasContribuyente == 0) {
         this.isExpectativa = true;
-      }if( this.idCaracteristicaPredio == 0  ) {
+      } if (this.idCaracteristicaPredio == 0) {
         this.resultVisitValidation = true;
       }
 
       this.mensaje.showAlert("Verifica los campos marcados con * y que minimo haya una foto capturada");
       this.loading.dismiss();
     } else {
-   /*    this.loading = await this.loadingController.create({
-        message: "Guardando la gestión..."
-      });
-      await this.loading.present(); */
+      /*    this.loading = await this.loadingController.create({
+           message: "Guardando la gestión..."
+         });
+         await this.loading.present(); */
       //   let sqlString =`'${account}',${this.idEstatus},'${this.observaciones}','${this.fechaPromesaPago}','${this.latitud}','${this.longitud}','${this.fechaCaptura}','${idAspUser}',${idTarea},'${this.fechaAsignacion}','${this.fechaVencimiento}'${this.idMotivoNoPago},'${this.motivoNoPago}',${this.idSolucionPlanteada},${this.idExpectativasContribuyente},'${this.otraExpectativaContribuyente}',${this.idCaracteristicaPredio},'${this.otraCaracteristicaPredio}',${this.idServiciosNoPago}`
       var dateDay = new Date().toISOString();
       let date: Date = new Date(dateDay);
@@ -327,24 +377,27 @@ export class GestionGestorPage implements OnInit {
         idCaracteristicaPredio: this.idCaracteristicaPredio,
         otraCaracteristicaPredio: this.otraCaracteristicaPredio,
         idServiciosNoPago: this.idServiciosNoPago,
+        idTipoServicio: this.idTipoServicio,
+        idEstatusToma: this.idEstatusToma,
+        idTipoToma: this.idTipoToma,
         id: this.idAccountSqlite
       };
       console.log(data);
-     await this.gestionGestor(data);
+      await this.gestionGestor(data);
       this.loading.dismiss();
-      this.exit(); 
+      this.exit();
     }
   }  // validaDatosGestion
 
   async gestionGestor(data) {
     await this.service.gestionGestor(data);
     this.detectedChanges = false;
-   // this.mensaje.showAlert("Gestion guardada correctamente");
-   // 
-   // let uid = await this.storage.get("idFireBase");
-  //  this.changeTotals(uid);
+    // this.mensaje.showAlert("Gestion guardada correctamente");
+    // 
+    // let uid = await this.storage.get("idFireBase");
+    //  this.changeTotals(uid);
 
-   
+
   }
   async getTotals() {
     this.usersFirebase.getTotals().subscribe(async user => {
@@ -426,8 +479,8 @@ export class GestionGestorPage implements OnInit {
             }
             this.mensaje.showAlert(
               "se ha cambiado la tarea a: <strong>" +
-                this.tareaAsignada +
-                "</strong>"
+              this.tareaAsignada +
+              "</strong>"
             );
           }
         }
@@ -436,4 +489,34 @@ export class GestionGestorPage implements OnInit {
 
     await alert.present();
   }
+
+
+ async  getIdPlaza() {
+  console.log("obteniendo el id de la plaza del gestor")
+  let idPlaza: any = await this.service.getIdPlazaUser();
+   console.log(idPlaza);
+   if( idPlaza == '8'
+      || idPlaza == '10'
+      || idPlaza == '11'
+      || idPlaza == '15'
+      || idPlaza == '23'
+      || idPlaza == '24'
+      || idPlaza == '25'
+      || idPlaza == '26'
+      || idPlaza == '27'  
+    ) {
+     console.log("Esta plaza es de agua");
+     this.isAgua = true;
+   } else {
+     console.log("Esta plaza es de predio")
+     this.isAgua = false;
+     this.isTipoToma = false;
+     this.isEstatusToma = false;
+     this.idEstatusToma = 100;
+     this.idTipoToma = 100;
+   }
+  }
+
+
+
 }

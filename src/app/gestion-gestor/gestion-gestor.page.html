@@ -96,9 +96,10 @@
                 <ion-item>
                     <ion-label>
                         <p>
-                            Descripción<strong>*</strong>
+                            Descripción<strong></strong>
                         </p>
-                        <p *ngIf="isDescripcion" style="color :red">Campo obligatorio</p>
+                        <!-- Este campo ya no sera obligatorio a partir de la version 1.2.7 -->
+                        <!-- <p *ngIf="isDescripcion" style="color :red">Campo obligatorio</p> -->
 
                     </ion-label>
                     <ion-textarea rows="5" [(ngModel)]="motivoNoPago" (ionChange)="activateDescripcion()"></ion-textarea>
@@ -153,22 +154,80 @@
             </ion-card-content>
         </ion-card>
 
-        <ion-card>
-            <ion-card-content>
+        <!-- Tipo de servicio solo en agua -->
+        <div *ngIf="isAgua">
+            <ion-card>
+                <ion-card-content>
+                    <ion-item>
+                        <ion-label>
+                            <p>Tipo de servicio</p>
+                            <p>
+                                <ion-select interface="popover" placeholder="Selecciona uno" [(ngModel)]="idTipoServicio">
+                                    <ion-select-option value='1'>Comercial</ion-select-option>
+                                    <ion-select-option value='2'>Residencial</ion-select-option>
+                                    <ion-select-option value='3'>Industrial</ion-select-option>
+                                    <ion-select-option value='4'>Gobierno</ion-select-option>
+                                </ion-select>
+                            </p>
+                        </ion-label>
+                    </ion-item>
+                </ion-card-content>
+            </ion-card>
 
-                <ion-item>
-                    <ion-label>
-                        <p>
-                            Características del predio:
-                        </p>
-                    </ion-label>
-                    <ion-textarea rows="5" [(ngModel)]="otraCaracteristicaPredio"></ion-textarea>
-                </ion-item>
-            </ion-card-content>
-        </ion-card>
+            <!-- Estatus de la toma solo en agua -->
+            <ion-card>
+                <ion-card-content>
+                    <ion-item>
+                        <ion-label>
+                            <p>Estatus de la toma <strong>*</strong> </p>
+                            <p *ngIf="isEstatusToma" style="color :red">Campo obligatorio</p>
+                            <p>
+                                <ion-select interface="popover" placeholder="Selecciona uno" (ionChange)="activateEstatusToma($event)" [(ngModel)]="idEstatusToma">
+                                    <ion-select-option value='1'>Normal</ion-select-option>
+                                    <ion-select-option value='2'>Clandestino</ion-select-option>
+                                </ion-select>
+                            </p>
+                        </ion-label>
+                    </ion-item>
+                    <div *ngIf="activaEstatusToma">
+                        <ion-item>
+                            <ion-label>
+                                <p>Tipo de toma <strong>*</strong> </p>
+                                <p *ngIf="isTipoToma" style="color :red">Campo obligatorio</p>
+                                <p>
+                                    <ion-select interface="popover" placeholder="Selecciona uno" (ionChange)="activateTipoToma()" [(ngModel)]="idTipoToma">
+                                        <ion-select-option value='1'>Toma directa</ion-select-option>
+                                        <ion-select-option value='2'>Derivación de toma</ion-select-option>
+                                        <ion-select-option value='3'>Restricción infringida</ion-select-option>
+                                        <ion-select-option value='4'>Manipulación de medidor</ion-select-option>
+                                        <ion-select-option value='5'>Medidor invertido</ion-select-option>
+                                        <ion-select-option value='6'>Medidor obstruido</ion-select-option>
+                                    </ion-select>
+                                </p>
+                            </ion-label>
+                        </ion-item>
+                    </div>
+                </ion-card-content>
+            </ion-card>
+        </div>
 
     </div>
     <!-- activatedResult -->
+
+    <ion-card>
+        <ion-card-content>
+
+            <ion-item>
+                <ion-label>
+                    <p>
+                        Características del predio: <strong>*</strong>
+                    </p>
+                    <p *ngIf="nCaracteristica" style="color :red">Campo obligatorio</p>
+                </ion-label>
+                <ion-textarea rows="5" [(ngModel)]="otraCaracteristicaPredio" (ionChange)="otraCaracteristicaValidate()"></ion-textarea>
+            </ion-item>
+        </ion-card-content>
+    </ion-card>
 
     <ion-card>
         <ion-card-content>

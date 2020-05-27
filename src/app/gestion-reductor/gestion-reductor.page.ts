@@ -39,8 +39,8 @@ export class GestionReductorPage implements OnInit {
   idObservacion: number = 0;
   lectura: string = "";
   conclusiones: string = "";
-  personaContacto: string = "";
-  telefonoContacto: string = "";
+  //personaContacto: string = "";
+  //telefonoContacto: string = "";
   fechaPromesa: string = "1999-09-09";
   fechaCaptura: string = "";
   fechaProximaVisita: string = "1999-09-09";
@@ -49,12 +49,22 @@ export class GestionReductorPage implements OnInit {
   latitud: number;
   longitud: number;
   idNiple: number = 0;
-  imgs : any
+  imgs: any
 
   isDescription: boolean = false;
   isObservacion: boolean = false;
   isFecha: boolean = false;
-  indicadorImagen: number=0;
+  indicadorImagen: number = 0;
+
+
+
+  isAgua: boolean = false;
+  idTipoServicio: number = 0;
+  idTipoToma: number = 0;
+  idEstatusToma: number = 0;
+  activaEstatusToma: boolean = false;
+  isEstatusToma: boolean = false;
+  isTipoToma: boolean = false;
 
   constructor(
     private camera: Camera,
@@ -65,7 +75,7 @@ export class GestionReductorPage implements OnInit {
     private webview: WebView,
     private loadingController: LoadingController,
     private geolocation: Geolocation
-  ) {  this.imgs = [{imagen:'assets/img/imgs.jpg'}]}
+  ) { this.imgs = [{ imagen: 'assets/img/imgs.jpg' }] }
   sliderOpts = {
     zoom: true,
     slidesPerView: 1.55,
@@ -75,6 +85,7 @@ export class GestionReductorPage implements OnInit {
   ngOnInit() {
     this.getInfoAccount();
     this.getFechaActual();
+    this.getIdPlaza();
   }
 
   getFechaActual() {
@@ -99,7 +110,7 @@ export class GestionReductorPage implements OnInit {
     this.idTarea = this.infoAccount[0].id_tarea;
     let gestionada = this.infoAccount[0].gestionada;
     this.tareaAsignada = this.infoAccount[0].tareaAsignada;
-   
+
     if (gestionada == 1) {
       this.mensaje.showAlert("Esta cuenta ya ha sido gestionada");
       this.modalController.dismiss();
@@ -146,10 +157,10 @@ export class GestionReductorPage implements OnInit {
         this.indicadorImagen = this.indicadorImagen + 1;
         let rutaBase64 = imageData;
         this.image = this.webview.convertFileSrc(imageData);
-        
-        this.imgs.push({imagen:this.image})
 
-        if (this.indicadorImagen == 1 ){ this.imgs.splice(0,1)}
+        this.imgs.push({ imagen: this.image })
+
+        if (this.indicadorImagen == 1) { this.imgs.splice(0, 1) }
         this.saveImage(
           this.image,
           this.account,
@@ -161,7 +172,7 @@ export class GestionReductorPage implements OnInit {
         );
       })
       .catch(error => {
-        console.error(error); 
+        console.error(error);
       });
   }
 
@@ -279,20 +290,30 @@ export class GestionReductorPage implements OnInit {
       )
     );
 
-    
+
 
     if (
       this.idDescripcion == 0 ||
       this.fechaProximaVisita === "1999-09-09"
-     
+      || this.idEstatusToma == 0 ||
+      this.idTipoToma == 0
     ) {
-    
+
       if (this.idDescripcion == 0) {
         this.isDescription = true;
       }
       if (this.fechaProximaVisita === "1999-09-09") {
         this.isFecha = true;
       }
+
+      if (this.idEstatusToma == 0) {
+        this.isEstatusToma = true;
+      }
+
+      if (this.idTipoToma == 0) {
+        this.isTipoToma = true;
+      }
+
       this.mensaje.showAlert("Verifica todos los campos con *");
     } else {
       if (
@@ -316,44 +337,48 @@ export class GestionReductorPage implements OnInit {
         let newDate1 = new Date(dateString1).toISOString();
         console.log(dateString);
         console.log(newDate);
-         await this.getPosition()
+        await this.getPosition()
 
 
 
-          let data = {
-            id : this.idAccountSqlite,
-            account : this.account,
-            idtarea: this.idTarea,
-            idObservacion: this.idObservacion,
-            idAspUser: this.idAspuser,
-            idDescripcion: this.idDescripcion,
-            idNiple: this.idNiple,
-            conclusiones: this.conclusiones,
-            fechaCaptura: this.fechaCaptura,
-            fechaPromesa: newDate,
-            fechaProximaVisita: newDate1,
-            horaFin: this.horaFin,
-            horaIni: this.horaIni,
-            latitud: this.latitud,
-            longitud: this.longitud,
-            lectura: this.lectura,
-            telefonoContacto: this.telefonoContacto,
-            personaContacto : this.personaContacto
-          };
-console.log(data)
+        let data = {
+          id: this.idAccountSqlite,
+          account: this.account,
+          idtarea: this.idTarea,
+          idObservacion: this.idObservacion,
+          idAspUser: this.idAspuser,
+          idDescripcion: this.idDescripcion,
+          idNiple: this.idNiple,
+          conclusiones: this.conclusiones,
+          fechaCaptura: this.fechaCaptura,
+          fechaPromesa: newDate,
+          fechaProximaVisita: newDate1,
+          horaFin: this.horaFin,
+          horaIni: this.horaIni,
+          latitud: this.latitud,
+          longitud: this.longitud,
+          lectura: this.lectura,
+          telefonoContacto: '',
+          personaContacto: '',
+          idTipoServicio: this.idTipoServicio,
+          idEstatusToma: this.idEstatusToma,
+          idTipoToma: this.idTipoToma
+          
+        };
+        console.log(data)
 
-         await this.gestionReductor(data); 
-         this.exit()
-         
-        
+        await this.gestionReductor(data);
+        this.exit()
+
+
       }
     }
   }
 
-  
+
   async gestionReductor(data) {
     await this.service.gestionReductor(data);
-   // this.detectedChanges = false;
+    // this.detectedChanges = false;
   }
   activateObservacion() {
     this.isObservacion = false;
@@ -361,6 +386,25 @@ console.log(data)
   activateFecha() {
     this.isFecha = false;
   }
+
+  activateEstatusToma(event) {
+    this.isEstatusToma = false;
+    //this.detectedChanges = true;
+    console.log(event.detail.value);
+    if (event.detail.value == 2) {
+      this.activaEstatusToma = true;
+    } else {
+      this.idTipoToma = 100;
+      this.activaEstatusToma = false;
+    }
+  }
+
+
+  activateTipoToma() {
+    this.isTipoToma = false;
+  }
+
+
   async getPosition() {
     this.loading = await this.loadingController.create({
       message: "Obteniendo la ubicación de esta gestión...."
@@ -378,4 +422,36 @@ console.log(data)
       return true;
     }
   }
+
+
+
+
+
+  async  getIdPlaza() {
+    console.log("obteniendo el id de la plaza del gestor")
+    let idPlaza: any = await this.service.getIdPlazaUser();
+    console.log(idPlaza);
+    if (idPlaza == '8'
+      || idPlaza == '10'
+      || idPlaza == '11'
+      || idPlaza == '15'
+      || idPlaza == '23'
+      || idPlaza == '24'
+      || idPlaza == '25'
+      || idPlaza == '26'
+      || idPlaza == '27'
+    ) {
+      console.log("Esta plaza es de agua");
+      this.isAgua = true;
+    } else {
+      console.log("Esta plaza es de predio")
+      this.isAgua = false;
+      this.isTipoToma = false;
+      this.isEstatusToma = false;
+      this.idTipoServicio = 100;
+      this.idEstatusToma = 100;
+      this.idTipoToma = 100;
+    }
+  }
+
 }

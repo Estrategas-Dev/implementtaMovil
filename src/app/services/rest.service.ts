@@ -825,8 +825,8 @@ export class RestService {
     console.log("llego el query string");
 
     let sql =
-      `INSERT INTO gestionReductor(account ,idTarea ,idDescripcion , idObservaciones , idaspuser,lectura ,conclusiones , personaContacto , telefonoContacto ,fechaPromesa , fechaCaptura , fechaProximaRev , latitud , longitud , niple , horaIni , horaFin)
-     values(?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)`;
+      `INSERT INTO gestionReductor(account ,idTarea ,idDescripcion , idObservaciones , idaspuser,lectura ,conclusiones , personaContacto , telefonoContacto ,fechaPromesa , fechaCaptura , fechaProximaRev , latitud , longitud , niple , horaIni , horaFin, idTipoServicio, idEstatusToma, idTipoToma)
+     values(?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)`;
     return this.db.executeSql(sql, [
       data.account,
       data.idtarea,
@@ -845,6 +845,9 @@ export class RestService {
       data.idNiple,
       data.horaIni,
       data.horaFin,
+      data.idTipoServicio,
+      data.idEstatusToma,
+      data.idTipoToma
     ]);
   }
   gestionGestor(data) {
@@ -852,8 +855,8 @@ export class RestService {
     console.log("llego el query string");
 
     let sql =
-      "INSERT INTO gestionGestor(account,idEstatus,observaciones,fechaPromesaPago,latitud,longitud,fechaCaptura,idAspuser,idTarea,fechaAsignacion,fechaVencimiento,idMotivoNoPago,motivoNoPago,idSolucionPlanteada,idExpectativasContribuyente,otraExpectativaContribuyente,idCaracteristicaPredio,otraCaracteristicaPredio,idServiciosNoPago)" +
-      "values(?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)";
+      "INSERT INTO gestionGestor(account,idEstatus,observaciones,fechaPromesaPago,latitud,longitud,fechaCaptura,idAspuser,idTarea,fechaAsignacion,fechaVencimiento,idMotivoNoPago,motivoNoPago,idSolucionPlanteada,idExpectativasContribuyente,otraExpectativaContribuyente,idCaracteristicaPredio,otraCaracteristicaPredio,idServiciosNoPago,idTipoServicio,idEstatusToma,idTipoToma)" +
+      "values(?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)";
     return this.db.executeSql(sql, [
       data.account,
       data.idEstatus,
@@ -873,7 +876,10 @@ export class RestService {
       data.otraExpectativaContribuyente,
       data.idCaracteristicaPredio,
       data.otraCaracteristicaPredio,
-      data.idServiciosNoPago
+      data.idServiciosNoPago,
+      data.idTipoServicio,
+      data.idEstatusToma,
+      data.idTipoToma
     ]);
   }
 
@@ -881,8 +887,8 @@ export class RestService {
     this.updateAccountGestionada(data.id);
 
     let sql =
-      "INSERT INTO gestionAbogado(account,idResultado,idPersona,observaciones,fechaPromesaPago,latitud,longitud,fechaCaptura,idAspuser,idTarea,fechaAsignacion,fechaVencimiento)" +
-      "values(?,?,?,?,?,?,?,?,?,?,?,?)";
+      "INSERT INTO gestionAbogado(account,idResultado,idPersona,observaciones,fechaPromesaPago,latitud,longitud,fechaCaptura,idAspuser,idTarea,fechaAsignacion,fechaVencimiento,idTipoServicio,idEstatusToma,idTipoToma)" +
+      "values(?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)";
     return this.db.executeSql(sql, [
       data.account,
       data.idResultado,
@@ -895,7 +901,10 @@ export class RestService {
       data.idAspuser,
       data.idTareaAbogado,
       data.fechaAsignacion,
-      data.fechaVencimiento
+      data.fechaVencimiento,
+      data.idTipoServicio,
+      data.idEstatusToma,
+      data.idTipoToma
     ]);
   }
   getAccountsReadyToSyncGestor() {
@@ -1023,8 +1032,11 @@ export class RestService {
           let otraCaracteristicaPredio = arrayGestiones[i]
             .otraCaracteristicaPredio;
           let idServiciosNoPago = arrayGestiones[i].idServiciosNoPago;
+          let idTipoServicio = arrayGestiones[i].idTipoServicio;
+          let idEstatusToma = arrayGestiones[i].idEstatusToma;
+          let idTipoToma = arrayGestiones[i].idTipoToma;
           let id = arrayGestiones[i].id;
-          let sqlString = `'${account}',${idEstatus},'${observaciones}','${fechaPromesaPago}',${latitud},${longitud},'${fechaCaptura}','${idAspUser}',${idTarea},'${fechaAsignacion}','${fechaVencimiento}',${idMotivoNoPago},'${motivoNoPago}',${idSolucionPlanteada},${idExpectativasContribuyente},'${otraExpectativaContribuyente}',${idCaracteristicaPredio},'${otraCaracteristicaPredio}',${idServiciosNoPago},${idPlaza}`;
+          let sqlString = `'${account}',${idEstatus},'${observaciones}','${fechaPromesaPago}',${latitud},${longitud},'${fechaCaptura}','${idAspUser}',${idTarea},'${fechaAsignacion}','${fechaVencimiento}',${idMotivoNoPago},'${motivoNoPago}',${idSolucionPlanteada},${idExpectativasContribuyente},'${otraExpectativaContribuyente}',${idCaracteristicaPredio},'${otraCaracteristicaPredio}',${idServiciosNoPago},${idPlaza},${idTipoServicio},${idEstatusToma},${idTipoToma}`;
 
           await this.accountSyncGestor(sqlString, id);
 
@@ -1095,9 +1107,13 @@ export class RestService {
         let idTarea = arrayGestionesAbogado[i].idTarea;
         let fechaVencimiento = arrayGestionesAbogado[i].fechaVencimiento;
         let horaVencimiento = arrayGestionesAbogado[i].fechaVencimiento;
+        let idTipoServicio = arrayGestionesAbogado[i].idTipoServicio;
+        let idEstatusToma = arrayGestionesAbogado[i].idEstatusToma;
+        let idTipoToma = arrayGestionesAbogado[i].idTipoToma;
+
 
         let id = arrayGestionesAbogado[i].id;
-        let sqlString = `'${account}',${idResultado},${idPersona},'${observaciones}','${fechaPromesaPago}',${latitud},${longitud},'${fechaCaptura}','${idAspUser}',${idTarea},'${fechaVencimiento}','${horaVencimiento}',${idPlaza}`;
+        let sqlString = `'${account}',${idResultado},${idPersona},'${observaciones}','${fechaPromesaPago}',${latitud},${longitud},'${fechaCaptura}','${idAspUser}',${idTarea},'${fechaVencimiento}','${horaVencimiento}',${idPlaza},${idTipoServicio},${idEstatusToma},${idTipoToma}`;
 
         await this.accountSyncAbogado(sqlString, id);
 
@@ -1140,9 +1156,12 @@ export class RestService {
           let idNiple = result.rows.item(i).niple;
           let horaIni = result.rows.item(i).horaIni;
           let horaFin = result.rows.item(i).horaFin;
+          let idTipoServicio = result.rows.item(i).idTipoServicio;
+          let idEstatusToma = result.rows.item(i).idEstatusToma;
+          let idTipoToma = result.rows.item(i).idTipoToma;
 
           let id = result.rows.item(i).id;
-          let sqlString = `'${account}',${idTarea},'${idObservacion}','${idDescripcion}','${idAspUser}','${lectura}','${conclusiones}','${personaContacto}','${telefonoContacto}','${fechaPromesa}','${fechaCaptura}','${fechaProximaVisita}','${latitud}','${longitud}',${idNiple},'${horaIni}','${horaFin}',${idPlaza}`;
+          let sqlString = `'${account}',${idTarea},'${idObservacion}','${idDescripcion}','${idAspUser}','${lectura}','${conclusiones}','${personaContacto}','${telefonoContacto}','${fechaPromesa}','${fechaCaptura}','${fechaProximaVisita}','${latitud}','${longitud}',${idNiple},'${horaIni}','${horaFin}',${idPlaza},${idTipoServicio},${idEstatusToma},${idTipoToma}`;
 
           await this.accountSyncReductor(sqlString, id);
         }
@@ -1507,9 +1526,9 @@ export class RestService {
       let id = arrayPropietarios[i].id;
       let sqlString = `'${account}','${nombre}','${telefono}','${celular}','${correo}','${fecha}','${fechaCaptura}','${idaspUser}','${idRol}',${type},${idPlaza}`;
 
-       this.accountSyncDatosPropietario(sqlString, id);
+      await this.accountSyncDatosPropietario(sqlString, id);
 
-      await resolve("Execute Query")
+      resolve("Execute Query")
 
     });
   }
@@ -1648,4 +1667,13 @@ export class RestService {
     return Promise.resolve("Executed query");
 
   }
+
+
+  async getIdPlazaUser() {
+    let idPlaza = await this.storage.get("IdPlaza");
+    console.log(idPlaza);
+    return idPlaza;
+  }
+
+
 }
