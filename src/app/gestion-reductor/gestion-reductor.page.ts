@@ -427,24 +427,15 @@ export class GestionReductorPage implements OnInit {
 
 
 
-  async  getIdPlaza() {
-    console.log("obteniendo el id de la plaza del gestor")
-    let idPlaza: any = await this.service.getIdPlazaUser();
-    console.log(idPlaza);
-    if (idPlaza == '8'
-      || idPlaza == '10'
-      || idPlaza == '11'
-      || idPlaza == '15'
-      || idPlaza == '23'
-      || idPlaza == '24'
-      || idPlaza == '25'
-      || idPlaza == '26'
-      || idPlaza == '27'
-    ) {
-      console.log("Esta plaza es de agua");
+  async getIdPlaza() {
+    console.log("obteniendo el id de la plaza");
+    let tipoPlaza = await this.service.getIdPlazaUser();
+    console.log(tipoPlaza);
+    if (tipoPlaza[0].TipoPlaza === 'Agua') {
+      console.log('Esta es una plaza de agua');
       this.isAgua = true;
     } else {
-      console.log("Esta plaza es de predio")
+      console.log("Esta es una plaza de predio");
       this.isAgua = false;
       this.isTipoToma = false;
       this.isEstatusToma = false;

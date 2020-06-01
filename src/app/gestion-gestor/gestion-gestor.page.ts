@@ -503,6 +503,7 @@ export class GestionGestorPage implements OnInit {
       this.isAgua = false;
       this.isTipoToma = false;
       this.isEstatusToma = false;
+      this.idTipoServicio = 100;
       this.idEstatusToma = 100;
       this.idTipoToma = 100;
     }

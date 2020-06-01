@@ -1147,7 +1147,7 @@ export class RestService {
           let account = result.rows.item(i).account;
           let idTarea = result.rows.item(i).idTarea;
           let idDescripcion = result.rows.item(i).idDescripcion;
-          let idObservacion = result.rows.item(i).idDescripcion;
+          let idObservacion = result.rows.item(i).idObservaciones;
           let idAspUser = result.rows.item(i).idaspuser;
           let lectura = result.rows.item(i).lectura
           let conclusiones = result.rows.item(i).conclusiones;
