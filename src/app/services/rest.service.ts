@@ -63,6 +63,11 @@ export class RestService {
     "https://implementta.net/andro/ImplementtaMovil.aspx?query=sp_actualizaDomicilios";
   apiUrl12 =
     "https://implementta.net/andro/ImplementtaMovil.aspx?query=sp_actualizaDatos";
+  apiurl13 = 
+    "https://implementta.net/andro/ImplementtaMovil.aspx?query=sp_ObtenerTipoPlaza";
+
+
+
   loading: any;
   lista: any[];
   constructor(
@@ -1672,7 +1677,13 @@ export class RestService {
   async getIdPlazaUser() {
     let idPlaza = await this.storage.get("IdPlaza");
     console.log(idPlaza);
-    return idPlaza;
+    return new Promise ( (resolve) => {
+      this.http.get(this.apiurl13 + " " + idPlaza ).subscribe( data => {
+        console.log(data);
+        resolve(data);
+      })
+    })
+    // return idPlaza;
   }
 
 
