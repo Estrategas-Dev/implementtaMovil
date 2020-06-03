@@ -66,6 +66,8 @@ export class GestionReductorPage implements OnInit {
   isEstatusToma: boolean = false;
   isTipoToma: boolean = false;
 
+  takePhoto: boolean;
+
   constructor(
     private camera: Camera,
     private service: RestService,
@@ -75,7 +77,11 @@ export class GestionReductorPage implements OnInit {
     private webview: WebView,
     private loadingController: LoadingController,
     private geolocation: Geolocation
-  ) { this.imgs = [{ imagen: 'assets/img/imgs.jpg' }] }
+  )
+   { 
+     this.imgs = [{ imagen: 'assets/img/imgs.jpg' }];
+      this.takePhoto = false;
+  }
   sliderOpts = {
     zoom: true,
     slidesPerView: 1.55,
@@ -157,7 +163,7 @@ export class GestionReductorPage implements OnInit {
         this.indicadorImagen = this.indicadorImagen + 1;
         let rutaBase64 = imageData;
         this.image = this.webview.convertFileSrc(imageData);
-
+        this.takePhoto = true;
         this.imgs.push({ imagen: this.image })
 
         if (this.indicadorImagen == 1) { this.imgs.splice(0, 1) }
@@ -296,7 +302,7 @@ export class GestionReductorPage implements OnInit {
       this.idDescripcion == 0 ||
       this.fechaProximaVisita === "1999-09-09"
       || this.idEstatusToma == 0 ||
-      this.idTipoToma == 0
+      this.idTipoToma == 0 || this.takePhoto == false
     ) {
 
       if (this.idDescripcion == 0) {
@@ -314,7 +320,7 @@ export class GestionReductorPage implements OnInit {
         this.isTipoToma = true;
       }
 
-      this.mensaje.showAlert("Verifica todos los campos con *");
+      this.mensaje.showAlert("Verifica todos los campos con * y que minimo haya una foto capturada");
     } else {
       if (
         (this.idDescripcion.toString() == "2" ||
@@ -324,7 +330,7 @@ export class GestionReductorPage implements OnInit {
         this.idObservacion == 0
       ) {
         this.isObservacion = true;
-        this.mensaje.showAlert("Verifica todos los campos con *");
+        this.mensaje.showAlert("Verifica todos los campos con * y que minimo haya una foto capturada");
       } else {
         /////////////////////Aqui se hace el proceso de gestion ya validados todos los campos
         this.fechaCaptura = ionicDate.toISOString();
