@@ -11,6 +11,7 @@ import { GestionAbogadoPage } from '../gestion-abogado/gestion-abogado.page';
 import { GestionReductorPage } from '../gestion-reductor/gestion-reductor.page';
 import { GestionCallPage } from '../gestion-call/gestion-call.page';
 import { TasksLawyerPage } from '../tasks-lawyer/tasks-lawyer.page';
+import { GestionCartaInvitacionPage } from '../gestion-carta-invitacion/gestion-carta-invitacion.page';
 
 const routes: Routes = [
   {
@@ -35,6 +36,10 @@ const routes: Routes = [
   },
   {
     path: '',
+    component: GestionCartaInvitacionPage
+  },
+  {
+    path: '',
     component: TasksLawyerPage
   }
 ];
@@ -46,6 +51,6 @@ const routes: Routes = [
     IonicModule,
     RouterModule.forChild(routes)
   ],
-  declarations: [GestionPagePage,GestionGestorPage,GestionReductorPage,GestionAbogadoPage,GestionCallPage,TasksLawyerPage]
+  declarations: [GestionPagePage,GestionGestorPage,GestionReductorPage,GestionAbogadoPage,GestionCallPage,TasksLawyerPage,GestionCartaInvitacionPage]
 })
 export class GestionPagePageModule {}

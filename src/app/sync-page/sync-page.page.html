@@ -1,8 +1,8 @@
 <ion-header>
 
-  <ion-toolbar>
-    <ion-title>Sincronización y asistencia</ion-title>
-  </ion-toolbar>
+    <ion-toolbar>
+        <ion-title>Sincronización y asistencia</ion-title>
+    </ion-toolbar>
 </ion-header>
 
 <ion-content>
@@ -10,62 +10,71 @@
     <div style="text-align: center">
         <img class="imagenUpload" src="assets/img/upDown.png">
     </div>
-  <ion-card>
-   
-      
-    
-    <ion-card-content>
-        <h1>Sincronización</h1>
-        <ion-item (click)="presentAction()">
-      
-            <ion-label>
-              <p>
-                  Sincronizar cuentas
-              </p></ion-label>
-     <ion-icon color ="secondary"name = "cloud-download" slot ="start"></ion-icon>
-          </ion-item>
-          <ion-item (click)="goPhotosWithParameters()">
-          
-              <ion-label><p>Sincronizar fotos</p></ion-label>
-       <ion-icon color ="secondary"name = "images" slot ="start"></ion-icon>
+    <ion-card>
+
+
+
+        <ion-card-content>
+            <h1>Sincronización</h1>
+            <ion-item (click)="presentAction()">
+
+                <ion-label>
+                    <p>
+                        Sincronizar cuentas
+                    </p>
+                </ion-label>
+                <ion-icon color="secondary" name="cloud-download" slot="start"></ion-icon>
+            </ion-item>
+            <ion-item (click)="goPhotosWithParameters()">
+
+                <ion-label>
+                    <p>Sincronizar fotos</p>
+                </ion-label>
+                <ion-icon color="secondary" name="images" slot="start"></ion-icon>
             </ion-item>
             <ion-item (click)="goUpdateInfoWithParameters()">
-          
-              <ion-label><p>Propietario, usuario, domicilios</p></ion-label>
-       <ion-icon color ="secondary"name = "refresh" slot ="start"></ion-icon>
+
+                <ion-label>
+                    <p>Propietario, usuario, domicilios</p>
+                </ion-label>
+                <ion-icon color="secondary" name="refresh" slot="start"></ion-icon>
             </ion-item>
-            
-       
-    
-    
-    <div>
-        <ion-item (click)="getSyncGestor()">
-          <ion-label> <p>Mis gestiones realizadas</p></ion-label>
-    
-                
-                <ion-icon slot="start" color="secondary" name="list"></ion-icon>
-        
-    
-        
-          </ion-item>
-    </div>
 
 
 
-    <h1>Asistencia</h1>
 
-      
-      <ion-item  (click)="getChecador()">
-        <ion-label><p>
-            Checador implementta
-        </p></ion-label>
-         <ion-icon name="alarm" slot= "start" color="secondary"></ion-icon>
-      
-       
-        </ion-item>
-  </ion-card-content>
+            <div>
+                <ion-item (click)="getSyncGestor()">
+                    <ion-label>
+                        <p>Mis gestiones realizadas</p>
+                    </ion-label>
 
 
-</ion-card>
+                    <ion-icon slot="start" color="secondary" name="list"></ion-icon>
+
+
+
+                </ion-item>
+            </div>
+
+
+
+            <h1>Asistencia</h1>
+
+
+            <ion-item (click)="getChecador()">
+                <ion-label>
+                    <p>
+                        Checador implementta
+                    </p>
+                </ion-label>
+                <ion-icon name="alarm" slot="start" color="secondary"></ion-icon>
+
+
+            </ion-item>
+        </ion-card-content>
+
+
+    </ion-card>
 
 </ion-content>

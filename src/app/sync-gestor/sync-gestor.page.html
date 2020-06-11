@@ -1,33 +1,33 @@
 <ion-header>
-  <ion-toolbar>
-    <ion-title>Mis cuentas gestionadas</ion-title>
-    <ion-buttons slot="end">
-   
-      <div *ngIf="isHide">
-          <ion-button color="danger" (click)="reDo()">
-              <ion-icon name="refresh"></ion-icon>
+    <ion-toolbar>
+        <ion-title>Mis cuentas gestionadas</ion-title>
+        <ion-buttons slot="end">
+
+            <div *ngIf="isHide">
+                <ion-button color="danger" (click)="reDo()">
+                    <ion-icon name="refresh"></ion-icon>
+                </ion-button>
+            </div>
+            <ion-button color="tertiary" (click)="syncAccounts()">
+                <ion-icon name="cloud-upload"></ion-icon>
             </ion-button>
-      </div>
-      <ion-button color="tertiary" (click)="syncAccounts()">
-        <ion-icon name="cloud-upload"></ion-icon>
-      </ion-button>
-    </ion-buttons>
-  </ion-toolbar>
+        </ion-buttons>
+    </ion-toolbar>
 </ion-header>
 
 <ion-content padding>
-<!--   <div *ngIf="accounts.length == 0">
+    <!--   <div *ngIf="accounts.length == 0">
     <h1>Sin cuentas gestionadas aún!</h1>
   </div> -->
-  <ion-list>
-    <ion-item *ngFor="let item of accounts">
-      <ion-label>
-        <p><strong>Cuenta:</strong>{{item.account}}</p>
-        <p><strong>Fecha captura:</strong>{{item.fechaCaptura}}</p>
-        <p><strong>Tarea:</strong>{{item.idTarea}}</p>
-        <p><strong>Rol:</strong>{{item.rol}}</p>
-      </ion-label>
-    </ion-item>
-  </ion-list>
+    <ion-list>
+        <ion-item *ngFor="let item of accounts">
+            <ion-label>
+                <p><strong>Cuenta:</strong>{{item.account}}</p>
+                <p><strong>Fecha captura:</strong>{{item.fechaCaptura}}</p>
+                <p><strong>Tarea:</strong>{{item.idTarea}}</p>
+                <p><strong>Rol:</strong>{{item.rol}}</p>
+            </ion-label>
+        </ion-item>
+    </ion-list>
 
 </ion-content>

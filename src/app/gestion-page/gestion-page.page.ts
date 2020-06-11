@@ -7,6 +7,8 @@ import { GestionReductorPage } from '../gestion-reductor/gestion-reductor.page';
 import { GestionCallPage } from '../gestion-call/gestion-call.page';
 import { Router } from '@angular/router';
 import { UsersFirebaseService } from '../services/users-firebase.service';
+import { runInThisContext } from 'vm';
+import { GestionCartaInvitacionPage } from '../gestion-carta-invitacion/gestion-carta-invitacion.page';
 
 @Component({
   selector: 'app-gestion-page',
@@ -18,6 +20,8 @@ gestor :boolean = false;
 abogado: boolean = false;
 callcenter:boolean = false;
 reductor : boolean =false;
+carta: boolean = false;
+
 constructor( private modalController : ModalController, private storage : Storage ,private platform :Platform,private router : Router, private firebase : UsersFirebaseService  ) { }
 
  async ngOnInit() {
@@ -45,6 +49,7 @@ console.log(user)
     case "5" : this.gestor = true ; break;
     case "4" : this.callcenter = true; break;
     case "7" : this.reductor = true; break;
+    case "8" : this.carta = true; break;
     case "1" : this.abogado= true;this.reductor=true;this.gestor=true;this.callcenter=true;break;
   }
 }
@@ -53,6 +58,25 @@ console.log(user)
    // Data = 1;
     const modal = await this.modalController.create({
       component: GestionGestorPage,
+     // componentProps: {
+      //  Data:Data }
+     
+    });
+  
+     await modal.present();
+     modal.onDidDismiss().then(data=>{
+      //console.log(data)
+      console.log('trata de salir')
+
+      this.router.navigate(['/home/main-list']);
+     })
+  
+  }
+
+  async cartaInvitacion() {
+    console.log("Entrando a carta invitacion");
+    const modal = await this.modalController.create({
+      component: GestionCartaInvitacionPage,
      // componentProps: {
       //  Data:Data }
      

@@ -44,7 +44,7 @@ export class SyncPagePage implements OnInit {
   progress: boolean = false;
   progressTotal: number = 0;
   idRol: number;
-  isHide : boolean
+  isHide: boolean
 
   constructor(
     private service: RestService,
@@ -56,8 +56,8 @@ export class SyncPagePage implements OnInit {
     private router: Router,
     private mensaje: MessagesService,
     private usersFirebase: UsersFirebaseService,
-   private app : AppVersion
-  ) {}
+    private app: AppVersion
+  ) { }
   /*   async getTotalG(){
     this.usersFirebase.getUserInfoAccount().subscribe(async user=>{
       this.userInfo = user
@@ -138,16 +138,16 @@ export class SyncPagePage implements OnInit {
     this.getCountPhotos();
   }
 
-  async setVersionAndDate(fecha){
-    await this.app.getVersionCode().then(res=>{
-let version = res.valueOf().toString()
-console.log(version, fecha)
-      this.usersFirebase.setVersion(version,fecha)
-    
-   
+  async setVersionAndDate(fecha) {
+    await this.app.getVersionCode().then(res => {
+      let version = res.valueOf().toString()
+      console.log(version, fecha)
+      this.usersFirebase.setVersion(version, fecha)
+
+
     })
-    
-      }
+
+  }
 
   ionViewDidEnter() {
     // this.showCard();
@@ -212,7 +212,7 @@ console.log(version, fecha)
 
       let fecha = ionicDate.toISOString();
       this.storage.set("FechaSync", fecha);
-      await  this.setVersionAndDate(fecha);
+      await this.setVersionAndDate(fecha);
       this.loading.dismiss();
       this.router.navigateByUrl('home/main-list')
       // navigator.app.loadUrl("file:///android_asset/www/index.html");
@@ -271,70 +271,70 @@ console.log(version, fecha)
 
   async getSyncGestor() {
 
-    
-    this.usersFirebase.getUserInfoAccount().subscribe(async user=>{
+
+    this.usersFirebase.getUserInfoAccount().subscribe(async user => {
       this.data = user
       console.log('entra por la info del firebase')
       console.log(this.data)
       this.isHide = this.data.isHide
 
-        })
+    })
 
-        const modal = await this.modalController.create({
-          component: SyncGestorPage,
-          componentProps: {
-            isHide: this.isHide
-          }
-        });
-        await modal.present();
-    
- 
+    const modal = await this.modalController.create({
+      component: SyncGestorPage,
+      componentProps: {
+        isHide: this.isHide
+      }
+    });
+    await modal.present();
+
+
   }
-  async goPhotosWithParameters(){
-  this.usersFirebase.getUserInfoAccount().subscribe(async user=>{
-    this.data = user
-    console.log('entra por la info del firebase')
-    console.log(this.data)
-    this.isHide = this.data.isHide
+  async goPhotosWithParameters() {
+    this.usersFirebase.getUserInfoAccount().subscribe(async user => {
+      this.data = user
+      console.log('entra por la info del firebase')
+      console.log(this.data)
+      this.isHide = this.data.isHide
 
-      })
+    })
 
-      const modal = await this.modalController.create({
-        component: SyncPhotosPage,
-        componentProps: {
-          isHide: this.isHide
-        }
-      });
-      await modal.present();
-}
+    const modal = await this.modalController.create({
+      component: SyncPhotosPage,
+      componentProps: {
+        isHide: this.isHide
+      }
+    });
+    await modal.present();
+  }
 
-async goUpdateInfoWithParameters() {
+  async goUpdateInfoWithParameters() {
 
-  this.usersFirebase.getUserInfoAccount().subscribe(async user=>{
-    this.data = user
-    console.log('entra por la info del firebase')
-    console.log(this.data)
-    this.isHide = this.data.isHide
+    this.usersFirebase.getUserInfoAccount().subscribe(async user => {
+      this.data = user
+      console.log('entra por la info del firebase')
+      console.log(this.data)
+      this.isHide = this.data.isHide
 
-      })
+    })
 
-      const modal = await this.modalController.create({
-        component: SyncUpdatePage,
-        componentProps: {
-          isHide: this.isHide
-        }
-      });
-      await modal.present();
+    const modal = await this.modalController.create({
+      component: SyncUpdatePage,
+      componentProps: {
+        isHide: this.isHide
+      }
+    });
+    await modal.present();
 
 
 
-}
+  }
 
 
   async goUpdateInfo() {
     const modal = await this.modalController.create({
       component: SyncUpdatePage,
-    
+
     });
     await modal.present();
   }

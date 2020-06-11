@@ -39,6 +39,7 @@ const routes: Routes = [
   { path: 'sync-update', loadChildren: './sync-update/sync-update.module#SyncUpdatePageModule' },
   { path: 'image-preview', loadChildren: './image-preview/image-preview.module#ImagePreviewPageModule' },
   { path: 'reload-photos-date', loadChildren: './reload-photos-date/reload-photos-date.module#ReloadPhotosDatePageModule' },
+  { path: 'gestion-carta-invitacion', loadChildren: './gestion-carta-invitacion/gestion-carta-invitacion.module#GestionCartaInvitacionPageModule' },
 
 
 

@@ -23,6 +23,7 @@ export class QuerysService {
     let tableFotos = `CREATE TABLE IF NOT EXISTS capturaFotos (id INTEGER PRIMARY KEY AUTOINCREMENT, imagenLocal TEXT, cuenta TEXT,fecha TEXT,rutaBase64 TEXT,idAspUser TEXT,idTarea INTEGER,tipo TEXT,urlImagen TEXT,isSelected INTEGER NOT NULL DEFAULT 0,cargado INTEGER NOT NULL DEFAULT 0)`;
     let tablePropietario = `CREATE TABLE IF NOT EXISTS  propietario (id INTEGER PRIMARY KEY AUTOINCREMENT, cuenta TEXT, nombre TEXT, telefono TEXT, celular TEXT , correo TEXT, fecha TEXT, fechaCaptura text, idaspUser text, idRol text, type INTEGER NOT NULL DEFAULT 0, cargado INTEGER NOT NULL DEFAULT 0 )`;
     let tableReductor = `CREATE TABLE IF NOT EXISTS gestionReductor (id INTEGER PRIMARY KEY AUTOINCREMENT,account TEXT,idTarea INTEGER,idDescripcion INTEGER, idObservaciones INTEGER,idaspuser TEXT,lectura TEXT,conclusiones TEXT, personaContacto TEXT, telefonoContacto TEXT,fechaPromesa TEXT, fechaCaptura TEXT, fechaProximaRev TEXT, latitud TEXT, longitud TEXT, niple INTEGER, horaIni TEXT, horaFin TEXT, idTipoServicio INTEGER, idEstatusToma INTEGER, idTipoToma INTEGER, cargado INTEGER NOT NULL DEFAULT 0  )`;
+    let tableCarta = `CREATE TABLE IF NOT EXISTS gestionCartaInvitacion (id INTEGER PRIMARY KEY AUTOINCREMENT,account TEXT,idTarea INTEGER,idaspuser TEXT,fechaCaptura TEXT,latitud TEXT, longitud TEXT,cargado INTEGER NOT NULL DEFAULT 0  )`;
     let tableDomicilios = `CREATE TABLE IF NOT EXISTS domicilios(id INTEGER PRIMARY KEY AUTOINCREMENT, cuenta TEXT,calle TEXT, manzana TEXT, lote TEXT, numExt  TEXT, numInterior TEXT, colonia TEXT, poblacion TEXT, cp TEXT, entreCalle1 TEXT, entreCalle2 TEXT,referencia TEXT, fechaCaptura text, idaspUser text, idRol text, type INTEGER NOT NULL DEFAULT 0, cargado INTEGER NOT NULL DEFAULT 0)`;
     let tables = {
       tableImplementta,
@@ -32,6 +33,7 @@ export class QuerysService {
       tableFotos,
       tablePropietario,
       tableReductor,
+      tableCarta,
       tableDomicilios
     };
     return tables;

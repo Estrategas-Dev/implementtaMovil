@@ -81,6 +81,7 @@ createDB(){
   await db.executeSql(table.tableImplementta,[])
   await db.executeSql(table.tablePropietario,[])
   await db.executeSql(table.tableReductor,[])
+  await db.executeSql(table.tableCarta,[])
   await db.executeSql(table.tableDomicilios,[])
    })
    .catch(e => console.log(e));
