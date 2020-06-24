@@ -64,61 +64,106 @@
             </ion-item>
 
 
-            <ion-item>
-                <ion-label>
-                    <p>Observaciones*</p>
-                    <p *ngIf="isObservacion" style="color :red">Campo obligatorio</p>
-                    <p>
-                        <ion-select class="myCustomSelect" interface="popover" placeholder="Selecciona uno" [(ngModel)]="idObservacion" (ionChange)="activateObservacion()">
+            <!-- Este campo observaciones solo se mostrara cuando se realize una accion sugerido en la version 1.3.1 -->
+            <div *ngIf="muestraCampoObservacion">
+                <ion-item>
+                    <ion-label>
+                        <p>Observaciones*</p>
+                        <p *ngIf="isObservacion" style="color :red">Campo obligatorio</p>
+                        <p>
+                            <ion-select class="myCustomSelect" interface="popover" placeholder="Selecciona uno" [(ngModel)]="idObservacion" (ionChange)="activateObservacion($event)">
 
 
 
-                            <div *ngIf="noInstalo">
-                                <ion-select-option value="1">Se encontró toma directa</ion-select-option>
-                                <ion-select-option value="2">Reductor ya instalado en buen estado</ion-select-option>
-                                <ion-select-option value="3">Medidor dentro del predio</ion-select-option>
-                                <ion-select-option value="4">Usuario no permitio realizar corte</ion-select-option>
-                                <ion-select-option value="5">Usuario realizo promesa de pago</ion-select-option>
-                                <ion-select-option value="6">No se encontro la toma</ion-select-option>
-                                <ion-select-option value="7">Predio no ubicado</ion-select-option>
-                                <ion-select-option value="8">Medidor obstruido</ion-select-option>
-                                <ion-select-option value="9">Llave de paso dañada</ion-select-option>
-                                <ion-select-option value="10">Otros</ion-select-option>
-                            </div>
-                            <div *ngIf="noRetiro">
-                                <ion-select-option value="11">Llave de paso dañada</ion-select-option>
-                                <ion-select-option value="12">Toma desconectada sin medidor</ion-select-option>
-                                <ion-select-option value="13">No se ubico el predio</ion-select-option>
-                                <ion-select-option value="14">Toma directa</ion-select-option>
-                                <ion-select-option value="15">Otros</ion-select-option>
-                            </div>
-                            <div *ngIf="noSuperviso">
-                                <ion-select-option value="16">Restricción infringida</ion-select-option>
-                                <ion-select-option value="17">Restricción correcta</ion-select-option>
-                                <ion-select-option value="18">Medidor dentro del predio</ion-select-option>
-                                <ion-select-option value="19">Usuario no permitió</ion-select-option>
-                                <ion-select-option value="20">Cuenta al corriente</ion-select-option>
-                                <ion-select-option value="21">Predio no ubicado</ion-select-option>
-                                <ion-select-option value="22">No se encontró la toma</ion-select-option>
-                                <ion-select-option value="23">Medidor obstruido</ion-select-option>
-                                <ion-select-option value="24">Otros</ion-select-option>
-                            </div>
-                            <div *ngIf="noTaponeo">
-                                <ion-select-option value="25">Descarga dentro del predio</ion-select-option>
-                                <ion-select-option value="26">Usuario no permitió</ion-select-option>
-                                <ion-select-option value="27">Usuario realiza promesa de pago</ion-select-option>
-                                <ion-select-option value="28">Cuenta en jurídico</ion-select-option>
-                                <ion-select-option value="29">Descarga obstruida</ion-select-option>
-                                <ion-select-option value="30">Cuenta al corriente</ion-select-option>
-                                <ion-select-option value="31">Predio no ubicado</ion-select-option>
-                                <ion-select-option value="32">No se encontró descarga</ion-select-option>
-                                <ion-select-option value="33">Otros</ion-select-option>
-                            </div>
+                                <div *ngIf="noInstalo">
+                                    <ion-select-option value="1">Se encontró toma directa</ion-select-option>
+                                    <ion-select-option value="2">Reductor ya instalado en buen estado</ion-select-option>
+                                    <ion-select-option value="3">Medidor dentro del predio</ion-select-option>
+                                    <ion-select-option value="4">Usuario no permitio realizar corte</ion-select-option>
+                                    <ion-select-option value="5">Usuario realizo promesa de pago</ion-select-option>
+                                    <ion-select-option value="6">No se encontro la toma</ion-select-option>
+                                    <ion-select-option value="7">Predio no ubicado</ion-select-option>
+                                    <ion-select-option value="8">Medidor obstruido</ion-select-option>
+                                    <ion-select-option value="9">Llave de paso dañada</ion-select-option>
+                                    <ion-select-option value="10">Otros</ion-select-option>
+                                </div>
+                                <div *ngIf="noRetiro">
+                                    <ion-select-option value="11">Llave de paso dañada</ion-select-option>
+                                    <ion-select-option value="12">Toma desconectada sin medidor</ion-select-option>
+                                    <ion-select-option value="13">No se ubico el predio</ion-select-option>
+                                    <ion-select-option value="14">Toma directa</ion-select-option>
+                                    <ion-select-option value="15">Otros</ion-select-option>
+                                </div>
+                                <div *ngIf="noSuperviso">
+                                    <ion-select-option value="16">Restricción infringida</ion-select-option>
+                                    <ion-select-option value="17">Restricción correcta</ion-select-option>
+                                    <ion-select-option value="18">Medidor dentro del predio</ion-select-option>
+                                    <ion-select-option value="19">Usuario no permitió</ion-select-option>
+                                    <ion-select-option value="20">Cuenta al corriente</ion-select-option>
+                                    <ion-select-option value="21">Predio no ubicado</ion-select-option>
+                                    <ion-select-option value="22">No se encontró la toma</ion-select-option>
+                                    <ion-select-option value="23">Medidor obstruido</ion-select-option>
+                                    <ion-select-option value="24">Otros</ion-select-option>
+                                </div>
+                                <div *ngIf="noTaponeo">
+                                    <ion-select-option value="25">Descarga dentro del predio</ion-select-option>
+                                    <ion-select-option value="26">Usuario no permitió</ion-select-option>
+                                    <ion-select-option value="27">Usuario realiza promesa de pago</ion-select-option>
+                                    <ion-select-option value="28">Cuenta en jurídico</ion-select-option>
+                                    <ion-select-option value="29">Descarga obstruida</ion-select-option>
+                                    <ion-select-option value="30">Cuenta al corriente</ion-select-option>
+                                    <ion-select-option value="31">Predio no ubicado</ion-select-option>
+                                    <ion-select-option value="32">No se encontró descarga</ion-select-option>
+                                    <ion-select-option value="33">Otros</ion-select-option>
+                                </div>
+                                <div *ngIf="siSuperviso">
+                                    <ion-select-option value="34">Aplica multa</ion-select-option>
+                                    <ion-select-option value="35">No aplica multa</ion-select-option>
+                                </div>
 
-                        </ion-select>
-                    </p>
-                </ion-label>
-            </ion-item>
+                            </ion-select>
+                        </p>
+                    </ion-label>
+                </ion-item>
+            </div>
+            <!-- Observaciones -->
+
+
+            <!-- Solo se muetsra este campo si esta en la descripcion 34 de aplica multa -->
+            <div *ngIf="muestraDescripcionMulta">
+                <ion-item>
+                    <ion-label>
+                        <p>
+                            Descripción*
+                        </p>
+                        <p *ngIf="isDescripcionMulta" style="color :red">Campo obligatorio</p>
+                    </ion-label>
+                    <ion-select class="myCustomSelect" interface="popover" placeholder="Selecciona uno" [(ngModel)]="idDescripcionMulta" (ionChange)="validaDescripcionMulta()">
+                        <ion-select-option value='1'>Toma directa</ion-select-option>
+                        <ion-select-option value='2'>Derivación de toma</ion-select-option>
+                        <ion-select-option value='3'>Restricción infringida</ion-select-option>
+                        <ion-select-option value='4'>Manipulación de medidor</ion-select-option>
+                        <ion-select-option value='5'>Medidor invertido</ion-select-option>
+                        <ion-select-option value='6'>Medidor obstruido</ion-select-option>
+                    </ion-select>
+                </ion-item>
+            </div>
+
+
+            <!-- Solo se muestra este campo si esta seleccionado la opcion de no instalo niple reductor y se encontro toma directa -->
+            <div *ngIf="muestraCampoDescripcion">
+                <ion-item>
+                    <ion-label>
+                        <p>
+                            Descripción*
+                        </p>
+                        <p *ngIf="isDescripcionN" style="color :red">Campo obligatorio</p>
+                    </ion-label>
+                    <ion-textarea rows="5" [(ngModel)]="descripcion" (ionChange)="validaCampoDescripcion()"></ion-textarea>
+                </ion-item>
+            </div>
+
+
             <ion-item>
                 <ion-label>
                     <p>Lectura</p>
@@ -153,9 +198,18 @@
     <div *ngIf="isAgua">
         <ion-card>
             <ion-card-content>
+
                 <ion-item>
                     <ion-label>
                         <p>Tipo de servicio</p>
+                        <p *ngIf="tipoServicioImplementta == null">Sin especificar</p>
+                        <p> {{tipoServicioImplementta}} </p>
+                    </ion-label>
+                </ion-item>
+
+                <ion-item>
+                    <ion-label>
+                        <p>Cambiar servicio</p>
                         <p>
                             <ion-select interface="popover" placeholder="Selecciona uno" [(ngModel)]="idTipoServicio">
                                 <ion-select-option value='1'>Comercial</ion-select-option>

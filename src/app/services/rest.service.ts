@@ -500,9 +500,10 @@ export class RestService {
           otra_expectativa_contribuyente,JSON_caracteristicas_predio,otra_caracteristica_predio,id_accion_sugerida,id_uso_suelo_predio,id_tipo_predio_predio,calle_predio,num_interior_predio,
           num_exterior_predio,cp_predio,colonia_predio,entre_calle1_predio,entre_calle2_predio,manzana_predio,lote_predio,poblacion_predio,calle_notificacion,num_interior_notificacion,
           num_exterior_notificacion,cp_notificacion,colonia_notificacion,entre_calle1_notificacion,entre_calle2_notificacion,manzana_notificacion,lote_notificacion,referencia_predio ,
-          referencia_notificacion,direccion_predio,direccion_notificacion,solucion_planteada,forma_pago,observaciones,id_tarea,latitud,longitud)
-          VALUES(?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)`;
-    return this.db.executeSql(sql, [
+          referencia_notificacion,direccion_predio,direccion_notificacion,solucion_planteada,forma_pago,observaciones,id_tarea,latitud,longitud,tipoServicio)
+          VALUES(?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)`;
+      console.log(sql);
+      return this.db.executeSql(sql, [
       data.cuenta,
       data.adeudo,
       data.SupTerrenoH,
@@ -572,7 +573,8 @@ export class RestService {
       data.observaciones,
       data.id_tarea,
       data.latitud,
-      data.longitud
+      data.longitud,
+      data.tipoServicio
     ]);
   }
 
@@ -832,8 +834,8 @@ export class RestService {
     console.log("llego el query string");
 
     let sql =
-      `INSERT INTO gestionReductor(account ,idTarea ,idDescripcion , idObservaciones , idaspuser,lectura ,conclusiones , personaContacto , telefonoContacto ,fechaPromesa , fechaCaptura , fechaProximaRev , latitud , longitud , niple , horaIni , horaFin, idTipoServicio, idEstatusToma, idTipoToma)
-     values(?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)`;
+      `INSERT INTO gestionReductor(account ,idTarea ,idDescripcion , idObservaciones , idaspuser,lectura ,conclusiones , personaContacto , telefonoContacto ,fechaPromesa , fechaCaptura , fechaProximaRev , latitud , longitud , niple , horaIni , horaFin, idTipoServicio, idEstatusToma, idTipoToma, descripcionTomaDirecta, idDescripcionMulta)
+     values(?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)`;
     return this.db.executeSql(sql, [
       data.account,
       data.idtarea,
@@ -854,7 +856,9 @@ export class RestService {
       data.horaFin,
       data.idTipoServicio,
       data.idEstatusToma,
-      data.idTipoToma
+      data.idTipoToma,
+      data.descripcionTomaDirecta,
+      data.idDescripcionMulta
     ]);
   }
   gestionGestor(data) {
@@ -1262,10 +1266,12 @@ export class RestService {
           let idTipoServicio = result.rows.item(i).idTipoServicio;
           let idEstatusToma = result.rows.item(i).idEstatusToma;
           let idTipoToma = result.rows.item(i).idTipoToma;
+          let descripcionTomaDirecta = result.rows.item(i).descripcionTomaDirecta;
+          let idDescripcionMulta = result.rows.item(i).idDescripcionMulta;
 
           let id = result.rows.item(i).id;
-          let sqlString = `'${account}',${idTarea},'${idObservacion}','${idDescripcion}','${idAspUser}','${lectura}','${conclusiones}','${personaContacto}','${telefonoContacto}','${fechaPromesa}','${fechaCaptura}','${fechaProximaVisita}','${latitud}','${longitud}',${idNiple},'${horaIni}','${horaFin}',${idPlaza},${idTipoServicio},${idEstatusToma},${idTipoToma}`;
-
+          let sqlString = `'${account}',${idTarea},'${idObservacion}','${idDescripcion}','${idAspUser}','${lectura}','${conclusiones}','${personaContacto}','${telefonoContacto}','${fechaPromesa}','${fechaCaptura}','${fechaProximaVisita}','${latitud}','${longitud}',${idNiple},'${horaIni}','${horaFin}',${idPlaza},${idTipoServicio},${idEstatusToma},${idTipoToma},'${descripcionTomaDirecta}',${idDescripcionMulta}`;
+          console.log(sqlString);
           await this.accountSyncReductor(sqlString, id);
         }
         //  this.loading.dismiss();

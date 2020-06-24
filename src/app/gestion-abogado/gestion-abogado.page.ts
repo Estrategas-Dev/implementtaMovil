@@ -56,6 +56,7 @@ export class GestionAbogadoPage implements OnInit {
   activaEstatusToma: boolean = false;
   isEstatusToma: boolean = false;
   isTipoToma: boolean = false;
+  tipoServicioImplementta:string;
 
 
 
@@ -125,6 +126,7 @@ export class GestionAbogadoPage implements OnInit {
     this.idTareaAbogado = this.infoAccount[0].id_tarea
     let gestionada = this.infoAccount[0].gestionada
     this.tareaAsignada = this.infoAccount[0].tareaAsignada
+    this.tipoServicioImplementta = this.infoAccount[0].tipoServicio;
     this.idEstatus = this.infoAccount[0].idEstatus
     if (gestionada == 1) {
       this.mensaje.showAlert("Esta cuenta ya ha sido gestionada");

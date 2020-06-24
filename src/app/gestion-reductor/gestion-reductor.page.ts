@@ -29,6 +29,7 @@ export class GestionReductorPage implements OnInit {
   noRetiro: boolean = false;
   noSuperviso: boolean = false;
   noTaponeo: boolean = false;
+  siSuperviso: boolean = false;
   horas: boolean = false;
   niple: boolean = false;
   loading: any;
@@ -67,6 +68,17 @@ export class GestionReductorPage implements OnInit {
   isTipoToma: boolean = false;
 
   takePhoto: boolean;
+  muestraCampoObservacion: boolean = false; // muestra el campo de las observaciones normales si es true
+  descripcion: string = ""; // valor del campo descripcion
+  muestraCampoDescripcion: boolean = false; // muestra el campo descripcion si la observacion es toma directa en la no colocacion de reductor
+  isDescripcionN: boolean = false; // si el campo descripcion ya esta activo es obligatorio
+
+  muestraDescripcionMulta: boolean = false; // muestra el campo de descripcionMulta si es true ---- Toma directa, Derivacion de toma, Restriccion infringida ...
+  idDescripcionMulta: number = 0;
+  isDescripcionMulta: boolean = false;
+  tipoServicioImplementta: string;
+
+
 
   constructor(
     private camera: Camera,
@@ -77,10 +89,9 @@ export class GestionReductorPage implements OnInit {
     private webview: WebView,
     private loadingController: LoadingController,
     private geolocation: Geolocation
-  )
-   { 
-     this.imgs = [{ imagen: 'assets/img/imgs.jpg' }];
-      this.takePhoto = false;
+  ) {
+    this.imgs = [{ imagen: 'assets/img/imgs.jpg' }];
+    this.takePhoto = false;
   }
   sliderOpts = {
     zoom: true,
@@ -116,6 +127,8 @@ export class GestionReductorPage implements OnInit {
     this.idTarea = this.infoAccount[0].id_tarea;
     let gestionada = this.infoAccount[0].gestionada;
     this.tareaAsignada = this.infoAccount[0].tareaAsignada;
+    this.tipoServicioImplementta = this.infoAccount[0].tipoServicio;
+    console.log(this.tipoServicioImplementta);
 
     if (gestionada == 1) {
       this.mensaje.showAlert("Esta cuenta ya ha sido gestionada");
@@ -239,30 +252,59 @@ export class GestionReductorPage implements OnInit {
       case "1":
         this.niple = true;
         this.horas = true;
+        this.muestraCampoObservacion = false;
+        this.siSuperviso = false;
+        //this.muestraObservacionesMulta = false;
         break;
       case "2":
         this.noInstalo = true;
         this.noRetiro = false;
         this.noSuperviso = false;
         this.noTaponeo = false;
+        this.siSuperviso = false;
         this.horas = false;
         this.niple = false;
+        this.muestraCampoObservacion = true;
+        //this.muestraObservacionesMulta = false;
+        break;
+      case "3":
+        this.muestraCampoObservacion = false;
+        this.siSuperviso = false;
+        //this.muestraObservacionesMulta = false;
         break;
       case "4":
         this.noInstalo = false;
-        this.noRetiro = true;
+        this.noRetiro = false;
         this.noSuperviso = false;
-        this.noTaponeo = false;
+        this.noTaponeo = true;
+        this.siSuperviso = false;
         this.horas = false;
         this.niple = false;
+        this.muestraCampoObservacion = true;
+        //this.muestraObservacionesMulta = false;
+        break;
+      case "5":
+        this.muestraCampoObservacion = true;
+        this.siSuperviso = true;
+        this.noTaponeo = false;
+        console.log("Si superviso muestra campos de multas");
+        //this.muestraObservacionesMulta = true;
         break;
       case "6":
         this.noInstalo = false;
         this.noRetiro = false;
-        this.noSuperviso = true;
-        this.noTaponeo = false;
+        this.noSuperviso = false;
+        this.noTaponeo = true;
+        this.siSuperviso = false;
         this.horas = false;
         this.niple = false;
+        this.muestraCampoObservacion = true;
+        //this.muestraObservacionesMulta = false;
+        break;
+      case "7":
+        this.muestraCampoObservacion = false;
+        this.siSuperviso = false;
+        //this.muestraObservacionesMulta = false;
         break;
       case "8":
         this.noInstalo = false;
@@ -271,6 +313,9 @@ export class GestionReductorPage implements OnInit {
         this.noTaponeo = true;
         this.horas = false;
         this.niple = false;
+        this.muestraCampoObservacion = true;
+        this.siSuperviso = false;
+        //this.muestraObservacionesMulta = false;
         break;
       default:
         this.noInstalo = false;
@@ -281,6 +326,13 @@ export class GestionReductorPage implements OnInit {
         break;
     }
   }
+
+
+  validaDescripcionMulta( ) {
+    this.isDescripcionMulta = false;
+  } 
+
+
 
   async Verify() {
     var dateDay = new Date().toISOString();
@@ -295,7 +347,6 @@ export class GestionReductorPage implements OnInit {
         date.getSeconds()
       )
     );
-
 
 
     if (
@@ -320,18 +371,33 @@ export class GestionReductorPage implements OnInit {
         this.isTipoToma = true;
       }
 
+
+
       this.mensaje.showAlert("Verifica todos los campos con * y que minimo haya una foto capturada");
     } else {
       if (
         (this.idDescripcion.toString() == "2" ||
           this.idDescripcion.toString() == "4" ||
+          this.idDescripcion.toString() == "5" ||
           this.idDescripcion.toString() == "6" ||
           this.idDescripcion.toString() == "8") &&
         this.idObservacion == 0
       ) {
+
         this.isObservacion = true;
         this.mensaje.showAlert("Verifica todos los campos con * y que minimo haya una foto capturada");
-      } else {
+
+      }
+
+      else if (this.idDescripcion.toString() == "2" && this.idObservacion.toString() == "1" && this.descripcion == "") {
+        this.isDescripcionN = true;
+        this.mensaje.showAlert("Verifica todos los campos con * y que minimo haya una foto capturada");
+      } else if (this.idDescripcion.toString() == "5" && this.idObservacion.toString() == "34" && this.idDescripcionMulta == 0) {
+        this.isDescripcionMulta = true;
+        this.mensaje.showAlert("Verifica todos los campos con * y que minimo haya una foto capturada");
+      }
+
+      else {
         /////////////////////Aqui se hace el proceso de gestion ya validados todos los campos
         this.fechaCaptura = ionicDate.toISOString();
         let fecha = this.fechaPromesa.split("T");
@@ -368,8 +434,10 @@ export class GestionReductorPage implements OnInit {
           personaContacto: '',
           idTipoServicio: this.idTipoServicio,
           idEstatusToma: this.idEstatusToma,
-          idTipoToma: this.idTipoToma
-          
+          idTipoToma: this.idTipoToma,
+          descripcionTomaDirecta: this.descripcion,
+          idDescripcionMulta: this.idDescripcionMulta
+
         };
         console.log(data)
 
@@ -386,9 +454,28 @@ export class GestionReductorPage implements OnInit {
     await this.service.gestionReductor(data);
     // this.detectedChanges = false;
   }
-  activateObservacion() {
+  activateObservacion(event) {
     this.isObservacion = false;
+    // si se selecciona la opcion de se encontro toma directa va a mostrar el campo nuevo descripcion a partir de la version 1.3.1
+    const opcion = event.detail.value;
+
+    if (opcion == 1) {
+      this.muestraCampoDescripcion = true;
+    } else if (opcion == 34) {
+      this.muestraDescripcionMulta = true;
+    } else {
+      this.muestraDescripcionMulta = false;
+      this.muestraCampoDescripcion = false;
+    }
+
+
   }
+
+
+  validaCampoDescripcion() {
+    this.isDescripcionN = false;
+  }
+
   activateFecha() {
     this.isFecha = false;
   }
@@ -440,6 +527,11 @@ export class GestionReductorPage implements OnInit {
     if (tipoPlaza[0].TipoPlaza === 'Agua') {
       console.log('Esta es una plaza de agua');
       this.isAgua = true;
+
+      // if(tipoPlaza[0].NombrePlaza == 'Tijuana') {
+      //   this.version131 = true;
+      // }
+
     } else {
       console.log("Esta es una plaza de predio");
       this.isAgua = false;
@@ -448,6 +540,8 @@ export class GestionReductorPage implements OnInit {
       this.idTipoServicio = 100;
       this.idEstatusToma = 100;
       this.idTipoToma = 100;
+      this.isDescripcionN = false;
+      this.isDescripcionMulta = false;
     }
   }
 

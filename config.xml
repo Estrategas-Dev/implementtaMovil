@@ -1,5 +1,5 @@
 <?xml version='1.0' encoding='utf-8'?>
-<widget id="com.implementtaApp.estrategas" version="1.3.0" xmlns="http://www.w3.org/ns/widgets" xmlns:cdv="http://cordova.apache.org/ns/1.0">
+<widget id="com.implementtaApp.estrategas" version="1.3.1" xmlns="http://www.w3.org/ns/widgets" xmlns:cdv="http://cordova.apache.org/ns/1.0">
     <name>implementtaMovil</name>
     <description>Nueva version de implementtaMovil</description>
     <author email="sistemas@estrategas.mx" href="http://estrategas.mx">Estrategas Team</author>
@@ -109,4 +109,5 @@
     <plugin name="cordova-plugin-googlemaps" spec="^2.6.2" />
     <preference name="GOOGLE_MAPS_ANDROID_API_KEY" value="AIzaSyB3fCaVSdeXtimnIJaX19hOZdHh9iw8_B0" />
     <preference name="GOOGLE_MAPS_IOS_API_KEY" value="AIzaSyDbmUEAcM1hrEMCmtqlbpTmbQOUwbjCMfw" />
+    <allow-navigation href="http://localhost:8100" sessionid="a6b5c115" />
 </widget>

@@ -71,6 +71,8 @@ export class GestionGestorPage implements OnInit {
   isEstatusToma: boolean = false;
   isTipoToma: boolean = false;
 
+  tipoServicioImplementta:string;
+
   
   constructor(
     private storage: Storage,
@@ -130,10 +132,12 @@ export class GestionGestorPage implements OnInit {
     const idRol = await this.storage.get('IdRol')
     console.log("this is the account to be proccessed");
     this.infoAccount = await this.service.getInfoAccount(this.account);
+    console.log(this.infoAccount);
     this.idAccountSqlite = this.infoAccount[0].id;
     this.idTareaGestor = this.infoAccount[0].id_tarea;
     let gestionada = this.infoAccount[0].gestionada;
     this.tareaAsignada = this.infoAccount[0].tareaAsignada;
+    this.tipoServicioImplementta = this.infoAccount[0].tipoServicio;
     if (idRol == '2') {
       this.idTareaGestor = 47;
       this.tareaAsignada = "Notificar adeudo a domicilio 3ra Carta"
