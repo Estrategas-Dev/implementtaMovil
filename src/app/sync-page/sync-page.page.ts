@@ -196,6 +196,8 @@ export class SyncPagePage implements OnInit {
       await this.setTableVisit(this.data);
 
       await this.storage.set("IdRol", this.data[0].idRol);
+      await this.storage.set("TipoPlazaServicio", this.data[0].TipoPlazaServicio);
+      console.log("TipoPlazaServicio" , this.storage.get("TipoPlazaServicio"));
 
       var dateDay = new Date().toISOString();
       let date: Date = new Date(dateDay);

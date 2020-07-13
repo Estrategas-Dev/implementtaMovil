@@ -495,11 +495,29 @@ export class GestionGestorPage implements OnInit {
   }
 
 
+  // async getIdPlaza() {
+  //   console.log("obteniendo el id de la plaza");
+  //   let tipoPlaza = await this.service.getIdPlazaUser();
+  //   console.log(tipoPlaza);
+  //   if (tipoPlaza[0].TipoPlaza === 'Agua') {
+  //     console.log('Esta es una plaza de agua');
+  //     this.isAgua = true;
+  //   } else {
+  //     console.log("Esta es una plaza de predio");
+  //     this.isAgua = false;
+  //     this.isTipoToma = false;
+  //     this.isEstatusToma = false;
+  //     this.idTipoServicio = 100;
+  //     this.idEstatusToma = 100;
+  //     this.idTipoToma = 100;
+  //   }
+  // }
+
+  
   async getIdPlaza() {
-    console.log("obteniendo el id de la plaza");
-    let tipoPlaza = await this.service.getIdPlazaUser();
+    let tipoPlaza = await this.storage.get("TipoPlazaServicio");
     console.log(tipoPlaza);
-    if (tipoPlaza[0].TipoPlaza === 'Agua') {
+    if (tipoPlaza === 'Agua') {
       console.log('Esta es una plaza de agua');
       this.isAgua = true;
     } else {
@@ -512,6 +530,7 @@ export class GestionGestorPage implements OnInit {
       this.idTipoToma = 100;
     }
   }
+
 
 
 

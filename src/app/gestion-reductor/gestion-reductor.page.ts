@@ -521,15 +521,14 @@ export class GestionReductorPage implements OnInit {
 
 
   async getIdPlaza() {
-    console.log("obteniendo el id de la plaza");
-    let tipoPlaza = await this.service.getIdPlazaUser();
+    let tipoPlaza = await this.storage.get("TipoPlazaServicio");
     console.log(tipoPlaza);
-    if (tipoPlaza[0].TipoPlaza === 'Agua') {
+    if (tipoPlaza === 'Agua') {
       console.log('Esta es una plaza de agua');
       this.isAgua = true;
 
       // if(tipoPlaza[0].NombrePlaza == 'Tijuana') {
-      //   this.version131 = true;
+    //   this.version131 = true;
       // }
 
     } else {

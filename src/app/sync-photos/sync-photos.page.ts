@@ -22,8 +22,8 @@ export class SyncPhotosPage implements OnInit {
   loading: HTMLIonLoadingElement;
   isSelected: boolean;
   contadorFotos: number = 0;
-  totalFotos : number = 0;
-  isHide : boolean= false
+  totalFotos: number = 0;
+  isHide: boolean = false
 
 
   constructor(
@@ -31,15 +31,15 @@ export class SyncPhotosPage implements OnInit {
     private loadingCtrl: LoadingController,
     private mensaje: MessagesService,
     private modalController: ModalController,
-    private router : Router,
-    private navParams : NavParams,
-  ) {}
+    private router: Router,
+    private navParams: NavParams,
+  ) { }
 
   ngOnInit() {
     this.getInfo();
-  this.getStatus();
+    this.getStatus();
   }
- 
+
   async getInfo() {
     this.loading = await this.loadingCtrl.create({
       message: "Cargando las fotos....."
@@ -59,7 +59,7 @@ export class SyncPhotosPage implements OnInit {
   }
   async uploadPhotos() {
 
-    await this.service.uploadPhotos().then( () => {
+    await this.service.uploadPhotos().then(() => {
       this.exit();
     });
     // this.modalController.getTop().then(res=>{
@@ -67,12 +67,12 @@ export class SyncPhotosPage implements OnInit {
     // });
   }
 
-  deletePhoto(id,rutaBase64){
-this.service.deletePhoto(id,rutaBase64);
-this.getInfo();
+  deletePhoto(id, rutaBase64) {
+    this.service.deletePhoto(id, rutaBase64);
+    this.getInfo();
   }
   openPreview(img) {
-    console.log("esta es la imagen que se va al modal: "+img)
+    console.log("esta es la imagen que se va al modal: " + img)
     this.modalController.create({
       component: ImagePreviewPage,
       componentProps: {
@@ -82,45 +82,45 @@ this.getInfo();
       modal.present();
     });
   }
-  async uploadPhoto(id){
-await this.service.uploadPhoto(id);
-this.modalController.getTop().then(res=>{
-  this.getInfo();
-})
+  async uploadPhoto(id) {
+    await this.service.uploadPhoto(id);
+    this.modalController.getTop().then(res => {
+      this.getInfo();
+    })
   }
-  getStatus(){
+  getStatus() {
     this.isHide = this.navParams.get('isHide');
     console.log('se trajo el parametro', this.isHide)
- console.log(this.isHide)
- 
-   }
-   async reDo(){
-    
+    console.log(this.isHide)
+
+  }
+  async reDo() {
+
     /*this.service.reloadAllPhotos().then(res=>{
       this.getInfo();
     })
     */
 
-   console.log("esta es la imagen que se va al modal: ")
-   /*this.modalController.create({
-     component: ReloadPhotosDatePage
-   }).then(modal => {
-     modal.present();
-   });
-*/
-   const modal = await this.modalController.create( {
-     component: ReloadPhotosDatePage
-   });
+    console.log("esta es la imagen que se va al modal: ")
+    /*this.modalController.create({
+      component: ReloadPhotosDatePage
+    }).then(modal => {
+      modal.present();
+    });
+ */
+    const modal = await this.modalController.create({
+      component: ReloadPhotosDatePage
+    });
 
-   await modal.present();
+    await modal.present();
 
-   const { data } = await modal.onDidDismiss();
+    const { data } = await modal.onDidDismiss();
 
-   this.service.reloadPhotosDate( data.fechaInicio, data.fechaFinal).then( res => {
-     this.getInfo();
-   });
+    this.service.reloadPhotosDate(data.fechaInicio, data.fechaFinal).then(res => {
+      this.getInfo();
+    });
 
-   }
+  }
 
 
 

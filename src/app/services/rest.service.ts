@@ -172,7 +172,7 @@ export class RestService {
         console.log(err);
       });
   }
-  async  uploadPhoto(id) {
+  async uploadPhoto(id) {
     return new Promise(async (resolve) => {
       let arrayImages = [];
       let sql = "SELECT * FROM capturaFotos where cargado = 0 and id = ?";
@@ -461,7 +461,7 @@ export class RestService {
           .subscribe(
             data => {
               // hay que agregar posteriormente el id de la plaza
-              console.log(data)
+              console.log("datos traidos del sql", data)
               resolve(data);
             },
             err => {
@@ -502,8 +502,8 @@ export class RestService {
           num_exterior_notificacion,cp_notificacion,colonia_notificacion,entre_calle1_notificacion,entre_calle2_notificacion,manzana_notificacion,lote_notificacion,referencia_predio ,
           referencia_notificacion,direccion_predio,direccion_notificacion,solucion_planteada,forma_pago,observaciones,id_tarea,latitud,longitud,tipoServicio)
           VALUES(?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)`;
-      console.log(sql);
-      return this.db.executeSql(sql, [
+
+    return this.db.executeSql(sql, [
       data.cuenta,
       data.adeudo,
       data.SupTerrenoH,
@@ -985,7 +985,288 @@ export class RestService {
       })
       .catch(error => Promise.reject(error));
   }
+
+
+  // eliminar una sola cuenta
+
+  async deleteAccountGestor(cuenta) {
+    let sql = "DELETE FROM gestionGestor where account = ?";
+    let sql_0 = "SELECT * FROM gestionGestor where account = ?"
+    let arrayDeleteGestor = [];
+    const result0 = await this.db.executeSql(sql_0, [cuenta]);
+    for (let i = 0; i < result0.rows.length; i++) {
+      arrayDeleteGestor.push(result0.rows.item(i));
+    }
+    console.log(arrayDeleteGestor)
+    if (arrayDeleteGestor.length == 0) {
+      this.mensaje.showToastSync("No se pudo eliminar la cuenta, no se guardo la gestión correctamente");
+    } else {
+      this.updateGestionadaDelete(cuenta);
+      console.log(`Borrando cuenta ${cuenta}`);
+      return this.db.executeSql(sql, [cuenta]);
+    }
+
+  }
+
+  async deleteAccountAbogado(cuenta) {
+    let sql = "DELETE FROM gestionAbogado where account = ?";
+    let sql_0 = "SELECT * FROM gestionAbogado where account = ?"
+    let arrayDeleteAbogado = [];
+    const result0 = await this.db.executeSql(sql_0, [cuenta]);
+    for (let i = 0; i < result0.rows.length; i++) {
+      arrayDeleteAbogado.push(result0.rows.item(i));
+    }
+    if (arrayDeleteAbogado.length == 0) {
+      this.mensaje.showToastSync("No se pudo eliminar la cuenta, no se guardo la gestión correctamente");
+    } else {
+      this.updateGestionadaDelete(cuenta);
+      console.log(`Borrando cuenta ${cuenta}`);
+      return this.db.executeSql(sql, [cuenta]);
+    }
+  }
+
+  async deleteAccountReductor(cuenta) {
+    let sql = "DELETE FROM gestionReductor where account = ?";
+    let sql_0 = "SELECT * FROM gestionReductor where account = ?"
+    let arrayDeleteReductor = [];
+    const result0 = await this.db.executeSql(sql_0, [cuenta]);
+    for (let i = 0; i < result0.rows.length; i++) {
+      arrayDeleteReductor.push(result0.rows.item(i));
+    }
+    if (arrayDeleteReductor.length == 0) {
+      this.mensaje.showToastSync("No se pudo eliminar la cuenta, no se guardo la gestión correctamente");
+    } else {
+      this.updateGestionadaDelete(cuenta);
+      console.log(`Borrando cuenta ${cuenta}`);
+      return this.db.executeSql(sql, [cuenta]);
+    }
+  }
+
+  async deleteAccountCartaInvitacion(cuenta) {
+    let sql = "DELETE FROM gestionCartaInvitacion where account = ?";
+    let sql_0 = "SELECT * FROM gestionCartaInvitacion where account = ?"
+    let arrayDeleteCartaInvitacion = [];
+    const result0 = await this.db.executeSql(sql_0, [cuenta]);
+    for (let i = 0; i < result0.rows.length; i++) {
+      arrayDeleteCartaInvitacion.push(result0.rows.item(i));
+    }
+    if (arrayDeleteCartaInvitacion.length == 0) {
+      this.mensaje.showToastSync("No se pudo eliminar la cuenta, no se guardo la gestión correctamente");
+    } else {  
+      this.updateGestionadaDelete(cuenta);
+      console.log(`Borrando cuenta ${cuenta}`);
+      return this.db.executeSql(sql, [cuenta]);
+    }
+  }
+
+
+
+  updateGestionadaDelete(cuenta) {
+    let sql = "UPDATE implementta SET gestionada = 0 where cuenta = ?";
+    return this.db.executeSql(sql, [cuenta])
+  }
+
+
   ///////////////////////////////////Sincronizacion al servidor SQL Server
+
+  // sincronizar una sola gestion 
+  async getAccountToSyncGestor(cuenta) {
+    let idPlaza = await this.storage.get("IdPlaza");
+    console.log("Sincronizando una sola cuenta al servidor");
+    try {
+      let arrayGestion = [];
+      let sql = "SELECT * FROM gestionGestor where cargado = 0 and account = ?"
+
+      const result = await this.db.executeSql(sql, [cuenta]);
+
+      for (let i = 0; i < result.rows.length; i++) {
+        arrayGestion.push(result.rows.item(i));
+      }
+      if (arrayGestion.length === 0) {
+        this.mensaje.showToastSync("Error en la cuenta, no se guardo la gestión correctamente");
+      } else {
+        console.log(arrayGestion);
+        let account = arrayGestion[0].account;
+        let idEstatus = arrayGestion[0].idEstatus;
+        let observaciones = arrayGestion[0].observaciones;
+        let fechaPromesaPago = arrayGestion[0].fechaPromesaPago;
+        let latitud = arrayGestion[0].latitud;
+        let longitud = arrayGestion[0].longitud;
+        let fechaCaptura = arrayGestion[0].fechaCaptura;
+        let idAspUser = arrayGestion[0].idAspuser;
+        let idTarea = arrayGestion[0].idTarea;
+        let fechaAsignacion = arrayGestion[0].fechaAsignacion;
+        let fechaVencimiento = arrayGestion[0].fechaVencimiento;
+        let idMotivoNoPago = arrayGestion[0].idMotivoNoPago;
+        let motivoNoPago = arrayGestion[0].motivoNoPago;
+        let idSolucionPlanteada = arrayGestion[0].idSolucionPlanteada;
+        let idExpectativasContribuyente = arrayGestion[0]
+          .idExpectativasContribuyente;
+        let otraExpectativaContribuyente = arrayGestion[0]
+          .otraExpectativaContribuyente;
+        let idCaracteristicaPredio = arrayGestion[0]
+          .idCaracteristicaPredio;
+        let otraCaracteristicaPredio = arrayGestion[0]
+          .otraCaracteristicaPredio;
+        let idServiciosNoPago = arrayGestion[0].idServiciosNoPago;
+        let idTipoServicio = arrayGestion[0].idTipoServicio;
+        let idEstatusToma = arrayGestion[0].idEstatusToma;
+        let idTipoToma = arrayGestion[0].idTipoToma;
+        let id = arrayGestion[0].id;
+        let sqlString = `'${account}',${idEstatus},'${observaciones}','${fechaPromesaPago}',${latitud},${longitud},'${fechaCaptura}','${idAspUser}',${idTarea},'${fechaAsignacion}','${fechaVencimiento}',${idMotivoNoPago},'${motivoNoPago}',${idSolucionPlanteada},${idExpectativasContribuyente},'${otraExpectativaContribuyente}',${idCaracteristicaPredio},'${otraCaracteristicaPredio}',${idServiciosNoPago},${idPlaza},${idTipoServicio},${idEstatusToma},${idTipoToma}`;
+
+        await this.accountSyncGestor(sqlString, id);
+        //console.log(sqlString);
+        this.mensaje.showToast("Sincronizacion de la cuenta correctamente");
+        return Promise.resolve("Executed query");
+      }
+    } catch (error_1) {
+
+      return Promise.reject(error_1);
+    }
+  }
+
+
+
+  async getAccountToSyncAbogado(cuenta) {
+    let idPlaza = await this.storage.get("IdPlaza");
+    console.log("Sincronizando una sola cuenta al servidor");
+    try {
+      let arrayGestionAbogado = [];
+      let sql = "SELECT * FROM gestionAbogado where cargado = 0 and account = ?"
+
+      const result = await this.db.executeSql(sql, [cuenta]);
+
+      for (let i = 0; i < result.rows.length; i++) {
+        arrayGestionAbogado.push(result.rows.item(i));
+      }
+
+      if (arrayGestionAbogado.length === 0) {
+        this.mensaje.showToastSync("Error en la cuenta, no se guardo la gestión correctamente");
+      } else {
+        console.log(arrayGestionAbogado);
+        let account = arrayGestionAbogado[0].account;
+        let idResultado = arrayGestionAbogado[0].idResultado;
+        let idPersona = arrayGestionAbogado[0].idPersona;
+        let observaciones = arrayGestionAbogado[0].observaciones;
+        let fechaPromesaPago = arrayGestionAbogado[0].fechaPromesaPago;
+        let latitud = arrayGestionAbogado[0].latitud;
+        let longitud = arrayGestionAbogado[0].longitud;
+        let fechaCaptura = arrayGestionAbogado[0].fechaCaptura;
+        let idAspUser = arrayGestionAbogado[0].idAspuser;
+        let idTarea = arrayGestionAbogado[0].idTarea;
+        let fechaVencimiento = arrayGestionAbogado[0].fechaVencimiento;
+        let horaVencimiento = arrayGestionAbogado[0].fechaVencimiento;
+        let idTipoServicio = arrayGestionAbogado[0].idTipoServicio;
+        let idEstatusToma = arrayGestionAbogado[0].idEstatusToma;
+        let idTipoToma = arrayGestionAbogado[0].idTipoToma;
+
+
+        let id = arrayGestionAbogado[0].id;
+        let sqlString = `'${account}',${idResultado},${idPersona},'${observaciones}','${fechaPromesaPago}',${latitud},${longitud},'${fechaCaptura}','${idAspUser}',${idTarea},'${fechaVencimiento}','${horaVencimiento}',${idPlaza},${idTipoServicio},${idEstatusToma},${idTipoToma}`;
+
+        await this.accountSyncAbogado(sqlString, id);
+
+        this.mensaje.showToast("Sincronizacion de la cuenta correctamente");
+        return Promise.resolve("Executed query");
+      }
+    } catch (error_1) {
+
+      return Promise.reject(error_1);
+    }
+  }
+
+
+  async getAccountToSyncReductor(cuenta) {
+    let idPlaza = await this.storage.get("IdPlaza");
+    console.log("Sincronizando una sola cuenta al servidor");
+    try {
+      let arrayGestionReductor = [];
+      let sql = "SELECT * FROM gestionReductor where cargado = 0 and account = ?"
+
+      const result = await this.db.executeSql(sql, [cuenta]);
+
+      for (let i = 0; i < result.rows.length; i++) {
+        arrayGestionReductor.push(result.rows.item(i));
+      }
+
+      if (arrayGestionReductor.length === 0) {
+        this.mensaje.showToastSync("Error en la cuenta, no se guardo la gestión correctamente");
+      } else {
+        console.log(arrayGestionReductor);
+        let account = arrayGestionReductor[0].account;
+        let idTarea = arrayGestionReductor[0].idTarea;
+        let idDescripcion = arrayGestionReductor[0].idDescripcion;
+        let idObservacion = arrayGestionReductor[0].idObservaciones;
+        let idAspUser = arrayGestionReductor[0].idaspuser;
+        let lectura = arrayGestionReductor[0].lectura
+        let conclusiones = arrayGestionReductor[0].conclusiones;
+        let personaContacto = arrayGestionReductor[0].personaContacto;
+        let telefonoContacto = arrayGestionReductor[0].telefonoContacto;
+        let fechaPromesa = arrayGestionReductor[0].fechaPromesa;
+        let fechaCaptura = arrayGestionReductor[0].fechaCaptura;
+        let fechaProximaVisita = arrayGestionReductor[0].fechaProximaRev;
+        let latitud = arrayGestionReductor[0].latitud
+        let longitud = arrayGestionReductor[0].longitud;
+        let idNiple = arrayGestionReductor[0].niple;
+        let horaIni = arrayGestionReductor[0].horaIni;
+        let horaFin = arrayGestionReductor[0].horaFin;
+        let idTipoServicio = arrayGestionReductor[0].idTipoServicio;
+        let idEstatusToma = arrayGestionReductor[0].idEstatusToma;
+        let idTipoToma = arrayGestionReductor[0].idTipoToma;
+        let descripcionTomaDirecta = arrayGestionReductor[0].descripcionTomaDirecta;
+        let idDescripcionMulta = arrayGestionReductor[0].idDescripcionMulta;
+
+        let id = arrayGestionReductor[0].id;
+        let sqlString = `'${account}',${idTarea},'${idObservacion}','${idDescripcion}','${idAspUser}','${lectura}','${conclusiones}','${personaContacto}','${telefonoContacto}','${fechaPromesa}','${fechaCaptura}','${fechaProximaVisita}','${latitud}','${longitud}',${idNiple},'${horaIni}','${horaFin}',${idPlaza},${idTipoServicio},${idEstatusToma},${idTipoToma},'${descripcionTomaDirecta}',${idDescripcionMulta}`;
+
+        await this.accountSyncReductor(sqlString, id);
+        this.mensaje.showToast("Sincronizacion de la cuenta correctamente");
+        return Promise.resolve("Executed query");
+      }
+    } catch (error_1) {
+
+      return Promise.reject(error_1);
+    }
+  }
+
+  async getAccountToSyncCartaInvitacion(cuenta) {
+    let idPlaza = await this.storage.get("IdPlaza");
+    console.log("Sincronizando una sola cuenta al servidor");
+    try {
+      let arrayCarta = [];
+      let sql = "SELECT * FROM gestionCartaInvitacion where cargado = 0 and account = ?"
+
+      const result = await this.db.executeSql(sql, [cuenta]);
+
+      for (let i = 0; i < result.rows.length; i++) {
+        arrayCarta.push(result.rows.item(i));
+      }
+
+      if (arrayCarta.length === 0) {
+        this.mensaje.showToastSync("Error en la cuenta, no se guardo la gestión correctamente");
+      } else {
+        console.log(arrayCarta);
+        let account = arrayCarta[0].account;
+        let latitud = arrayCarta[0].latitud;
+        let longitud = arrayCarta[0].longitud;
+        let fechaCaptura = arrayCarta[0].fechaCaptura;
+        let idAspUser = arrayCarta[0].idaspuser;
+        let idTarea = arrayCarta[0].idTarea;
+
+        let id = arrayCarta[0].id;
+        let sqlString = `'${account}',${latitud},${longitud},'${fechaCaptura}','${idAspUser}',${idTarea},${idPlaza}`;
+        console.log(sqlString);
+        await this.accountSyncCartas(sqlString, id);
+        this.mensaje.showToast("Sincronizacion de la cuenta correctamente");
+        return Promise.resolve("Executed query");
+      }
+    } catch (error_1) {
+      return Promise.reject(error_1);
+    }
+  }
+
+
   async getAccoutsToSyncGestor() {
 
     console.log("getAccoutsToSyncGestor")
@@ -1814,17 +2095,17 @@ export class RestService {
   }
 
 
-  async getIdPlazaUser() {
-    let idPlaza = await this.storage.get("IdPlaza");
-    console.log(idPlaza);
-    return new Promise((resolve) => {
-      this.http.get(this.apiurl13 + " " + idPlaza).subscribe(data => {
-        console.log(data);
-        resolve(data);
-      })
-    })
-    // return idPlaza;
-  }
+  // async getIdPlazaUser() {
+  //   let idPlaza = await this.storage.get("IdPlaza");
+  //   console.log(idPlaza);
+  //   return new Promise((resolve) => {
+  //     this.http.get(this.apiurl13 + " " + idPlaza).subscribe(data => {
+  //       console.log(data);
+  //       resolve(data);
+  //     })
+  //   })
+  //   // return idPlaza;
+  // }
 
 
 }

@@ -58,6 +58,85 @@ export class SyncGestorPage implements OnInit {
     // }
 
   }
+
+ // Sincronizar solo una cuenta
+  async syncAccount( cuenta, rol ) {
+
+    // this.loading = await this.loadingCtrl.create({
+    //   message: `Sincronizando la cuenta ${cuenta} servidor de implementta....`
+    // // });
+    // await this.loading.present();
+
+    if (rol === 'Gestor') {
+      console.log('entra gestor con cuenta', cuenta)
+      await this.service.getAccountToSyncGestor(cuenta);
+      // this.loading.dismiss()
+      this.modalController.getTop().then(res => {
+        this.getAccounts(this.rol);
+      })
+    } else if(rol === 'Abogado') {
+      console.log('entra abogado');
+      await this.service.getAccountToSyncAbogado(cuenta);
+      // this.loading.dimsiss()
+      this.modalController.getTop().then(res => {
+        this.getAccounts(this.rol);
+      })
+    } else if(rol === 'Reductor') {
+      console.log('entra Reductor');
+      await this.service.getAccountToSyncReductor(cuenta);
+      // this.loading.dimsiss()
+      this.modalController.getTop().then(res => {
+        this.getAccounts(this.rol);
+      })
+    } else if(rol === 'CARTA INVITACION') {
+      console.log('entra carta invitacion');
+      await this.service.getAccountToSyncCartaInvitacion(cuenta);
+      // this.loading.dimsiss()
+      this.modalController.getTop().then(res => {
+        this.getAccounts(this.rol);
+      })
+    }
+
+   }
+
+
+   // borrar solo una cuenta
+   
+  async deleteAccount( cuenta, rol ) {
+    console.log(cuenta, rol);
+    if(rol === 'Gestor') {
+      console.log("Entra a borrar gestor");
+      await this.service.deleteAccountGestor(cuenta); 
+      this.mensaje.showToast("Cuenta eliminada correctamente");
+      this.modalController.getTop().then(res => {
+        this.getAccounts(this.rol);
+      })
+    } else if(rol === 'Abogado') {
+      console.log("Entra a borrar abogado");
+      await this.service.deleteAccountAbogado(cuenta);
+      this.mensaje.showToast("Cuenta eliminada correctamente");
+      this.modalController.getTop().then(res => {
+        this.getAccounts(this.rol);
+      })
+    } else if(rol === 'Reductor') {
+      console.log("Entra a borrar reductor");
+      await this.service.deleteAccountReductor(cuenta);
+      this.mensaje.showToast("Cuenta eliminada correctamente");
+      this.modalController.getTop().then(res => {
+        this.getAccounts(this.rol);
+      })
+    } else if(rol === 'CARTA INVITACION') {
+      console.log("Entra a borrar carta invitacion");
+      await this.service.deleteAccountCartaInvitacion(cuenta);
+      this.mensaje.showToast("Cuenta eliminada correctamente");
+      this.modalController.getTop().then(res => {
+        this.getAccounts(this.rol);
+      })
+    }
+  }
+
+
+
   async syncAccounts() {
     this.loading = await this.loadingCtrl.create({
       message: "Sincronizando al servidor de implementta...."
@@ -101,4 +180,11 @@ export class SyncGestorPage implements OnInit {
     this.getAccounts(this.rol);
 
   }
+
+
+
+
+
+
+
 }
