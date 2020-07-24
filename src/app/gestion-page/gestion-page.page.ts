@@ -42,14 +42,18 @@ console.log(user)
   async checkProfile(){
 
   let profile = await this.storage.get("IdRol")
- 
+  let EstatusCartaInvitacion = await this.storage.get("EstatusCartaInvitacion");
+  if(EstatusCartaInvitacion == 'Activado') {
+    this.carta = true
+  }
+
   console.log("this is the profile :"+profile)
   switch (profile){
     case "2" : this.abogado = true; break;
     case "5" : this.gestor = true ; break;
     case "4" : this.callcenter = true; break;
     case "7" : this.reductor = true; break;
-    case "8" : this.carta = true; break;
+    //case "8" : this.carta = true; break;
     case "1" : this.abogado= true;this.reductor=true;this.gestor=true;this.callcenter=true;break;
   }
 }

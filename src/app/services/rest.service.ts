@@ -68,6 +68,8 @@ export class RestService {
   apiurl14 =
     "https://implementta.net/andro/ImplementtaMovil.aspx?query=sp_RegistroCartaInvitacionMovil";
 
+  
+
 
 
   loading: any;
@@ -500,8 +502,8 @@ export class RestService {
           otra_expectativa_contribuyente,JSON_caracteristicas_predio,otra_caracteristica_predio,id_accion_sugerida,id_uso_suelo_predio,id_tipo_predio_predio,calle_predio,num_interior_predio,
           num_exterior_predio,cp_predio,colonia_predio,entre_calle1_predio,entre_calle2_predio,manzana_predio,lote_predio,poblacion_predio,calle_notificacion,num_interior_notificacion,
           num_exterior_notificacion,cp_notificacion,colonia_notificacion,entre_calle1_notificacion,entre_calle2_notificacion,manzana_notificacion,lote_notificacion,referencia_predio ,
-          referencia_notificacion,direccion_predio,direccion_notificacion,solucion_planteada,forma_pago,observaciones,id_tarea,latitud,longitud,tipoServicio)
-          VALUES(?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)`;
+          referencia_notificacion,direccion_predio,direccion_notificacion,solucion_planteada,forma_pago,observaciones,id_tarea,latitud,longitud,tipoServicio,clave_catastral)
+          VALUES(?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)`;
 
     return this.db.executeSql(sql, [
       data.cuenta,
@@ -574,7 +576,8 @@ export class RestService {
       data.id_tarea,
       data.latitud,
       data.longitud,
-      data.tipoServicio
+      data.tipoServicio,
+      data.clave_catastral
     ]);
   }
 
@@ -600,7 +603,7 @@ export class RestService {
     //carga las cuentas desde la base interna sqlite
 
     //  let sql ='SELECT cuenta||propietario||calle as full, cuenta,propietario,cp,calle,colonia,poblacion,numext,deudaTotal,latitud,longitud FROM implementta_status where propietario NOT NULL order by propietario';
-    let sql = `SELECT gestionada, 'CUENTA: '||cuenta||','||'PROPIETARIO: '||nombre_propietario||','||'DIRECCION: '||calle_predio||','||'NUM: '||num_exterior_predio||','||colonia_predio||','||'DEUDA: '||adeudo as full, cuenta,nombre_propietario,latitud,longitud,calle_predio,num_exterior_predio,colonia_predio,poblacion_predio,cp_predio,adeudo FROM implementta where nombre_propietario NOT NULL order by cuenta`;
+    let sql = `SELECT gestionada, 'CUENTA: '||cuenta||','||'PROPIETARIO: '||nombre_propietario||','||'DIRECCION: '||calle_predio||','||'NUM: '||num_exterior_predio||','||colonia_predio||','||'DEUDA: '||adeudo as full, cuenta,nombre_propietario,latitud,longitud,calle_predio,num_exterior_predio,colonia_predio,poblacion_predio,cp_predio,adeudo,clave_catastral FROM implementta where nombre_propietario NOT NULL order by cuenta`;
 
     return this.db
       .executeSql(sql, [])

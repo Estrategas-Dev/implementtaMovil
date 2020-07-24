@@ -82,7 +82,7 @@ export class CustomTag {
       const idPlaza = await this.storage.get('IdPlaza')
       switch(idPlaza){
         case '4': url = 'http://oscarvazquez.maps.arcgis.com/apps/webappviewer/index.html?id=632ea1dc115c4d3fa9960f80b88e37d1&find='+account; break;
-        case '7': url = 'http://oscarvazquez.maps.arcgis.com/apps/webappviewer/index.html?id=4ffee4123fa84fe2b4b88d2dc9aec1ba&find='+account; break;
+        case '7': url = 'https://sis-estrategas.maps.arcgis.com/apps/webappviewer/index.html?id=8c5d59991b2c4676952f46a429ed1e2a&find='+account; break;
         case '3': url = 'http://oscarvazquez.maps.arcgis.com/apps/webappviewer/index.html?id=632ea1dc115c4d3fa9960f80b88e37d1&find='+account; break;
         case '8': url = 'https://cartoestrategas.maps.arcgis.com/apps/webappviewer/index.html?id=bde50fa89665458ab23aca1323b980c4&find='+account; break;
         case '10': url = 'https://carto2estrategas.maps.arcgis.com/apps/webappviewer/index.html?id=1ff1f324e54e4b1eac49517ee239567f&find='+account; break;
@@ -90,6 +90,11 @@ export class CustomTag {
         case '13': url = 'https://cartoestrategas.maps.arcgis.com/apps/webappviewer/index.html?id=09d157d58e464c57875e0b7e590d9b69&find='+account; break;
         case '12': url = 'https://carto2estrategas.maps.arcgis.com/apps/webappviewer/index.html?id=e2aa3190ed0245b596e6e890e84e15bc&find='+account; break;
         case '11': url = 'https://carto2estrategas.maps.arcgis.com/apps/webappviewer/index.html?id=e2aa3190ed0245b596e6e890e84e15bc&find='+account; break;
+        case '25': url = 'https://cartoestrategas.maps.arcgis.com/apps/webappviewer/index.html?id=2737fe33e0a847039bdb3712984100d4&find=' +account; break;
+        case '23': url = 'https://claudiagarcia.maps.arcgis.com/apps/webappviewer/index.html?id=27f6cc2518364b718d2f9e248f407393&find=' +account; break;
+        case '27': url = 'https://claudiagarcia.maps.arcgis.com/apps/webappviewer/index.html?id=0decccf35bd14a6a8c68b277c51a7d1e&find=' +account; break;
+        case '18': url = 'https://camiloerdm.maps.arcgis.com/apps/webappviewer/index.html?id=8b8e7f78b3af45ca8bcb3016e1ef7c0f&find=' +account; break;
+        case '24': url = 'https://camiloerdm.maps.arcgis.com/apps/webappviewer/index.html?id=8b8e7f78b3af45ca8bcb3016e1ef7c0f&find=' +account; break;
       }
       
    console.log(url)

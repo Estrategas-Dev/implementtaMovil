@@ -42,6 +42,8 @@ export class AccountDetailPage implements OnInit {
   fechaActual : string=''
   idaspUser: string;
 
+  ultimaGestion: any;
+
   constructor(
     private mensaje : MessagesService,
     private storage: Storage,
