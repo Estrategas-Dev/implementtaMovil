@@ -5,10 +5,11 @@ import { Storage } from '@ionic/storage';
 import { GestionAbogadoPage } from '../gestion-abogado/gestion-abogado.page';
 import { GestionReductorPage } from '../gestion-reductor/gestion-reductor.page';
 import { GestionCallPage } from '../gestion-call/gestion-call.page';
-import { Router } from '@angular/router';
+import { Router, NavigationExtras } from '@angular/router';
 import { UsersFirebaseService } from '../services/users-firebase.service';
 import { runInThisContext } from 'vm';
 import { GestionCartaInvitacionPage } from '../gestion-carta-invitacion/gestion-carta-invitacion.page';
+import { NavController } from '@ionic/angular';
 
 @Component({
   selector: 'app-gestion-page',
@@ -22,7 +23,7 @@ callcenter:boolean = false;
 reductor : boolean =false;
 carta: boolean = false;
 
-constructor( private modalController : ModalController, private storage : Storage ,private platform :Platform,private router : Router, private firebase : UsersFirebaseService  ) { }
+constructor( private modalController : ModalController, private storage : Storage ,private platform :Platform,private router : Router, private firebase : UsersFirebaseService, private nav:NavController  ) { }
 
  async ngOnInit() {
   await this.platform.ready();
@@ -70,8 +71,7 @@ console.log(user)
      await modal.present();
      modal.onDidDismiss().then(data=>{
       //console.log(data)
-      console.log('trata de salir')
-
+      console.log('trata de salir');
       this.router.navigate(['/home/main-list']);
      })
   

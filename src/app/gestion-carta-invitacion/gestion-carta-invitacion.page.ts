@@ -34,6 +34,7 @@ export class GestionCartaInvitacionPage implements OnInit {
   tareaAsignada: string = '';
   fechaPromesaPago: string = '1999-09-09';
   detectedChanges: boolean = false;
+  infoImage:any[];
 
 
   constructor(private mensaje: MessagesService, private camera: Camera, private storage: Storage, private webview: WebView,
@@ -208,5 +209,22 @@ export class GestionCartaInvitacionPage implements OnInit {
     this.detectedChanges = false;
   }
 
+
+  async deletePhoto(img) {
+    console.log(img);
+    console.log(this.imgs);
+
+    for (let i = 0; i< this.imgs.length; i++) {
+      console.log(this.imgs[i].imagen);
+      if(this.imgs[i].imagen == img) {
+        this.imgs.splice(i, 1);
+      } else {
+        console.log("No hay coincidencias");
+      }
+    }
+    //borrara la foto trayendo la imagen de la tabla y mandando a llamar al metodo delete del restservice
+     this.infoImage = await this.service.getImageLocal(img);
+    console.log(this.infoImage[0]);
+  }
 
 }

@@ -15,13 +15,14 @@
 
 <ion-content padding>
 
-
     <ion-slides [options]="sliderOpts">
         <ion-slide *ngFor="let img of imgs">
             <img src={{img.imagen}} class="imagen">
+            <ion-fab-button padding size="small" (click)="deletePhoto(img.imagen)" *ngIf="img.imagen != 'assets/img/imgs.jpg'" color="danger">
+                <ion-icon name="trash"></ion-icon>
+            </ion-fab-button>
         </ion-slide>
     </ion-slides>
-
 
 
     <ion-item text-center>

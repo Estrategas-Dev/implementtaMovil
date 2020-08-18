@@ -67,7 +67,8 @@ export class RestService {
     "https://implementta.net/andro/ImplementtaMovil.aspx?query=sp_ObtenerTipoPlaza";
   apiurl14 =
     "https://implementta.net/andro/ImplementtaMovil.aspx?query=sp_RegistroCartaInvitacionMovil";
-
+  apiurl15 =
+    "https://implementta.net/andro/ImplementtaMovil.aspx?query=sp_HistorialAccionesMovil";
   
 
 
@@ -448,6 +449,24 @@ export class RestService {
       })
       .catch(error => Promise.reject(error));
   }
+
+  async getImageLocal(img) {
+    let sql = "SELECT * FROM CapturaFotos where cargado = 0 and imagenLocal = ?"
+    return this.db.executeSql(sql, [img])
+      .then(response => {
+        let arrayImage = [];
+        arrayImage.push(response.rows.item(0));
+        console.log(arrayImage);
+        this.deletePhoto(arrayImage[0].id, arrayImage[0].rutaBase64);
+        return Promise.resolve(arrayImage);
+      })
+      .catch(error => Promise.reject(error));
+
+  }
+
+
+
+
   getVisit(idaspuser, idplaza) {
     //este metodo en primer lugar descarga los datos del servidor SQL server
 
@@ -837,8 +856,8 @@ export class RestService {
     console.log("llego el query string");
 
     let sql =
-      `INSERT INTO gestionReductor(account ,idTarea ,idDescripcion , idObservaciones , idaspuser,lectura ,conclusiones , personaContacto , telefonoContacto ,fechaPromesa , fechaCaptura , fechaProximaRev , latitud , longitud , niple , horaIni , horaFin, idTipoServicio, idEstatusToma, idTipoToma, descripcionTomaDirecta, idDescripcionMulta)
-     values(?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)`;
+      `INSERT INTO gestionReductor(account ,idTarea ,idDescripcion , idObservaciones , idaspuser,lectura ,conclusiones , personaContacto , telefonoContacto ,fechaPromesa , fechaCaptura , fechaProximaRev , latitud , longitud , niple , horaIni , horaFin, idTipoServicio, idEstatusToma, idTipoToma, descripcionTomaDirecta, idDescripcionMulta, idDetalle, idMedidorTapado, idTipoReductor, noCincho, idEstatusRequerimiento)
+     values(?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)`;
     return this.db.executeSql(sql, [
       data.account,
       data.idtarea,
@@ -861,7 +880,12 @@ export class RestService {
       data.idEstatusToma,
       data.idTipoToma,
       data.descripcionTomaDirecta,
-      data.idDescripcionMulta
+      data.idDescripcionMulta,
+      data.idDetalle,
+      data.idMedidorTapado,
+      data.idTipoReductor,
+      data.noCincho,
+      data.idEstatusRequerimiento
     ]);
   }
   gestionGestor(data) {
@@ -2109,6 +2133,24 @@ export class RestService {
   //   })
   //   // return idPlaza;
   // }
+
+  // this.apiUrl0 + " " + '"' + idaspuser + '"' + "," + idplaza,
+  async getHistorialAcciones(cuenta) {
+    let idPlaza = await this.storage.get("IdPlaza");
+    console.log(cuenta);
+    return new Promise((resolve) => {
+      this.http.get(this.apiurl15 + " " + idPlaza + ", " + "'" + cuenta + "'").subscribe(data => {
+        resolve(data);
+        console.log(data);
+      })
+    })
+
+
+  }
+
+
+
+
 
 
 }

@@ -6,6 +6,7 @@ import { Camera, CameraOptions } from "@ionic-native/camera/ngx";
 import { WebView } from "@ionic-native/ionic-webview/ngx";
 import { MessagesService } from "../services/messages.service";
 import { Geolocation } from "@ionic-native/geolocation/ngx";
+import { IoTThingsGraph } from 'aws-sdk';
 
 @Component({
   selector: "app-gestion-reductor",
@@ -77,6 +78,30 @@ export class GestionReductorPage implements OnInit {
   idDescripcionMulta: number = 0;
   isDescripcionMulta: boolean = false;
   tipoServicioImplementta: string;
+  infoImage: any[];
+
+  // estos atributos son solo para la plaza de mexicali
+  mexicali: boolean = false; // para ver si la plaza es mexicali
+  noInstaloMexicali: boolean = false; // se volvera true si la plaza es mexicali y si elige no instalo niple
+  muestraCampoDetalle: boolean = false; // se volvera true si la plaza es mexicali y si elige medidor x dentro
+  idDetalle: number = 0; // recibe el valor del campo detalle
+  isDetalle: boolean = false; // para indicar que se debe de llenar el campo
+  muestraCampoMedidorTapado: boolean = false; // para mostrar el campo de medidor tapado cuando sea la observacion de medidor obstruido
+  idMedidorTapado: number = 0; // recibe el valor del medidor obstruido
+  isMedidorTapado: boolean = false; // para indicar que debe de llenarse ese campo
+  muestraCampoTipoReductor: boolean = false; // para mostrar el campo de tipoReductor cuando si instalo niple
+  idTipoReductor: number = 0; // recibe el valor del tipoReductor
+  isTipoReductor: boolean = false; // para indicar que se debe de llenar este campo
+  muestraCampoCincho: boolean = false; // para mostrar el campo de noCincho cuando si instalo niple
+  noCincho: string = ''; // recibe el valor de noCincho
+  isCincho: boolean = false; // para indicar que se debe de llenar este campo
+  idEstatusRequerimiento: number = 0; // recibe el valos del estatus requerimiento, siempre se tendra que llenar en mexicali  
+  isEstatusRequerimiento: boolean = false; // para indicar que se debe de llenar este campo
+
+
+
+  tijuana: boolean = false; // esta es solo para quitar el campo de niple en tijuana tambien
+
 
 
 
@@ -248,25 +273,58 @@ export class GestionReductorPage implements OnInit {
   activateDescription(event) {
     this.isDescription = false;
     const action = event.detail.value;
+    console.log(action);
+    console.log("muestra campo observacion", this.muestraCampoObservacion);
     switch (action) {
       case "1":
-        this.niple = true;
-        this.horas = true;
-        this.muestraCampoObservacion = false;
-        this.siSuperviso = false;
-        //this.muestraObservacionesMulta = false;
-        break;
+        if (this.mexicali == true) {
+          this.muestraCampoTipoReductor = true; // muestra el campo de tipo de reductor (birlo o rondana)
+          this.muestraCampoCincho = true;
+          this.niple = false; // el campo de niple se desactiva en mexicali y tijuana
+          this.horas = true;
+          this.muestraCampoObservacion = false;
+          this.siSuperviso = false;
+          break;
+        } else if (this.tijuana == true) {
+          this.niple = false;
+          break
+        }
+        else {
+          this.niple = true;
+          this.horas = true;
+          this.muestraCampoObservacion = false;
+          this.siSuperviso = false;
+          this.muestraCampoTipoReductor = false;
+          //this.muestraObservacionesMulta = false;
+          break;
+        }
       case "2":
-        this.noInstalo = true;
-        this.noRetiro = false;
-        this.noSuperviso = false;
-        this.noTaponeo = false;
-        this.siSuperviso = false;
-        this.horas = false;
-        this.niple = false;
-        this.muestraCampoObservacion = true;
-        //this.muestraObservacionesMulta = false;
-        break;
+        if (this.mexicali == true) {
+          console.log("No instalo niple reductor y es mexicali debe de mostrar solo 4 items en las observaciones");
+          this.noInstaloMexicali = true;
+          this.noInstalo = false;
+          this.noRetiro = false;
+          this.noSuperviso = false;
+          this.noTaponeo = false;
+          this.siSuperviso = false;
+          this.horas = false;
+          this.niple = false;
+          this.muestraCampoObservacion = true;
+          this.muestraCampoTipoReductor = false;
+          this.muestraCampoCincho = false;
+          break
+        } else {
+          this.noInstalo = true;
+          this.noRetiro = false;
+          this.noSuperviso = false;
+          this.noTaponeo = false;
+          this.siSuperviso = false;
+          this.horas = false;
+          this.niple = false;
+          this.muestraCampoObservacion = true;
+          //this.muestraObservacionesMulta = false;
+          break;
+        }
       case "3":
         this.muestraCampoObservacion = false;
         this.siSuperviso = false;
@@ -328,33 +386,220 @@ export class GestionReductorPage implements OnInit {
   }
 
 
-  validaDescripcionMulta( ) {
+  validaDescripcionMulta() {
     this.isDescripcionMulta = false;
-  } 
+  }
 
+  validaDetalle() {
+    this.isDetalle = false;
+  }
+
+  validaMedidorTapado() {
+    this.isMedidorTapado = false;
+  }
+
+  validaTipoReductor() {
+    this.isTipoReductor = false;
+  }
+
+  validaCampoCincho() {
+    this.isCincho = false;
+  }
+
+  validaCampoRequerimiento() {
+    this.isEstatusRequerimiento = false;
+  }
+
+
+
+  //  async Verify() {
+  //     var dateDay = new Date().toISOString();
+  //     let date: Date = new Date(dateDay);
+  //     let ionicDate = new Date(
+  //       Date.UTC(
+  //         date.getFullYear(),
+  //         date.getMonth(),
+  //         date.getDate(),
+  //         date.getHours(),
+  //         date.getMinutes(),
+  //         date.getSeconds()
+  //       )
+  //     );
+
+
+  //   // validacion para los campos de mexicali
+  //   if (this.mexicali == true) {
+
+  //     if (this.idDescripcion.toString() == '2') {
+  //       console.log("Validaciones para cuando no se instalo niple reductor");
+  //       if ((this.idObservacion.toString() == '3' && this.idDetalle == 0) || (this.idObservacion.toString() == '8' && this.idMedidorTapado == 0)) {
+  //         if (this.idDetalle == 0) {
+  //           this.isDetalle = true;
+  //         }
+
+  //         if (this.idMedidorTapado == 0) {
+  //           this.isMedidorTapado = true;
+  //         }
+  //         this.mensaje.showAlert("Verifica todos los campos con * y que minimo haya una foto capturada");
+  //       }
+  //     }
+  //     else if (this.idDescripcion.toString() == '1') {
+  //       console.log("Validaciones para cuando si se instalo niple reductor");
+  //       if (this.idTipoReductor == 0) {
+  //         this.isTipoReductor = true;
+  //       }
+
+  //       if (this.noCincho = "") {
+  //         this.isCincho = true;
+  //       }
+  //       this.mensaje.showAlert("Verifica todos los campos con * y que minimo haya una foto capturada");
+  //     }
+
+  //     if (this.idEstatusRequerimiento == 0) {
+  //       this.isEstatusRequerimiento = true;
+  //       this.mensaje.showAlert("Verifica todos los campos con * y que minimo haya una foto capturada");
+  //     }
+  //   }// termina la validacion de mexicali
+
+
+  //   //validacion de campos principales
+  //   if (this.idDescripcion == 0 || this.fechaProximaVisita === "1999-09-09" || this.idEstatusToma == 0 ||
+  //     this.idTipoToma == 0 || this.takePhoto == false) {
+
+  //     console.log("Algunos de los campos principales no se ha llenado");
+
+  //     if (this.idDescripcion == 0) {
+  //       this.isDescription = true;
+  //     }
+  //     if (this.fechaProximaVisita === "1999-09-09") {
+  //       this.isFecha = true;
+  //     }
+
+  //     if (this.idEstatusToma == 0) {
+  //       this.isEstatusToma = true;
+  //     }
+
+  //     if (this.idTipoToma == 0) {
+  //       this.isTipoToma = true;
+  //     }
+
+  //     this.mensaje.showAlert("Verifica todos los campos con * y que minimo haya una foto capturada");
+
+  //   } else { // este else es el de la primer validacion de los campos principales
+  //     console.log("Campos principales llenados correctamente");
+
+  //     if ( // validacion interna o segunda validacion
+  //       (this.idDescripcion.toString() == "2" ||
+  //         this.idDescripcion.toString() == "4" ||
+  //         this.idDescripcion.toString() == "5" ||
+  //         this.idDescripcion.toString() == "6" ||
+  //         this.idDescripcion.toString() == "8") &&
+  //       this.idObservacion == 0
+  //     ) {
+
+  //       this.isObservacion = true;
+  //       this.mensaje.showAlert("Verifica todos los campos con * y que minimo haya una foto capturada");
+
+  //     }
+
+  //     else if (this.idDescripcion.toString() == "2" && this.idObservacion.toString() == "1" && this.descripcion == "") {
+  //       this.isDescripcionN = true;
+  //       this.mensaje.showAlert("Verifica todos los campos con * y que minimo haya una foto capturada");
+  //     } else if (this.idDescripcion.toString() == "5" && this.idObservacion.toString() == "34" && this.idDescripcionMulta == 0) {
+  //       this.isDescripcionMulta = true;
+  //       this.mensaje.showAlert("Verifica todos los campos con * y que minimo haya una foto capturada");
+  //     } 
+
+  //     else { // si pasa toda la validacion interna o segunda validacion
+  //       /////////////////////Aqui se hace el proceso de gestion ya validados todos los campos
+  //       console.log("Pasa la validacion de los campos secundarios por lo cual paso toda la validacion");
+  //       this.fechaCaptura = ionicDate.toISOString();
+  //       let fecha = this.fechaPromesa.split("T");
+  //       let dateString = fecha[0];
+  //       let newDate = new Date(dateString).toISOString();
+
+  //       let fecha1 = this.fechaPromesa.split("T");
+  //       let dateString1 = fecha1[0];
+  //       let newDate1 = new Date(dateString1).toISOString();
+  //       console.log(dateString);
+  //       console.log(newDate);
+  //       await this.getPosition()
+
+
+  //       let data = {
+  //         id: this.idAccountSqlite,
+  //         account: this.account,
+  //         idtarea: this.idTarea,
+  //         idObservacion: this.idObservacion,
+  //         idAspUser: this.idAspuser,
+  //         idDescripcion: this.idDescripcion,
+  //         idNiple: this.idNiple,
+  //         conclusiones: this.conclusiones,
+  //         fechaCaptura: this.fechaCaptura,
+  //         fechaPromesa: newDate,
+  //         fechaProximaVisita: newDate1,
+  //         horaFin: this.horaFin,
+  //         horaIni: this.horaIni,
+  //         latitud: this.latitud,
+  //         longitud: this.longitud,
+  //         lectura: this.lectura,
+  //         telefonoContacto: '',
+  //         personaContacto: '',
+  //         idTipoServicio: this.idTipoServicio,
+  //         idEstatusToma: this.idEstatusToma,
+  //         idTipoToma: this.idTipoToma,
+  //         descripcionTomaDirecta: this.descripcion,
+  //         idDescripcionMulta: this.idDescripcionMulta,
+  //         idDetalle: this.idDetalle,
+  //         idMedidorTapado: this.idMedidorTapado,
+  //         idTipoReductor: this.idTipoReductor,
+  //         noCincho: this.noCincho,
+  //         idEstatusRequerimiento: this.idEstatusRequerimiento
+  //       };
+  //       console.log(data)
+
+  //       await this.gestionReductor(data);
+  //       this.exit()
+
+
+  //     } // else de los campos secundarios
+  //   } // else de los campos principales
+  //}
 
 
   async Verify() {
-    var dateDay = new Date().toISOString();
-    let date: Date = new Date(dateDay);
-    let ionicDate = new Date(
-      Date.UTC(
-        date.getFullYear(),
-        date.getMonth(),
-        date.getDate(),
-        date.getHours(),
-        date.getMinutes(),
-        date.getSeconds()
-      )
-    );
+    // llamar al metodo de la primera validacion que es la de los campos principales
+    if (this.validaCamposPrincipales() == true) {
+      // si es true verificamos si es mexicali y mandamos a traer al metodo d ela validacion de mexicali
+      console.log("Datos principales llenados");
+      if (this.mexicali == true) {
+        console.log("Es mexicali");
+        if (this.validaCamposMexicali() == true) {
+          console.log("Campos de mexicali llenados");
+          if (this.validaCamposSecundarios() == true) {
+            // traer al metodo del envio de datos
+            console.log("Campos secundarios llenados");
+            this.datosValidados();
+          }
+        }
+      } else {
+        // mandamos a traer el metodo de la segunda validacion
+        if (this.validaCamposSecundarios() == true) {
+          console.log("Campos secundarios llenados");
+          this.datosValidados();
+        }
+      }
+    } // validaCamposPrincipales 
+  } // verify
 
 
-    if (
-      this.idDescripcion == 0 ||
-      this.fechaProximaVisita === "1999-09-09"
-      || this.idEstatusToma == 0 ||
-      this.idTipoToma == 0 || this.takePhoto == false
-    ) {
+
+  validaCamposPrincipales() {
+    console.log("Entrando a validar campos principales");
+    if (this.idDescripcion == 0 || this.fechaProximaVisita === "1999-09-09" || this.idEstatusToma == 0 ||
+      this.idTipoToma == 0 || this.takePhoto == false) {
+
+      console.log("Algunos de los campos principales no se ha llenado");
 
       if (this.idDescripcion == 0) {
         this.isDescription = true;
@@ -371,145 +616,66 @@ export class GestionReductorPage implements OnInit {
         this.isTipoToma = true;
       }
 
-
-
       this.mensaje.showAlert("Verifica todos los campos con * y que minimo haya una foto capturada");
+      return false;
     } else {
-      if (
-        (this.idDescripcion.toString() == "2" ||
-          this.idDescripcion.toString() == "4" ||
-          this.idDescripcion.toString() == "5" ||
-          this.idDescripcion.toString() == "6" ||
-          this.idDescripcion.toString() == "8") &&
-        this.idObservacion == 0
-      ) {
+      return true
+    }
+  }
 
-        this.isObservacion = true;
-        this.mensaje.showAlert("Verifica todos los campos con * y que minimo haya una foto capturada");
+  validaCamposSecundarios() {
+    if ((this.idDescripcion.toString() == "2" ||
+      this.idDescripcion.toString() == "4" ||
+      this.idDescripcion.toString() == "5" ||
+      this.idDescripcion.toString() == "6" ||
+      this.idDescripcion.toString() == "8") &&
+      this.idObservacion == 0
+    ) {
 
-      }
+      this.isObservacion = true;
+      this.mensaje.showAlert("Verifica todos los campos con * y que minimo haya una foto capturada");
+      console.log("retornando false en los campos secundarios");
+      return false;
+    }
 
-      else if (this.idDescripcion.toString() == "2" && this.idObservacion.toString() == "1" && this.descripcion == "") {
-        this.isDescripcionN = true;
-        this.mensaje.showAlert("Verifica todos los campos con * y que minimo haya una foto capturada");
-      } else if (this.idDescripcion.toString() == "5" && this.idObservacion.toString() == "34" && this.idDescripcionMulta == 0) {
-        this.isDescripcionMulta = true;
-        this.mensaje.showAlert("Verifica todos los campos con * y que minimo haya una foto capturada");
-      }
-
-      else {
-        /////////////////////Aqui se hace el proceso de gestion ya validados todos los campos
-        this.fechaCaptura = ionicDate.toISOString();
-        let fecha = this.fechaPromesa.split("T");
-        let dateString = fecha[0];
-        let newDate = new Date(dateString).toISOString();
-
-        let fecha1 = this.fechaPromesa.split("T");
-        let dateString1 = fecha1[0];
-        let newDate1 = new Date(dateString1).toISOString();
-        console.log(dateString);
-        console.log(newDate);
-        await this.getPosition()
-
-
-
-        let data = {
-          id: this.idAccountSqlite,
-          account: this.account,
-          idtarea: this.idTarea,
-          idObservacion: this.idObservacion,
-          idAspUser: this.idAspuser,
-          idDescripcion: this.idDescripcion,
-          idNiple: this.idNiple,
-          conclusiones: this.conclusiones,
-          fechaCaptura: this.fechaCaptura,
-          fechaPromesa: newDate,
-          fechaProximaVisita: newDate1,
-          horaFin: this.horaFin,
-          horaIni: this.horaIni,
-          latitud: this.latitud,
-          longitud: this.longitud,
-          lectura: this.lectura,
-          telefonoContacto: '',
-          personaContacto: '',
-          idTipoServicio: this.idTipoServicio,
-          idEstatusToma: this.idEstatusToma,
-          idTipoToma: this.idTipoToma,
-          descripcionTomaDirecta: this.descripcion,
-          idDescripcionMulta: this.idDescripcionMulta
-
-        };
-        console.log(data)
-
-        await this.gestionReductor(data);
-        this.exit()
-
-
-      }
+    else if (this.idDescripcion.toString() == "2" && this.idObservacion.toString() == "1" && this.descripcion == "") {
+      this.isDescripcionN = true;
+      this.mensaje.showAlert("Verifica todos los campos con * y que minimo haya una foto capturada");
+      return false;
+    } else if (this.idDescripcion.toString() == "5" && this.idObservacion.toString() == "34" && this.idDescripcionMulta == 0) {
+      this.isDescripcionMulta = true;
+      this.mensaje.showAlert("Verifica todos los campos con * y que minimo haya una foto capturada");
+      console.log("retornando false en los campos secundarios");
+      return false;
+    } else {
+      console.log("Campos secundarios validados");
+      return true;
     }
   }
 
 
-  async gestionReductor(data) {
-    await this.service.gestionReductor(data);
-    // this.detectedChanges = false;
-  }
-  activateObservacion(event) {
-    this.isObservacion = false;
-    // si se selecciona la opcion de se encontro toma directa va a mostrar el campo nuevo descripcion a partir de la version 1.3.1
-    const opcion = event.detail.value;
-
-    if (opcion == 1) {
-      this.muestraCampoDescripcion = true;
-    } else if (opcion == 34) {
-      this.muestraDescripcionMulta = true;
-    } else {
-      this.muestraDescripcionMulta = false;
-      this.muestraCampoDescripcion = false;
-    }
-
-
-  }
-
-
-  validaCampoDescripcion() {
-    this.isDescripcionN = false;
-  }
-
-  activateFecha() {
-    this.isFecha = false;
-  }
-
-  activateEstatusToma(event) {
-    this.isEstatusToma = false;
-    //this.detectedChanges = true;
-    console.log(event.detail.value);
-    if (event.detail.value == 2) {
-      this.activaEstatusToma = true;
-    } else {
-      this.idTipoToma = 100;
-      this.activaEstatusToma = false;
-    }
-  }
-
-
-  activateTipoToma() {
-    this.isTipoToma = false;
-  }
-
-
-  async getPosition() {
-    this.loading = await this.loadingController.create({
-      message: "Obteniendo la ubicación de esta gestión...."
-    });
-    await this.loading.present();
-    const position = await this.geolocation.getCurrentPosition();
-    this.loading.dismiss();
-    console.log(position);
-    this.latitud = position.coords.latitude;
-    this.longitud = position.coords.longitude;
-
-    if (this.latitud === undefined || this.latitud == 0) {
+  validaCamposMexicali() {
+    // validacion para los campos de mexicali
+    if (this.idEstatusRequerimiento == 0) {
+      this.isEstatusRequerimiento = true;
+      this.mensaje.showAlert("Verifica todos los campos con * y que minimo haya una foto capturada");
+      console.log("retorna false en mexicali");
+      return false;
+    } else if (this.idDescripcion.toString() == '2' && this.idObservacion.toString() == '3' && this.idDetalle == 0) {
+      this.isDetalle = true;
+      this.mensaje.showAlert("Verifica todos los campos con * y que minimo haya una foto capturada");
+      return false;
+    } else if (this.idDescripcion.toString() == '2' && this.idObservacion.toString() == '8' && this.idMedidorTapado == 0) {
+      this.isMedidorTapado = true;
+      this.mensaje.showAlert("Verifica todos los campos con * y que minimo haya una foto capturada");
+      return false;
+    } else if (this.idDescripcion.toString() == '1' && this.idTipoReductor == 0) {
+      this.isTipoReductor = true;
+      this.mensaje.showAlert("Verifica todos los campos con * y que minimo haya una foto capturada");
+      return false;
+    } else if (this.idDescripcion.toString() == '1' && this.noCincho == "") {
+      this.isCincho = true;
+      this.mensaje.showAlert("Verifica todos los campos con * y que minimo haya una foto capturada");
       return false;
     } else {
       return true;
@@ -518,30 +684,211 @@ export class GestionReductorPage implements OnInit {
 
 
 
+async datosValidados() {
+  var dateDay = new Date().toISOString();
+  let date: Date = new Date(dateDay);
+  let ionicDate = new Date(
+    Date.UTC(
+      date.getFullYear(),
+      date.getMonth(),
+      date.getDate(),
+      date.getHours(),
+      date.getMinutes(),
+      date.getSeconds()
+    )
+  );
+  this.fechaCaptura = ionicDate.toISOString();
+  let fecha = this.fechaPromesa.split("T");
+  let dateString = fecha[0];
+  let newDate = new Date(dateString).toISOString();
+
+  let fecha1 = this.fechaPromesa.split("T");
+  let dateString1 = fecha1[0];
+  let newDate1 = new Date(dateString1).toISOString();
+  console.log(dateString);
+  console.log(newDate);
+  await this.getPosition()
 
 
-  async getIdPlaza() {
-    let tipoPlaza = await this.storage.get("TipoPlazaServicio");
-    console.log(tipoPlaza);
-    if (tipoPlaza === 'Agua') {
-      console.log('Esta es una plaza de agua');
-      this.isAgua = true;
+  let data = {
+    id: this.idAccountSqlite,
+    account: this.account,
+    idtarea: this.idTarea,
+    idObservacion: this.idObservacion,
+    idAspUser: this.idAspuser,
+    idDescripcion: this.idDescripcion,
+    idNiple: this.idNiple,
+    conclusiones: this.conclusiones,
+    fechaCaptura: this.fechaCaptura,
+    fechaPromesa: newDate,
+    fechaProximaVisita: newDate1,
+    horaFin: this.horaFin,
+    horaIni: this.horaIni,
+    latitud: this.latitud,
+    longitud: this.longitud,
+    lectura: this.lectura,
+    telefonoContacto: '',
+    personaContacto: '',
+    idTipoServicio: this.idTipoServicio,
+    idEstatusToma: this.idEstatusToma,
+    idTipoToma: this.idTipoToma,
+    descripcionTomaDirecta: this.descripcion,
+    idDescripcionMulta: this.idDescripcionMulta,
+    idDetalle: this.idDetalle,
+    idMedidorTapado: this.idMedidorTapado,
+    idTipoReductor: this.idTipoReductor,
+    noCincho: this.noCincho,
+    idEstatusRequerimiento: this.idEstatusRequerimiento
+  };
+  console.log(data)
 
-      // if(tipoPlaza[0].NombrePlaza == 'Tijuana') {
-    //   this.version131 = true;
-      // }
+  await this.gestionReductor(data);
+  this.exit()
+}
 
+
+async gestionReductor(data) {
+  await this.service.gestionReductor(data);
+  // this.detectedChanges = false;
+}
+activateObservacion(event) {
+  this.isObservacion = false;
+  // si se selecciona la opcion de se encontro toma directa va a mostrar el campo nuevo descripcion a partir de la version 1.3.1
+  const opcion = event.detail.value;
+  console.log(opcion);
+  if (this.mexicali == true) {
+    if (opcion == 3) {
+      console.log("Muestra el campo del medidor dentro del predio");
+      this.muestraCampoDetalle = true;
+      this.muestraCampoMedidorTapado = false;
+    } else if (opcion == 8) {
+      console.log("Muestra el campo del medidor tapado");
+      this.muestraCampoMedidorTapado = true;
+      this.muestraCampoDetalle = false;
     } else {
-      console.log("Esta es una plaza de predio");
-      this.isAgua = false;
-      this.isTipoToma = false;
-      this.isEstatusToma = false;
-      this.idTipoServicio = 100;
-      this.idEstatusToma = 100;
-      this.idTipoToma = 100;
-      this.isDescripcionN = false;
-      this.isDescripcionMulta = false;
+      this.muestraCampoDetalle = false;
+      this.muestraCampoMedidorTapado = false;
     }
   }
+
+  if (opcion == 1) {
+    this.muestraCampoDescripcion = true;
+  } else if (opcion == 34) {
+    this.muestraDescripcionMulta = true;
+  } else {
+    this.muestraDescripcionMulta = false;
+    this.muestraCampoDescripcion = false;
+
+  }
+
+
+}
+
+
+validaCampoDescripcion() {
+  this.isDescripcionN = false;
+}
+
+activateFecha() {
+  this.isFecha = false;
+}
+
+activateEstatusToma(event) {
+  this.isEstatusToma = false;
+  //this.detectedChanges = true;
+  console.log(event.detail.value);
+  if (event.detail.value == 2) {
+    this.activaEstatusToma = true;
+  } else {
+    this.idTipoToma = 100;
+    this.activaEstatusToma = false;
+  }
+}
+
+
+activateTipoToma() {
+  this.isTipoToma = false;
+}
+
+
+async getPosition() {
+  this.loading = await this.loadingController.create({
+    message: "Obteniendo la ubicación de esta gestión...."
+  });
+  await this.loading.present();
+  const position = await this.geolocation.getCurrentPosition();
+  this.loading.dismiss();
+  console.log(position);
+  this.latitud = position.coords.latitude;
+  this.longitud = position.coords.longitude;
+
+  if (this.latitud === undefined || this.latitud == 0) {
+    return false;
+  } else {
+    return true;
+  }
+}
+
+
+
+
+
+async getIdPlaza() {
+  let tipoPlaza = await this.storage.get("TipoPlazaServicio");
+  console.log(tipoPlaza);
+  if (tipoPlaza === 'Agua') {
+    console.log('Esta es una plaza de agua');
+    this.isAgua = true;
+    this.mexicali = false;
+    // if(tipoPlaza[0].NombrePlaza == 'Tijuana') {
+    //   this.version131 = true;
+    // }
+  }
+  // esta opcion es para que la plaza de mexicali tenga cambios en el formulario 
+  else if (tipoPlaza === 'Agua Mexicali') {
+    console.log("Esta plaza es Mexicali agua");
+    this.isAgua = true;
+    this.mexicali = true;
+  } else if (tipoPlaza === 'Agua Tijuana') {
+    console.log("Esta plaza es Tijuana agua");
+    this.isAgua = true;
+    this.tijuana = true;
+  }
+
+  else {
+    console.log("Esta es una plaza de predio");
+    this.isAgua = false;
+    this.isTipoToma = false;
+    this.isEstatusToma = false;
+    this.idTipoServicio = 100;
+    this.idEstatusToma = 100;
+    this.idTipoToma = 100;
+    this.isDescripcionN = false;
+    this.isDescripcionMulta = false;
+    this.mexicali = false;
+    this.tijuana = false;
+  }
+}
+
+
+
+async deletePhoto(img) {
+  console.log(img);
+  console.log(this.imgs);
+
+  for (let i = 0; i < this.imgs.length; i++) {
+    console.log(this.imgs[i].imagen);
+    if (this.imgs[i].imagen == img) {
+      this.imgs.splice(i, 1);
+    } else {
+      console.log("No hay coincidencias");
+    }
+  }
+  //borrara la foto trayendo la imagen de la tabla y mandando a llamar al metodo delete del restservice
+  this.infoImage = await this.service.getImageLocal(img);
+  console.log(this.infoImage[0]);
+}
+
+
 
 }

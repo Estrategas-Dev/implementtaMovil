@@ -73,7 +73,12 @@
                         <p>
                             <ion-select class="myCustomSelect" interface="popover" placeholder="Selecciona uno" [(ngModel)]="idObservacion" (ionChange)="activateObservacion($event)">
 
-
+                                <div *ngIf="noInstaloMexicali">
+                                    <ion-select-option value="3">Medidor dentro del predio</ion-select-option>
+                                    <ion-select-option value="4">Usuario no permitio realizar corte</ion-select-option>
+                                    <ion-select-option value="7">Predio no ubicado</ion-select-option>
+                                    <ion-select-option value="8">Medidor obstruido</ion-select-option>
+                                </div>
 
                                 <div *ngIf="noInstalo">
                                     <ion-select-option value="1">Se encontró toma directa</ion-select-option>
@@ -128,6 +133,36 @@
             </div>
             <!-- Observaciones -->
 
+            <!-- Solo se mostrara el campo detalle si la plaza es mexicali y si tiene la opcion 3 en observaciones -->
+            <div *ngIf="muestraCampoDetalle">
+                <ion-item>
+                    <ion-label>
+                        <p>
+                            Detalle*
+                        </p>
+                        <p *ngIf="isDetalle" style="color :red">Campo obligatorio</p>
+                    </ion-label>
+                    <ion-select class="myCustomSelect" interface="popover" placeholder="Selecciona uno" [(ngModel)]="idDetalle" (ionChange)="validaDetalle()">
+                        <ion-select-option value='1'>Con banqueta</ion-select-option>
+                        <ion-select-option value='2'>Sin banqueta</ion-select-option>
+                    </ion-select>
+                </ion-item>
+            </div>
+
+            <div *ngIf="muestraCampoMedidorTapado">
+                <ion-item>
+                    <ion-label>
+                        <p>
+                            Detalle*
+                        </p>
+                        <p *ngIf="isDetalle" style="color :red">Campo obligatorio</p>
+                    </ion-label>
+                    <ion-select class="myCustomSelect" interface="popover" placeholder="Selecciona uno" [(ngModel)]="idMedidorTapado" (ionChange)="validaMedidorTapado()">
+                        <ion-select-option value='1'>Tierra</ion-select-option>
+                        <ion-select-option value='2'>Concreto</ion-select-option>
+                    </ion-select>
+                </ion-item>
+            </div>
 
             <!-- Solo se muetsra este campo si esta en la descripcion 34 de aplica multa -->
             <div *ngIf="muestraDescripcionMulta">
@@ -190,8 +225,58 @@
                 </ion-item>
             </div>
 
+            <!-- Solo se muestra este campo si esta seleccionado la opcion de si instalo niple reductor en mexicali -->
+            <div *ngIf="muestraCampoTipoReductor">
+                <ion-item>
+                    <ion-label>
+                        <p>
+                            Tipo de reductor*
+                        </p>
+                        <p *ngIf="isTipoReductor" style="color :red">Campo obligatorio</p>
+                    </ion-label>
+                    <ion-select class="myCustomSelect" interface="popover" placeholder="Selecciona uno" [(ngModel)]="idTipoReductor" (ionChange)="validaTipoReductor()">
+                        <ion-select-option value='1'>Birlo</ion-select-option>
+                        <ion-select-option value='2'>Rondana</ion-select-option>
+                    </ion-select>
+                </ion-item>
+            </div>
+
+            <!-- Solo se muestra este campo si esta seleccionado la opcion de si instalo niple reductor en mexicali -->
+            <div *ngIf="muestraCampoCincho">
+                <ion-item>
+                    <ion-label>
+                        <p>
+                            No Cincho*
+                        </p>
+                        <p *ngIf="isCincho" style="color :red">Campo obligatorio</p>
+                    </ion-label>
+                    <!-- caja de texo para numero de cincho -->
+                    <ion-textarea rows="5" [(ngModel)]="noCincho" (ionChange)="validaCampoCincho()"></ion-textarea>
+                </ion-item>
+            </div>
+
+
+            <!-- Solo se muestra este campo si es plaza mexicali -->
+            <div *ngIf="mexicali">
+                <ion-item>
+                    <ion-label>
+                        <p>
+                            Estatus requerimiento*
+                        </p>
+                        <p *ngIf="isEstatusRequerimiento" style="color :red">Campo obligatorio</p>
+                    </ion-label>
+                    <ion-select class="myCustomSelect" interface="popover" placeholder="Selecciona uno" [(ngModel)]="idEstatusRequerimiento" (ionChange)="validaCampoRequerimiento()">
+                        <ion-select-option value='1'>No aplica</ion-select-option>
+                        <ion-select-option value='2'>Se dejo</ion-select-option>
+                        <ion-select-option value='2'>Se entrego</ion-select-option>
+                    </ion-select>
+                </ion-item>
+            </div>
+
         </ion-card-content>
     </ion-card>
+
+
 
 
     <!-- Tipo de servicio solo en agua -->
@@ -379,8 +464,12 @@
     <ion-slides [options]="sliderOpts">
         <ion-slide *ngFor="let img of imgs">
             <img src={{img.imagen}} class="imagen">
+            <ion-fab-button padding size="small" (click)="deletePhoto(img.imagen)" *ngIf="img.imagen != 'assets/img/imgs.jpg'" color="danger">
+                <ion-icon name="trash"></ion-icon>
+            </ion-fab-button>
         </ion-slide>
     </ion-slides>
+
     <ion-item text-center>
         <ion-label>
             <p>

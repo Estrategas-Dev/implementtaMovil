@@ -1,11 +1,10 @@
 <ion-header>
-    <ion-toolbar>
 
+
+    <ion-toolbar>
         <ion-searchbar placeholder="Buscar por propietario" animated (ionChange)="find($event)"></ion-searchbar>
         <div style="text-align: center">
             <ion-item>
-
-
                 <ion-chip color="primary" (click)="filter(1)">
 
                     <ion-label>
@@ -47,10 +46,12 @@
 </ion-header>
 <ion-content>
 
+    <ion-refresher slot="fixed" (ionRefresh)="doRefresh($event)">
+        <ion-refresher-content pullingIcon="chevron-down-circle-outline" pullingText="Actualizando" refreshingSpinner="circles" refreshingText="Actualizando...">
+        </ion-refresher-content>
+    </ion-refresher>
+
     <div *ngIf="account">
-
-
-
         <ion-virtual-scroll [items]="account | filtro : findText ">
             <ion-item-sliding *virtualItem="let item">
                 <ion-item class="animated fadeIn fast" (click)="getDetail(item.cuenta)">
@@ -80,7 +81,7 @@
 
                 <ion-item-options side="end">
                     <ion-item-option color="tertiary" (click)="copyAccount(item.cuenta)">
-                        <ion-icon slot="icon-only" name="copy"></ion-icon>
+                        <ion-icon slot="icon-only" name="navigate"></ion-icon>
                     </ion-item-option>
 
                     <ion-item-option color="success" (click)="goPhotos(item.cuenta)">

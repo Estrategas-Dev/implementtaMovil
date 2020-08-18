@@ -14,6 +14,7 @@ import { Geolocation } from "@ionic-native/geolocation/ngx";
 import { AngularFirestore } from "@angular/fire/firestore";
 import { UsersFirebaseService } from "../services/users-firebase.service";
 import { Router } from "@angular/router";
+import { ImagePreviewPage } from '../image-preview/image-preview.page';
 @Component({
   selector: "app-gestion-gestor",
   templateUrl: "./gestion-gestor.page.html",
@@ -72,6 +73,7 @@ export class GestionGestorPage implements OnInit {
   isTipoToma: boolean = false;
 
   tipoServicioImplementta:string;
+  infoImage: any[];
 
   
   constructor(
@@ -532,7 +534,22 @@ export class GestionGestorPage implements OnInit {
   }
 
 
+  async deletePhoto(img) {
+    console.log(img);
+    console.log(this.imgs);
 
+    for (let i = 0; i< this.imgs.length; i++) {
+      console.log(this.imgs[i].imagen);
+      if(this.imgs[i].imagen == img) {
+        this.imgs.splice(i, 1);
+      } else {
+        console.log("No hay coincidencias");
+      }
+    }
+    //borrara la foto trayendo la imagen de la tabla y mandando a llamar al metodo delete del restservice
+     this.infoImage = await this.service.getImageLocal(img);
+    console.log(this.infoImage[0]);
+  }
 
 
 }

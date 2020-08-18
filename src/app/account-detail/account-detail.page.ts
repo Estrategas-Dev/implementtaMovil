@@ -36,21 +36,22 @@ export class AccountDetailPage implements OnInit {
   telefonoUsuario: string;
   celularUsuario: string;
   correoUsuario: string;
-  fechaLocalizacion: string='1999-09-09';
-  isChange: boolean= false;
+  fechaLocalizacion: string = '1999-09-09';
+  isChange: boolean = false;
 
-  fechaActual : string=''
+  fechaActual: string = ''
   idaspUser: string;
 
   ultimaGestion: any;
+  historialAccionesData: any;
 
   constructor(
-    private mensaje : MessagesService,
+    private mensaje: MessagesService,
     private storage: Storage,
     private service: RestService,
     public loadingCtrl: LoadingController,
     private alertController: AlertController
-  ) {}
+  ) { }
 
   async ngOnInit() {
     await this.getCrendentials();
@@ -60,7 +61,7 @@ export class AccountDetailPage implements OnInit {
     this.getFechaActual();
   }
 
-  getFechaActual(){
+  getFechaActual() {
     var dateDay = new Date().toISOString();
     let date: Date = new Date(dateDay);
     let ionicDate = new Date(
@@ -73,10 +74,10 @@ export class AccountDetailPage implements OnInit {
         date.getSeconds()
       )
     );
-    
-  this.fechaActual = ionicDate.toISOString();
-  console.log('Esta es la fecha Actual :::::::::::' + this.fechaActual)
-  
+
+    this.fechaActual = ionicDate.toISOString();
+    console.log('Esta es la fecha Actual :::::::::::' + this.fechaActual)
+
   }
 
 
@@ -100,6 +101,13 @@ export class AccountDetailPage implements OnInit {
     this.telefonoPropietario = this.infoAccount[0].telefono_propietario;
     this.celularPropietario = this.infoAccount[0].celular_propietario;
     this.correoPropietario = this.infoAccount[0].correo_electronico_propietario;
+
+    // ede las versiones 1.3.3 hacia atras no se veian estos datos en el page de propietarios
+    this.nombreUsuario = this.infoAccount[0].nombre_usuario;
+    this.celularUsuario = this.infoAccount[0].celular_usuario;
+    this.telefonoUsuario = this.infoAccount[0].telefono_usuario;
+    this.correoUsuario = this.infoAccount[0].correo_electronico_usuario;
+
 
     console.log(this.infoAccount);
     this.loading.dismiss();
@@ -163,6 +171,8 @@ export class AccountDetailPage implements OnInit {
         this.valores = false;
         this.historial = true;
         this.mapa = false;
+        // llamar a metodo que va a ser la peticion al sql patra que traiga el historial de acciones
+        this.historialAcciones();
         break;
       case 6:
         this.propietario = false;
@@ -175,44 +185,61 @@ export class AccountDetailPage implements OnInit {
     }
   }
 
- 
-  async saveConfirm(type) {
-console.log(this.isChange)
-    if(this.isChange == true){
 
-      if(this.fechaLocalizacion =='1999-09-09' && type == 1){this.mensaje.showAlert('Ingresa la fecha de localización')}
-else{
-    const alert = await this.alertController.create({
-      header: "Confirmar!",
-      message:
-        "La información editada se guardará y se verá reflejada despues de sincronizar con el servidor de implementta!!!",
-      buttons: [
-        {
-          text: "Cancelar",
-          role: "cancel",
-          cssClass: "secondary",
-          handler: blah => {
-            console.log("Confirm Cancel: blah");
-            this.isChange = false
-          }
-        },
-        {
-          text: "Guardar",
-          handler: () => {
-              this.saveDataPropietario(type);
-              this.isChange = false    
-          }
-        }
-      ]
-    });
 
-    await alert.present();}
-  
-  
+
+ async historialAcciones() {
+
+    // llamar al restservice
+    console.log("Entro a solicitar el historial de acciones con la cuenta", this.accountNumber);
+    this.historialAccionesData =  await this.service.getHistorialAcciones(this.accountNumber);
+    let total = this.historialAccionesData.length;
+
+    if (total == 0) {
+      this.mensaje.showAlert("Esta cuenta no tiene gestiones historicas");
+    }
+    
   }
 
 
-    else{this.mensaje.showAlert('No hay cambios que guardar :(')}
+  async saveConfirm(type) {
+    console.log(this.isChange)
+    if (this.isChange == true) {
+
+      if (this.fechaLocalizacion == '1999-09-09' && type == 1) { this.mensaje.showAlert('Ingresa la fecha de localización') }
+      else {
+        const alert = await this.alertController.create({
+          header: "Confirmar!",
+          message:
+            "La información editada se guardará y se verá reflejada despues de sincronizar con el servidor de implementta!!!",
+          buttons: [
+            {
+              text: "Cancelar",
+              role: "cancel",
+              cssClass: "secondary",
+              handler: blah => {
+                console.log("Confirm Cancel: blah");
+                this.isChange = false
+              }
+            },
+            {
+              text: "Guardar",
+              handler: () => {
+                this.saveDataPropietario(type);
+                this.isChange = false
+              }
+            }
+          ]
+        });
+
+        await alert.present();
+      }
+
+
+    }
+
+
+    else { this.mensaje.showAlert('No hay cambios que guardar :(') }
   }
   saveDataPropietario(type) {
     let fecha = this.fechaLocalizacion.split("T");
@@ -221,8 +248,8 @@ else{
     console.log(dateString);
     console.log(newDate);
     let data
-    if (type == 2){
-       data = {
+    if (type == 2) {
+      data = {
         cuenta: this.accountNumber,
         nombre: this.nombreUsuario,
         telefono: this.telefonoUsuario,
@@ -234,24 +261,25 @@ else{
         idRol: this.user_role,
         type: type
       };
-    }else{
-     data = {
-       cuenta: this.accountNumber,
-       nombre: this.nombrePropietario,
-       telefono: this.telefonoPropietario,
-       celular: this.celularPropietario,
-       correo: this.correoPropietario,
-       fecha: newDate,
-       fechaCaptura: this.fechaActual,
-       idaspUser: this.idaspUser,
-       idRol: this.user_role,
-       type: type
-     };}
+    } else {
+      data = {
+        cuenta: this.accountNumber,
+        nombre: this.nombrePropietario,
+        telefono: this.telefonoPropietario,
+        celular: this.celularPropietario,
+        correo: this.correoPropietario,
+        fecha: newDate,
+        fechaCaptura: this.fechaActual,
+        idaspUser: this.idaspUser,
+        idRol: this.user_role,
+        type: type
+      };
+    }
     console.log(data);
     this.service.setPropietario(data);
   }
- 
-  isChanged(){
+
+  isChanged() {
     this.isChange = true
   }
 }

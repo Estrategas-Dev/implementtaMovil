@@ -1,20 +1,23 @@
-
-.logo{
-    border-radius:150px;
+.logo {
+    border-radius: 150px;
 }
-.imagen img{
 
+.imagen img {
     width: 40%;
     height: 40%;
 }
-.imagen{
+
+.imagen {
     text-align: center;
-    border-radius:150px;
+    border-radius: 150px;
 }
-#map{
-          
+
+#map {
     width: 100%;
     height: 50%;
-  
+}
 
-  }
+.wrap-expand-textarea {
+    width: 100% !important;
+    border: none;
+}

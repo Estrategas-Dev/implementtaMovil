@@ -1,7 +1,7 @@
 import { Component, OnInit } from "@angular/core";
 import { Storage } from "@ionic/storage";
-import { Router, NavigationExtras } from "@angular/router";
-import { MenuController, LoadingController, ModalController } from "@ionic/angular";
+import { Router, NavigationExtras, ActivatedRoute, NavigationEnd } from '@angular/router';
+import { MenuController, LoadingController, ModalController, IonTabs } from "@ionic/angular";
 import { RestService } from "../services/rest.service";
 import { MessagesService } from "../services/messages.service";
 import { InAppBrowser } from "@ionic-native/in-app-browser/ngx";
@@ -15,7 +15,7 @@ import { Clipboard } from '@ionic-native/clipboard/ngx';
 })
 export class MainListPage implements OnInit {
   ngOnInit() {
-   
+
   }
   account: any[];
   findText: string = "";
@@ -24,6 +24,9 @@ export class MainListPage implements OnInit {
   total: number;
   gestionadas: number;
   pagadas: number;
+  argumento = null;
+  refrescar = null;
+  routerSubscription:any;
   constructor(
     private mensaje: MessagesService,
     private iab: InAppBrowser,
@@ -33,17 +36,30 @@ export class MainListPage implements OnInit {
     private geolocation: Geolocation,
     private service: RestService,
     public loadingCtrl: LoadingController,
-    private clipboard : Clipboard
-    
-  ) {}
- 
-  
- 
-  
+    private clipboard: Clipboard,
+    private activateRoute: ActivatedRoute
+
+  ) { 
+
+  }
+
+
   ionViewDidEnter() {
     this.refresh();
-console.log('Entra a el didenter')
+    console.log('Entra a el didenter')
   }
+
+  doRefresh(event) {
+    console.log('A hecho el refresh');
+    this.router.navigate(['home/main-list']);
+    this.refresh();
+    setTimeout(() => {
+       console.log('Async operation has ended');
+       event.target.complete();
+    }, 1000);
+  }
+
+
   async getInfo() {
     this.total = await this.service.getTotalaccounts();
     this.gestionadas = await this.service.getTotalaccountsManagded();
@@ -92,8 +108,8 @@ console.log('Entra a el didenter')
   }
 
   goDetail() {
+    this.router.navigate(["/detail"]);
 
-  this.router.navigate(["/detail"]);
   }
   async getDetail(accountNumber) {
     console.log("this is account to be saved: " + accountNumber);
@@ -119,14 +135,14 @@ console.log('Entra a el didenter')
   }
   async getAccountInfo() {
     //realiza la carga de informacion que existe en la base interna sqlite
-  this.account = null;
- this.account = await this.service.getDataVisitList();
-/*   await this.service.getList().subscribe(data=>{
-    this.account = data
-    console.log('Y al fin lo tengo')
-    console.log(this.account)
-  }); */
- 
+    this.account = null;
+    this.account = await this.service.getDataVisitList();
+    /*   await this.service.getList().subscribe(data=>{
+        this.account = data
+        console.log('Y al fin lo tengo')
+        console.log(this.account)
+      }); */
+
 
     console.log(this.account);
     if (this.account.length == 0) {
@@ -134,7 +150,7 @@ console.log('Entra a el didenter')
         "Debes sincronizar primero para comenzar con las gestiones!!"
       );
       this.router.navigate(["home/sync-page"])
-    } 
+    }
   }
 
   async refresh() {
@@ -143,20 +159,20 @@ console.log('Entra a el didenter')
     this.loading = await this.loadingCtrl.create({
       message: "Cargando lista..."
     });
-    await this.loading.present(); 
+    await this.loading.present();
     await this.getInfo();
     await this.getAccountInfo();
     this.loading.dismiss()
   }
- async getPagadas(){
-  this.account = null;
-  this.account = await this.service.getDataVisitListPaid();
+  async getPagadas() {
+    this.account = null;
+    this.account = await this.service.getDataVisitListPaid();
   }
-  async getFaltantes(){
+  async getFaltantes() {
     this.account = null;
     this.account = await this.service.getDataVisitListLeft();
   }
-  async getGestionadas(){
+  async getGestionadas() {
     this.account = null;
     this.account = await this.service.getDataVisitListManaged();
   }
@@ -178,16 +194,20 @@ console.log('Entra a el didenter')
     console.log(link);
     this.iab.create(link, "_system", { location: "yes", zoom: "yes" });
   }
-  copyAccount(account){
-    this.clipboard.copy(account);
-    this.mensaje.showToast('Numero de cuenta copiado al portapapeles '+ account)
+  async copyAccount(account) {
+    // this.clipboard.copy(account);
+    // this.mensaje.showToast('Numero de cuenta copiado al portapapeles ' + account)
+     await this.storage.set("accountNumber", account);
+     console.log(account);
+    this.router.navigate(["gestion-page"]);
   }
-  filter(type){
-    switch (type){
-      case 1 : this. refresh(); break;
-      case 2 : this.getGestionadas(); break;
-      case 3 : this.getFaltantes(); break;
-      case 4 : this.getPagadas(); break;
+
+  filter(type) {
+    switch (type) {
+      case 1: this.refresh(); break;
+      case 2: this.getGestionadas(); break;
+      case 3: this.getFaltantes(); break;
+      case 4: this.getPagadas(); break;
     }
   }
 }

@@ -57,6 +57,7 @@ export class GestionAbogadoPage implements OnInit {
   isEstatusToma: boolean = false;
   isTipoToma: boolean = false;
   tipoServicioImplementta:string;
+  infoImage:any[];
 
 
 
@@ -296,6 +297,21 @@ export class GestionAbogadoPage implements OnInit {
     }
   }
 
+  async deletePhoto(img) {
+    console.log(img);
+    console.log(this.imgs);
 
+    for (let i = 0; i< this.imgs.length; i++) {
+      console.log(this.imgs[i].imagen);
+      if(this.imgs[i].imagen == img) {
+        this.imgs.splice(i, 1);
+      } else {
+        console.log("No hay coincidencias");
+      }
+    }
+    //borrara la foto trayendo la imagen de la tabla y mandando a llamar al metodo delete del restservice
+     this.infoImage = await this.service.getImageLocal(img);
+    console.log(this.infoImage[0]);
+  }
 
 }

@@ -13,6 +13,7 @@ import { GestionCallPage } from '../gestion-call/gestion-call.page';
 import { TasksLawyerPage } from '../tasks-lawyer/tasks-lawyer.page';
 import { GestionCartaInvitacionPage } from '../gestion-carta-invitacion/gestion-carta-invitacion.page';
 
+
 const routes: Routes = [
   {
     path: '',
@@ -49,7 +50,7 @@ const routes: Routes = [
     CommonModule,
     FormsModule,
     IonicModule,
-    RouterModule.forChild(routes)
+    RouterModule.forChild(routes),
   ],
   declarations: [GestionPagePage,GestionGestorPage,GestionReductorPage,GestionAbogadoPage,GestionCallPage,TasksLawyerPage,GestionCartaInvitacionPage]
 })
