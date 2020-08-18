@@ -522,7 +522,16 @@ export class GestionGestorPage implements OnInit {
     if (tipoPlaza === 'Agua') {
       console.log('Esta es una plaza de agua');
       this.isAgua = true;
-    } else {
+    }
+    // esta opcion es para que la plaza de mexicali tenga cambios en el formulario 
+    else if (tipoPlaza === 'Agua Mexicali') {
+      console.log("Esta plaza es Mexicali agua");
+      this.isAgua = true;
+    } else if (tipoPlaza === 'Agua Tijuana') {
+      console.log("Esta plaza es Tijuana agua");
+      this.isAgua = true;
+    }
+    else {
       console.log("Esta es una plaza de predio");
       this.isAgua = false;
       this.isTipoToma = false;
