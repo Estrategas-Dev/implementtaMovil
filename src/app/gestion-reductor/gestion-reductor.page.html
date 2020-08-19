@@ -155,7 +155,7 @@
                         <p>
                             Detalle*
                         </p>
-                        <p *ngIf="isDetalle" style="color :red">Campo obligatorio</p>
+                        <p *ngIf="isMedidorTapado" style="color :red">Campo obligatorio</p>
                     </ion-label>
                     <ion-select class="myCustomSelect" interface="popover" placeholder="Selecciona uno" [(ngModel)]="idMedidorTapado" (ionChange)="validaMedidorTapado()">
                         <ion-select-option value='1'>Tierra</ion-select-option>
@@ -268,7 +268,7 @@
                     <ion-select class="myCustomSelect" interface="popover" placeholder="Selecciona uno" [(ngModel)]="idEstatusRequerimiento" (ionChange)="validaCampoRequerimiento()">
                         <ion-select-option value='1'>No aplica</ion-select-option>
                         <ion-select-option value='2'>Se dejo</ion-select-option>
-                        <ion-select-option value='2'>Se entrego</ion-select-option>
+                        <ion-select-option value='3'>Se entrego</ion-select-option>
                     </ion-select>
                 </ion-item>
             </div>

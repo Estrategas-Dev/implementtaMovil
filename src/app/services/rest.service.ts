@@ -1576,9 +1576,14 @@ export class RestService {
           let idTipoToma = result.rows.item(i).idTipoToma;
           let descripcionTomaDirecta = result.rows.item(i).descripcionTomaDirecta;
           let idDescripcionMulta = result.rows.item(i).idDescripcionMulta;
+          let idDetalle = result.rows.item(i).idDetalle;
+          let idMedidorTapado = result.rows.item(i).idMedidorTapado;
+          let idTipoReductor = result.rows.item(i).idTipoReductor;
+          let noCincho = result.rows.item(i).noCincho;
+          let idEstatusRequerimiento = result.rows.item(i).idEstatusRequerimiento;
 
           let id = result.rows.item(i).id;
-          let sqlString = `'${account}',${idTarea},'${idObservacion}','${idDescripcion}','${idAspUser}','${lectura}','${conclusiones}','${personaContacto}','${telefonoContacto}','${fechaPromesa}','${fechaCaptura}','${fechaProximaVisita}','${latitud}','${longitud}',${idNiple},'${horaIni}','${horaFin}',${idPlaza},${idTipoServicio},${idEstatusToma},${idTipoToma},'${descripcionTomaDirecta}',${idDescripcionMulta}`;
+          let sqlString = `'${account}',${idTarea},'${idObservacion}','${idDescripcion}','${idAspUser}','${lectura}','${conclusiones}','${personaContacto}','${telefonoContacto}','${fechaPromesa}','${fechaCaptura}','${fechaProximaVisita}','${latitud}','${longitud}',${idNiple},'${horaIni}','${horaFin}',${idPlaza},${idTipoServicio},${idEstatusToma},${idTipoToma},'${descripcionTomaDirecta}',${idDescripcionMulta},${idDetalle},${idMedidorTapado},${idTipoReductor},${noCincho},${idEstatusRequerimiento}`;
           console.log(sqlString);
           await this.accountSyncReductor(sqlString, id);
         }
