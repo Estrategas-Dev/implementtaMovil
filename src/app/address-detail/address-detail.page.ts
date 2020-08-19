@@ -123,22 +123,24 @@ mapa : boolean = false
       
 
     async goArcgis(){
+      const rutaArcgis = await this.storage.get('rutaArcgis');
+      var url2 = rutaArcgis + '&find=' + this.accountNumber;
       var url =''
-      const idPlaza = await this.storage.get('IdPlaza')
-      switch(idPlaza){
-        case '4': url = 'http://oscarvazquez.maps.arcgis.com/apps/webappviewer/index.html?id=632ea1dc115c4d3fa9960f80b88e37d1&find='+this.accountNumber; break;
-        case '7': url = 'http://oscarvazquez.maps.arcgis.com/apps/webappviewer/index.html?id=4ffee4123fa84fe2b4b88d2dc9aec1ba&find='+this.accountNumber; break;
-        case '3': url = 'http://oscarvazquez.maps.arcgis.com/apps/webappviewer/index.html?id=632ea1dc115c4d3fa9960f80b88e37d1&find='+this.accountNumber; break;
-        case '8': url = 'https://cartoestrategas.maps.arcgis.com/apps/webappviewer/index.html?id=bde50fa89665458ab23aca1323b980c4&find='+this.accountNumber; break;
-        case '10': url = 'https://carto2estrategas.maps.arcgis.com/apps/webappviewer/index.html?id=1ff1f324e54e4b1eac49517ee239567f&find='+this.accountNumber; break;
-        case '9':  url = 'https://carto2estrategas.maps.arcgis.com/apps/webappviewer/index.html?id=1ff1f324e54e4b1eac49517ee239567f&find='+this.accountNumber; break;
-        case '13': url = 'https://cartoestrategas.maps.arcgis.com/apps/webappviewer/index.html?id=09d157d58e464c57875e0b7e590d9b69&find='+this.accountNumber; break;
-        case '12': url = 'https://carto2estrategas.maps.arcgis.com/apps/webappviewer/index.html?id=e2aa3190ed0245b596e6e890e84e15bc&find='+this.accountNumber; break;
-        case '11': url = 'https://carto2estrategas.maps.arcgis.com/apps/webappviewer/index.html?id=e2aa3190ed0245b596e6e890e84e15bc&find='+this.accountNumber; break;
-      }
+      // const idPlaza = await this.storage.get('IdPlaza')
+      // switch(idPlaza){
+      //   case '4': url = 'http://oscarvazquez.maps.arcgis.com/apps/webappviewer/index.html?id=632ea1dc115c4d3fa9960f80b88e37d1&find='+this.accountNumber; break;
+      //   case '7': url = 'http://oscarvazquez.maps.arcgis.com/apps/webappviewer/index.html?id=4ffee4123fa84fe2b4b88d2dc9aec1ba&find='+this.accountNumber; break;
+      //   case '3': url = 'http://oscarvazquez.maps.arcgis.com/apps/webappviewer/index.html?id=632ea1dc115c4d3fa9960f80b88e37d1&find='+this.accountNumber; break;
+      //   case '8': url = 'https://cartoestrategas.maps.arcgis.com/apps/webappviewer/index.html?id=bde50fa89665458ab23aca1323b980c4&find='+this.accountNumber; break;
+      //   case '10': url = 'https://carto2estrategas.maps.arcgis.com/apps/webappviewer/index.html?id=1ff1f324e54e4b1eac49517ee239567f&find='+this.accountNumber; break;
+      //   case '9':  url = 'https://carto2estrategas.maps.arcgis.com/apps/webappviewer/index.html?id=1ff1f324e54e4b1eac49517ee239567f&find='+this.accountNumber; break;
+      //   case '13': url = 'https://cartoestrategas.maps.arcgis.com/apps/webappviewer/index.html?id=09d157d58e464c57875e0b7e590d9b69&find='+this.accountNumber; break;
+      //   case '12': url = 'https://carto2estrategas.maps.arcgis.com/apps/webappviewer/index.html?id=e2aa3190ed0245b596e6e890e84e15bc&find='+this.accountNumber; break;
+      //   case '11': url = 'https://carto2estrategas.maps.arcgis.com/apps/webappviewer/index.html?id=e2aa3190ed0245b596e6e890e84e15bc&find='+this.accountNumber; break;
+      // }
       
-   console.log(url)
-       this.iab.create(url,"_system",{location : 'yes', zoom : 'yes'});
+   console.log(url2)
+       this.iab.create(url2,"_system",{location : 'yes', zoom : 'yes'});
 
     }
 

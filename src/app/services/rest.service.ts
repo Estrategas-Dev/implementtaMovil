@@ -1243,9 +1243,15 @@ export class RestService {
         let idTipoToma = arrayGestionReductor[0].idTipoToma;
         let descripcionTomaDirecta = arrayGestionReductor[0].descripcionTomaDirecta;
         let idDescripcionMulta = arrayGestionReductor[0].idDescripcionMulta;
+        let idDetalle = arrayGestionReductor[0].idDetalle;
+        let idMedidorTapado = arrayGestionReductor[0].idMedidorTapado;
+        let idTipoReductor = arrayGestionReductor[0].idTipoReductor;
+        let noCincho = arrayGestionReductor[0].noCincho;
+        let idEstatusRequerimiento = arrayGestionReductor[0].idEstatusRequerimiento;
+        
 
         let id = arrayGestionReductor[0].id;
-        let sqlString = `'${account}',${idTarea},'${idObservacion}','${idDescripcion}','${idAspUser}','${lectura}','${conclusiones}','${personaContacto}','${telefonoContacto}','${fechaPromesa}','${fechaCaptura}','${fechaProximaVisita}','${latitud}','${longitud}',${idNiple},'${horaIni}','${horaFin}',${idPlaza},${idTipoServicio},${idEstatusToma},${idTipoToma},'${descripcionTomaDirecta}',${idDescripcionMulta}`;
+        let sqlString = `'${account}',${idTarea},'${idObservacion}','${idDescripcion}','${idAspUser}','${lectura}','${conclusiones}','${personaContacto}','${telefonoContacto}','${fechaPromesa}','${fechaCaptura}','${fechaProximaVisita}','${latitud}','${longitud}',${idNiple},'${horaIni}','${horaFin}',${idPlaza},${idTipoServicio},${idEstatusToma},${idTipoToma},'${descripcionTomaDirecta}',${idDescripcionMulta},${idDetalle},${idMedidorTapado},${idTipoReductor},'${noCincho}',${idEstatusRequerimiento}`;
 
         await this.accountSyncReductor(sqlString, id);
         this.mensaje.showToast("Sincronizacion de la cuenta correctamente");
@@ -1583,7 +1589,7 @@ export class RestService {
           let idEstatusRequerimiento = result.rows.item(i).idEstatusRequerimiento;
 
           let id = result.rows.item(i).id;
-          let sqlString = `'${account}',${idTarea},'${idObservacion}','${idDescripcion}','${idAspUser}','${lectura}','${conclusiones}','${personaContacto}','${telefonoContacto}','${fechaPromesa}','${fechaCaptura}','${fechaProximaVisita}','${latitud}','${longitud}',${idNiple},'${horaIni}','${horaFin}',${idPlaza},${idTipoServicio},${idEstatusToma},${idTipoToma},'${descripcionTomaDirecta}',${idDescripcionMulta},${idDetalle},${idMedidorTapado},${idTipoReductor},${noCincho},${idEstatusRequerimiento}`;
+          let sqlString = `'${account}',${idTarea},'${idObservacion}','${idDescripcion}','${idAspUser}','${lectura}','${conclusiones}','${personaContacto}','${telefonoContacto}','${fechaPromesa}','${fechaCaptura}','${fechaProximaVisita}','${latitud}','${longitud}',${idNiple},'${horaIni}','${horaFin}',${idPlaza},${idTipoServicio},${idEstatusToma},${idTipoToma},'${descripcionTomaDirecta}',${idDescripcionMulta},${idDetalle},${idMedidorTapado},${idTipoReductor},'${noCincho}',${idEstatusRequerimiento}`;
           console.log(sqlString);
           await this.accountSyncReductor(sqlString, id);
         }
