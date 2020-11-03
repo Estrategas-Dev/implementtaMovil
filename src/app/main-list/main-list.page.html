@@ -62,6 +62,7 @@
                         <p class='border'><strong>Dirección: </strong> {{item.calle_predio}} {{item.num_exterior_predio}} {{item.colonia_predio}} {{item.poblacion_predio}} {{item.cp_predio}}</p>
                         <p class='border'><strong>Deuda:</strong>{{item.adeudo | currency:'USD':'symbol' }}</p>
                         <p *ngIf="item.clave_catastral != ''" class='border'><strong>Clave:</strong>{{item.clave_catastral }}</p>
+                        <p *ngIf="item.numMedidor != ''" class='border'><strong>Medidor:</strong>{{item.numMedidor }}</p>
                         <p *ngIf="item.gestionada == 1" style="color:green">Cuenta gestionada</p>
                     </ion-label>
 

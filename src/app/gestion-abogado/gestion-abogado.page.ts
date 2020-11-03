@@ -139,7 +139,7 @@ export class GestionAbogadoPage implements OnInit {
     this.modalController.dismiss();
   }
 
-  takePic(type) {
+ async takePic(type) {
     let tipo
     if (type == 1) {
       tipo = "Evidencia"
@@ -155,7 +155,7 @@ export class GestionAbogadoPage implements OnInit {
     let fecha = ionicDate.toISOString();
 
     let options: CameraOptions = {
-      quality: 70,
+      quality: 40,
       correctOrientation: true,
       destinationType: this.camera.DestinationType.FILE_URI,
       sourceType: this.camera.PictureSourceType.CAMERA,

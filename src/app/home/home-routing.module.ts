@@ -59,6 +59,16 @@ const routes: Routes = [
               }
             ]
         },
+        {
+          path: 'gestion-inspeccion',
+          children:
+            [
+              {
+                path: '',
+                loadChildren: '../gestion-inspeccion/gestion-inspeccion.module#GestionInspeccionPageModule'
+              }
+            ]
+        },
         
 /*         {
           path: 'mapajs',

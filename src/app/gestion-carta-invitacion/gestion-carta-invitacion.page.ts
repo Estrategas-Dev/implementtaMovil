@@ -98,7 +98,7 @@ export class GestionCartaInvitacionPage implements OnInit {
     this.modalController.dismiss();
   }
 
-  takePic(type) {
+ async takePic(type) {
     let tipo
     if (type == 1) {
       tipo = "Evidencia"
@@ -116,7 +116,7 @@ export class GestionCartaInvitacionPage implements OnInit {
     let fecha = ionicDate.toISOString();
 
     let options: CameraOptions = {
-      quality: 70,
+      quality: 40,
       correctOrientation: true,
       destinationType: this.camera.DestinationType.FILE_URI,
       sourceType: this.camera.PictureSourceType.CAMERA,
@@ -127,7 +127,9 @@ export class GestionCartaInvitacionPage implements OnInit {
     this.camera.getPicture(options).then(imageData => {
       this.indicadorImagen = this.indicadorImagen + 1
       let rutaBase64 = imageData
+      console.log(rutaBase64);
       this.image = this.webview.convertFileSrc(imageData);
+      console.log(this.image);
       this.isPhoto = false
       this.takePhoto = true;
       this.imgs.push({ imagen: this.image })

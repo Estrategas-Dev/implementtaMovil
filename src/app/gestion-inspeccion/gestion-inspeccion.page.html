@@ -1,0 +1,348 @@
+<ion-header>
+    <ion-toolbar>
+        <ion-title>Clandestino</ion-title>
+        <ion-buttons slot="end">
+            <ion-button color="tertiary">
+                <ion-icon name="information-circle"></ion-icon>
+            </ion-button>
+            <ion-button color="tertiary" (click)="exit()">
+                <ion-icon name="close"></ion-icon>
+            </ion-button>
+        </ion-buttons>
+    </ion-toolbar>
+</ion-header>
+
+<ion-content>
+
+
+    <ion-card>
+        <ion-card-content>
+            <ion-item>
+                <ion-label>
+                    <p>
+                        Cuenta
+                    </p>
+                </ion-label>
+                <ion-input class="myCustomSelect" interface="popover" [(ngModel)]="cuenta" (ionBlur)="verificarCuenta( $event )">
+                </ion-input>
+            </ion-item>
+
+            <ion-item>
+                <ion-label>
+                    <p *ngIf="cuentaPadron" style="color: green;">Cuenta perteneciente al padrón</p>
+                    <p *ngIf="cuentaPadron == false" style="color: red;">Cuenta no perteneciente al padrón</p>
+                </ion-label>
+            </ion-item>
+
+
+
+            <ion-item>
+                <ion-label>
+                    <p>
+                        Clave
+                    </p>
+                </ion-label>
+                <ion-input class="myCustomSelect" interface="popover" [(ngModel)]="clave">
+                </ion-input>
+            </ion-item>
+
+            <ion-item>
+                <ion-label>
+                    <p>
+                        Numero de medidor
+                    </p>
+                </ion-label>
+                <ion-input class="myCustomSelect" interface="popover" [(ngModel)]="medidor">
+                </ion-input>
+            </ion-item>
+
+        </ion-card-content>
+    </ion-card>
+
+    <ion-card>
+        <ion-card-content>
+            <ion-item>
+                <ion-label>
+                    <p>
+                        Tipo de clandestino<strong>*</strong>
+                    </p>
+                    <p *ngIf="resultClandestinoValidation" style="color: red;">Campo obligatorio</p>
+                    <p>
+                        <ion-select class="myCustomSelect" interface="popover" placeholder="Selecciona uno" [(ngModel)]="idTipoClandestino" (ionChange)="resultClandestino($event)">
+                            <ion-select-option value="1">Toma directa</ion-select-option>
+                            <ion-select-option value="2">Manipulacion de medidor</ion-select-option>
+                            <ion-select-option value="3">Daño y desarreglo al medidor</ion-select-option>
+                            <ion-select-option value="4">Restriccion infringida</ion-select-option>
+                            <ion-select-option value="5">Derivacion de toma</ion-select-option>
+                            <ion-select-option value="6">Pasar agua de un predio a otro</ion-select-option>
+                            <ion-select-option value="7">Pasar agua de un giro a otro</ion-select-option>
+                        </ion-select>
+                    </p>
+
+                </ion-label>
+            </ion-item>
+
+            <!-- Campo obligatorio -->
+            <div *ngIf="activaContratada">
+                <ion-item>
+                    <ion-label>
+                        <p>
+                            Descripción clandestino <strong>*</strong>
+                        </p>
+                        <p *ngIf="resultContratadaValidation" style="color: red;">Campo obligatorio</p>
+                        <p>
+                            <ion-select class="myCustomSelect" interface="popover" placeholder="Selecciona uno" [(ngModel)]="idContratada" (ionChange)="contratadaValidation()">
+                                <ion-select-option value="1">Contratada</ion-select-option>
+                                <ion-select-option value="2">No contratada</ion-select-option>
+                            </ion-select>
+                        </p>
+                    </ion-label>
+                </ion-item>
+            </div>
+
+
+            <div *ngIf="activaDescripcionClandestino">
+                <ion-item>
+                    <ion-label>
+                        <p>
+                            Descripción clandestino <strong>*</strong>
+                        </p>
+                        <p *ngIf="resultDescripcionValidation" style="color: red;">Campo obligatorio</p>
+                    </ion-label>
+                    <ion-textarea rows="5" [(ngModel)]="descripcionClandestino" (ionChange)="descripcionClandestinoValidation()"></ion-textarea>
+                </ion-item>
+            </div>
+        </ion-card-content>
+    </ion-card>
+
+
+    <ion-card>
+        <ion-card-content>
+
+            <!-- Este campo solo se mostrara si la cuenta ingresada en el input 1 esta dentro del padron -->
+            <div *ngIf="cuentaPadron">
+                <ion-item>
+                    <ion-label>
+                        <p>Tipo de servicio actual</p>
+                        <!-- <p *ngIf="tipoServicioImplementta == null">Sin especificar</p> -->
+                        <p> {{cuentaInformacion[0].TipoServicio}} </p>
+                    </ion-label>
+                </ion-item>
+            </div>
+
+            <ion-item>
+                <ion-label>
+                    <p>Tipo de servicio detectado</p>
+                    <p>
+                        <ion-select interface="popover" placeholder="Selecciona uno" [(ngModel)]="idTipoServicioDetectado">
+                            <ion-select-option value='2'>Residencial</ion-select-option>
+                            <ion-select-option value='3'>Comercial </ion-select-option>
+                            <ion-select-option value='4'>Industrial </ion-select-option>
+                            <ion-select-option value='5'>Gobierno</ion-select-option>
+                        </ion-select>
+                    </p>
+                </ion-label>
+            </ion-item>
+
+            <ion-item>
+                <ion-label>
+                    <p>Condiciones del predio</p>
+                    <p>
+                        <ion-select interface="popover" placeholder="Selecciona uno" [(ngModel)]="idCondicionesPredio" (ionChange)="resultCondicionesPredio($event)">
+                            <ion-select-option value='1'>Casa habitada</ion-select-option>
+                            <ion-select-option value='2'>Casa sola </ion-select-option>
+                            <ion-select-option value='3'>Casa abandonada </ion-select-option>
+                            <ion-select-option value='4'>Lote baldio</ion-select-option>
+                            <ion-select-option value='5'>Predio en construccion</ion-select-option>
+                            <ion-select-option value='6'>Local comercial</ion-select-option>
+                            <ion-select-option value='7'>Local no opera</ion-select-option>
+                            <ion-select-option value='8'>Departamento</ion-select-option>
+                            <ion-select-option value='9'>Otros</ion-select-option>
+                        </ion-select>
+                    </p>
+                </ion-label>
+            </ion-item>
+
+            <div *ngIf="activaDescripcionCondicionesPredio">
+                <ion-item>
+                    <ion-label>
+                        <p>Descripcion condiciones del predio <strong>*</strong> </p>
+                        <p *ngIf="resultDescCondicionPredio" style="color: red;">Campo obligatorio</p>
+                    </ion-label>
+                    <ion-textarea rows="5" [(ngModel)]="descripcionCondicionesPredio" (ionChange)="DescCondicionPredioValidation()"></ion-textarea>
+                </ion-item>
+            </div>
+
+
+            <ion-item>
+                <ion-label>
+                    <p>Instalaciones encontradas</p>
+                    <p>
+                        <ion-select interface="popover" placeholder="Selecciona uno" [(ngModel)]="idInstalaciones" (ionChange)="resultInstalaciones($event)">
+                            <ion-select-option value='1'>Toma</ion-select-option>
+                            <ion-select-option value='2'>Medidor </ion-select-option>
+                            <ion-select-option value='3'>Descarga </ion-select-option>
+                            <ion-select-option value='4'>Toma, medidor y descarga</ion-select-option>
+                        </ion-select>
+                    </p>
+                </ion-label>
+            </ion-item>
+
+            <div *ngIf="activaTomaMaterial">
+                <ion-item>
+                    <ion-label>
+                        <p>Toma material</p>
+                        <p>
+                            <ion-select interface="popover" placeholder="Selecciona uno" [(ngModel)]="idTomaMaterial">
+                                <ion-select-option value='1'>PVC</ion-select-option>
+                                <ion-select-option value='2'>Cobre </ion-select-option>
+                                <ion-select-option value='3'>Poliducto </ion-select-option>
+                                <ion-select-option value='4'>Otro</ion-select-option>
+                            </ion-select>
+                        </p>
+                    </ion-label>
+                </ion-item>
+            </div>
+
+            <div *ngIf="activaTomaMaterial">
+                <ion-item>
+                    <ion-label>
+                        <p>Diametro de toma</p>
+                        <p>
+                            <ion-select interface="popover" placeholder="Selecciona uno" [(ngModel)]="diametro">
+                                <ion-select-option value='1/2'>1/2</ion-select-option>
+                                <ion-select-option value='3/4'>3/4 </ion-select-option>
+                                <ion-select-option value='1'>1 </ion-select-option>
+                                <ion-select-option value='1 1/2'>1 1/2</ion-select-option>
+                                <ion-select-option value='2'>2</ion-select-option>
+                            </ion-select>
+                        </p>
+                    </ion-label>
+                </ion-item>
+            </div>
+
+            <div *ngIf="activaCamposMedidor">
+                <ion-item>
+                    <ion-label>
+                        <p>Serie medidor</p>
+                    </ion-label>
+                    <ion-input class="myCustomSelect" interface="popover" [(ngModel)]="serieMedidor">
+                    </ion-input>
+                </ion-item>
+            </div>
+
+            <div *ngIf="activaCamposMedidor">
+                <ion-item>
+                    <ion-label>
+                        <p>Lectura medidor</p>
+                    </ion-label>
+                    <ion-input class="myCustomSelect" interface="popover" [(ngModel)]="lecturaMedidor">
+                    </ion-input>
+                </ion-item>
+            </div>
+
+            <div *ngIf="activaCamposMedidor">
+                <ion-item>
+                    <ion-label>
+                        <p>Marca medidor</p>
+                        <p>
+                            <ion-select interface="popover" placeholder="Selecciona uno" [(ngModel)]="idMarcaMedidor">
+                                <ion-select-option value='1'>ABB</ion-select-option>
+                                <ion-select-option value='2'>BADGER </ion-select-option>
+                                <ion-select-option value='3'>ELSTER </ion-select-option>
+                                <ion-select-option value='4'>HITRON</ion-select-option>
+                                <ion-select-option value='5'>KENT</ion-select-option>
+                                <ion-select-option value='6'>NEPTUNE</ion-select-option>
+                                <ion-select-option value='7'>SENSUS</ion-select-option>
+                                <ion-select-option value='8'>Otro</ion-select-option>
+                            </ion-select>
+                        </p>
+                    </ion-label>
+                </ion-item>
+            </div>
+
+
+
+            <div *ngIf="activaCamposMedidor">
+                <ion-item>
+                    <ion-label>
+                        <p>Diametro medidor</p>
+                        <p>
+                            <ion-select interface="popover" placeholder="Selecciona uno" [(ngModel)]="diametroMedidor">
+                                <ion-select-option value='1/2'>1/2</ion-select-option>
+                                <ion-select-option value='3/4'>3/4 </ion-select-option>
+                                <ion-select-option value='1'>1 </ion-select-option>
+                                <ion-select-option value='1 1/2'>1 1/2</ion-select-option>
+                                <ion-select-option value='2'>2</ion-select-option>
+                            </ion-select>
+                        </p>
+                    </ion-label>
+                </ion-item>
+            </div>
+
+            <div *ngIf="activaDescargaConectada">
+                <ion-item>
+                    <ion-label>
+                        <p>Estado de descarga</p>
+                        <p>
+                            <ion-select interface="popover" placeholder="Selecciona uno" [(ngModel)]="estadoDescarga">
+                                <ion-select-option value='1'>Conectada</ion-select-option>
+                                <ion-select-option value='2'>No conectada</ion-select-option>
+                            </ion-select>
+                        </p>
+                    </ion-label>
+                </ion-item>
+            </div>
+
+            <ion-item>
+                <ion-label>
+                    <p>
+                        Observacion <strong>*</strong>
+                    </p>
+                    <p *ngIf="resultObservacion" style="color: red;">Campo obligatorio</p>
+                </ion-label>
+                <ion-textarea rows="5" [(ngModel)]="observacion" (ionChange)="observacionValidation()"></ion-textarea>
+            </ion-item>
+
+        </ion-card-content>
+    </ion-card>
+
+
+
+
+
+    <ion-slides [options]="sliderOpts">
+        <ion-slide *ngFor="let img of imgs">
+            <img src={{img.imagen}} class="imagen">
+            <ion-fab-button padding size="small" (click)="deletePhoto(img.imagen)" *ngIf="img.imagen != 'assets/img/imgs.jpg'" color="danger">
+                <ion-icon name="trash"></ion-icon>
+            </ion-fab-button>
+        </ion-slide>
+    </ion-slides>
+
+    <ion-item text-center>
+        <ion-label>
+            <p>
+                Fotos de la visita
+            </p>
+
+
+            <ion-grid>
+                <ion-row>
+                    <ion-col text-center>
+                        <ion-button expand="block" color="tertiary" (click)="takePic(1)">
+                            <ion-icon name="camera"></ion-icon>
+                        </ion-button>
+                        <ion-label>Inspección</ion-label>
+                    </ion-col>
+
+                </ion-row>
+
+            </ion-grid>
+        </ion-label>
+    </ion-item>
+    <ion-button expand="block" color="tertiary" (click)="Verify()">Terminar</ion-button>
+
+
+
+</ion-content>

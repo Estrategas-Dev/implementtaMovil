@@ -95,6 +95,12 @@ export class SyncGestorPage implements OnInit {
       this.modalController.getTop().then(res => {
         this.getAccounts(this.rol);
       })
+    } else if (rol === 'Inspeccion clandestino') {
+      console.log('entra a inpeccion clandestino');
+      await this.service.getAccountToSyncInspeccion(cuenta);
+      this.modalController.getTop().then( resp => {
+        this.getAccounts(this.rol);
+      })
     }
 
    }
@@ -132,6 +138,13 @@ export class SyncGestorPage implements OnInit {
       this.modalController.getTop().then(res => {
         this.getAccounts(this.rol);
       })
+    } else if (rol === 'Inspeccion clandestino') {
+      console.log("Entra a borrar inspeccion clandestino");
+      await this.service.deleteAccountInspeccion(cuenta);
+      this.mensaje.showToast("Cuenta eliminada correctamente");
+      this.modalController.getTop().then(resp => {
+        this.getAccounts(this.rol);
+      })
     }
   }
 
@@ -147,6 +160,7 @@ export class SyncGestorPage implements OnInit {
       console.log('entra gestor')
       await this.service.getAccoutsToSyncGestor();
       await this.service.getAccoutsToSyncCartaInvitacion();
+      await this.service.getAccountsToSyncInspeccion();
       this.loading.dismiss()
       //this.mensaje.showToast('Gestiones sincronizadas correctamente')
     }
@@ -155,6 +169,7 @@ export class SyncGestorPage implements OnInit {
       await this.service.getAccoutsToSyncAbogado();
       await this.service.getAccoutsToSyncGestor();
       await this.service.getAccoutsToSyncCartaInvitacion();
+      await this.service.getAccountsToSyncInspeccion();
       this.loading.dismiss()
       //this.mensaje.showToast('Gestiones legales sicronizadas correctamente')
     }
@@ -164,6 +179,7 @@ export class SyncGestorPage implements OnInit {
       await this.service.getAccoutsToSyncGestor();
       await this.service.getAccoutsToSyncReductor();
       await this.service.getAccoutsToSyncCartaInvitacion();
+      await this.service.getAccountsToSyncInspeccion();
       this.loading.dismiss()
     } 
     // else if (this.rol == '8') {

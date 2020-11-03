@@ -12,6 +12,7 @@ import { GestionReductorPage } from '../gestion-reductor/gestion-reductor.page';
 import { GestionCallPage } from '../gestion-call/gestion-call.page';
 import { TasksLawyerPage } from '../tasks-lawyer/tasks-lawyer.page';
 import { GestionCartaInvitacionPage } from '../gestion-carta-invitacion/gestion-carta-invitacion.page';
+import { GestionInspeccionPage } from '../gestion-inspeccion/gestion-inspeccion.page';
 
 
 const routes: Routes = [
@@ -39,6 +40,10 @@ const routes: Routes = [
     path: '',
     component: GestionCartaInvitacionPage
   },
+  // {
+  //   path: '',
+  //   component: GestionInspeccionPage
+  // },
   {
     path: '',
     component: TasksLawyerPage

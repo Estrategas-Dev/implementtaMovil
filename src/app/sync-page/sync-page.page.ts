@@ -193,6 +193,7 @@ export class SyncPagePage implements OnInit {
       }
       this.storage.set("total", this.total);
       console.log("Datos a almacenar en implementta ", this.data);
+      console.log("numMedidor", this.data[0].numMedidor);
       await this.setTableVisit(this.data);
 
       await this.storage.set("IdRol", this.data[0].idRol);

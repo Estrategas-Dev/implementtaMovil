@@ -10,6 +10,7 @@ import { UsersFirebaseService } from '../services/users-firebase.service';
 import { runInThisContext } from 'vm';
 import { GestionCartaInvitacionPage } from '../gestion-carta-invitacion/gestion-carta-invitacion.page';
 import { NavController } from '@ionic/angular';
+import { GestionInspeccionPage } from '../gestion-inspeccion/gestion-inspeccion.page';
 
 @Component({
   selector: 'app-gestion-page',
@@ -17,121 +18,141 @@ import { NavController } from '@ionic/angular';
   styleUrls: ['./gestion-page.page.scss'],
 })
 export class GestionPagePage implements OnInit {
-gestor :boolean = false;
-abogado: boolean = false;
-callcenter:boolean = false;
-reductor : boolean =false;
-carta: boolean = false;
+  gestor: boolean = false;
+  abogado: boolean = false;
+  callcenter: boolean = false;
+  reductor: boolean = false;
+  carta: boolean = false;
 
-constructor( private modalController : ModalController, private storage : Storage ,private platform :Platform,private router : Router, private firebase : UsersFirebaseService, private nav:NavController  ) { }
+  constructor(private modalController: ModalController, private storage: Storage, private platform: Platform, private router: Router, private firebase: UsersFirebaseService, private nav: NavController) { }
 
- async ngOnInit() {
-  await this.platform.ready();
+  async ngOnInit() {
+    await this.platform.ready();
 
-  await this.checkRole();
+    await this.checkRole();
 
-  await this.checkProfile();
+    await this.checkProfile();
   }
-  async checkRole(){
-    this.firebase.getUserInfoAccount().subscribe(user=>{
-console.log(user)
+  async checkRole() {
+    this.firebase.getUserInfoAccount().subscribe(user => {
+      console.log(user)
 
     })
-  
+
 
   }
-  async checkProfile(){
+  async checkProfile() {
 
-  let profile = await this.storage.get("IdRol")
-  let EstatusCartaInvitacion = await this.storage.get("EstatusCartaInvitacion");
-  if(EstatusCartaInvitacion == 'Activado') {
-    this.carta = true
-  }
+    let profile = await this.storage.get("IdRol")
+    let EstatusCartaInvitacion = await this.storage.get("EstatusCartaInvitacion");
+    if (EstatusCartaInvitacion == 'Activado') {
+      this.carta = true
+    }
 
-  console.log("this is the profile :"+profile)
-  switch (profile){
-    case "2" : this.abogado = true; break;
-    case "5" : this.gestor = true ; break;
-    case "4" : this.callcenter = true; break;
-    case "7" : this.reductor = true; break;
-    //case "8" : this.carta = true; break;
-    case "1" : this.abogado= true;this.reductor=true;this.gestor=true;this.callcenter=true;break;
+    console.log("this is the profile :" + profile)
+    switch (profile) {
+      case "2": this.abogado = true; break;
+      case "5": this.gestor = true; break;
+      case "4": this.callcenter = true; break;
+      case "7": this.reductor = true; break;
+      //case "8" : this.carta = true; break;
+      case "1": this.abogado = true; this.reductor = true; this.gestor = true; this.callcenter = true; break;
+    }
   }
-}
 
   async gestionGestor() {
-   // Data = 1;
+    // Data = 1;
     const modal = await this.modalController.create({
       component: GestionGestorPage,
-     // componentProps: {
+      // componentProps: {
       //  Data:Data }
-     
+
     });
-  
-     await modal.present();
-     modal.onDidDismiss().then(data=>{
+
+    await modal.present();
+    modal.onDidDismiss().then(data => {
       //console.log(data)
       console.log('trata de salir');
       this.router.navigate(['/home/main-list']);
-     })
-  
+    })
+
   }
 
   async cartaInvitacion() {
     console.log("Entrando a carta invitacion");
     const modal = await this.modalController.create({
       component: GestionCartaInvitacionPage,
-     // componentProps: {
+      // componentProps: {
       //  Data:Data }
-     
+
     });
-  
-     await modal.present();
-     modal.onDidDismiss().then(data=>{
+
+    await modal.present();
+    modal.onDidDismiss().then(data => {
       //console.log(data)
       console.log('trata de salir')
 
       this.router.navigate(['/home/main-list']);
-     })
-  
+    })
+
   }
-  
-  async gestionAbogado() {
-     const modal = await this.modalController.create({
-       component: GestionAbogadoPage,    
-     });  
-      await modal.present(); 
-      modal.onDidDismiss().then(data=>{
-        //console.log(data)
-        console.log('trata de salir')
-        this.router.navigate(['/home/main-list']);
-      })
-   }
-   
-  async gestionReductor() {
-     const modal = await this.modalController.create({
-       component: GestionReductorPage,    
-     });
-      await modal.present();
-      modal.onDidDismiss().then(data=>{
-        //console.log(data)
-        console.log('trata de salir')
-        this.router.navigate(['/']);
-      })
-   
-   }
-   async gestionCall() {
+
+
+  async inspeccion() {
+    console.log("Entrando a inspeccion");
     const modal = await this.modalController.create({
-      component: GestionCallPage,    
+      component: GestionInspeccionPage,
+      // componentProps: {
+      //  Data:Data }
+
     });
-     await modal.present();
-     modal.onDidDismiss().then(data=>{
+
+    await modal.present();
+    modal.onDidDismiss().then(data => {
+      //console.log(data)
+      console.log('trata de salir')
+
+      this.router.navigate(['/home/main-list']);
+    })
+  }
+
+
+  async gestionAbogado() {
+    const modal = await this.modalController.create({
+      component: GestionAbogadoPage,
+    });
+    await modal.present();
+    modal.onDidDismiss().then(data => {
+      //console.log(data)
+      console.log('trata de salir')
+      this.router.navigate(['/home/main-list']);
+    })
+  }
+
+  async gestionReductor() {
+    const modal = await this.modalController.create({
+      component: GestionReductorPage,
+    });
+    await modal.present();
+    modal.onDidDismiss().then(data => {
+      //console.log(data)
+      console.log('trata de salir')
+      this.router.navigate(['/']);
+    })
+
+  }
+  async gestionCall() {
+    const modal = await this.modalController.create({
+      component: GestionCallPage,
+    });
+    await modal.present();
+    modal.onDidDismiss().then(data => {
       //console.log(data)
       console.log('trata de salir')
       this.router.navigate(['home']);
-      
-     })
+
+    })
   }
-   
+
 
 }
