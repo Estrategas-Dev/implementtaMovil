@@ -52,15 +52,15 @@ export class SyncGestorPage implements OnInit {
     } else if (rol == '7') {
       this.accounts = await this.service.getAccountsReadyToSyncReductor()
       console.log(this.accounts)
-    } 
+    }
     // else if(rol == '8') {
     //   this.accounts = await this.service.getAccountsReadyToSyncGestor()
     // }
 
   }
 
- // Sincronizar solo una cuenta
-  async syncAccount( cuenta, rol ) {
+  // Sincronizar solo una cuenta
+  async syncAccount(cuenta, rol) {
 
     // this.loading = await this.loadingCtrl.create({
     //   message: `Sincronizando la cuenta ${cuenta} servidor de implementta....`
@@ -74,21 +74,21 @@ export class SyncGestorPage implements OnInit {
       this.modalController.getTop().then(res => {
         this.getAccounts(this.rol);
       })
-    } else if(rol === 'Abogado') {
+    } else if (rol === 'Abogado') {
       console.log('entra abogado');
       await this.service.getAccountToSyncAbogado(cuenta);
       // this.loading.dimsiss()
       this.modalController.getTop().then(res => {
         this.getAccounts(this.rol);
       })
-    } else if(rol === 'Reductor') {
+    } else if (rol === 'Reductor') {
       console.log('entra Reductor');
       await this.service.getAccountToSyncReductor(cuenta);
       // this.loading.dimsiss()
       this.modalController.getTop().then(res => {
         this.getAccounts(this.rol);
       })
-    } else if(rol === 'CARTA INVITACION') {
+    } else if (rol === 'CARTA INVITACION') {
       console.log('entra carta invitacion');
       await this.service.getAccountToSyncCartaInvitacion(cuenta);
       // this.loading.dimsiss()
@@ -98,40 +98,46 @@ export class SyncGestorPage implements OnInit {
     } else if (rol === 'Inspeccion clandestino') {
       console.log('entra a inpeccion clandestino');
       await this.service.getAccountToSyncInspeccion(cuenta);
-      this.modalController.getTop().then( resp => {
+      this.modalController.getTop().then(resp => {
+        this.getAccounts(this.rol);
+      })
+    } else if (rol === 'Valores catastrales') {
+      console.log('entra a valores catastrales');
+      await this.service.getAccountToSyncValores(cuenta);
+      this.modalController.getTop().then(resp => {
         this.getAccounts(this.rol);
       })
     }
 
-   }
+  }
 
 
-   // borrar solo una cuenta
-   
-  async deleteAccount( cuenta, rol ) {
+  // borrar solo una cuenta
+
+  async deleteAccount(cuenta, rol) {
     console.log(cuenta, rol);
-    if(rol === 'Gestor') {
+    if (rol === 'Gestor') {
       console.log("Entra a borrar gestor");
-      await this.service.deleteAccountGestor(cuenta); 
+      await this.service.deleteAccountGestor(cuenta);
       this.mensaje.showToast("Cuenta eliminada correctamente");
       this.modalController.getTop().then(res => {
         this.getAccounts(this.rol);
       })
-    } else if(rol === 'Abogado') {
+    } else if (rol === 'Abogado') {
       console.log("Entra a borrar abogado");
       await this.service.deleteAccountAbogado(cuenta);
       this.mensaje.showToast("Cuenta eliminada correctamente");
       this.modalController.getTop().then(res => {
         this.getAccounts(this.rol);
       })
-    } else if(rol === 'Reductor') {
+    } else if (rol === 'Reductor') {
       console.log("Entra a borrar reductor");
       await this.service.deleteAccountReductor(cuenta);
       this.mensaje.showToast("Cuenta eliminada correctamente");
       this.modalController.getTop().then(res => {
         this.getAccounts(this.rol);
       })
-    } else if(rol === 'CARTA INVITACION') {
+    } else if (rol === 'CARTA INVITACION') {
       console.log("Entra a borrar carta invitacion");
       await this.service.deleteAccountCartaInvitacion(cuenta);
       this.mensaje.showToast("Cuenta eliminada correctamente");
@@ -141,6 +147,13 @@ export class SyncGestorPage implements OnInit {
     } else if (rol === 'Inspeccion clandestino') {
       console.log("Entra a borrar inspeccion clandestino");
       await this.service.deleteAccountInspeccion(cuenta);
+      this.mensaje.showToast("Cuenta eliminada correctamente");
+      this.modalController.getTop().then(resp => {
+        this.getAccounts(this.rol);
+      })
+    } else if (rol === 'Valores catastrales') {
+      console.log("Entra a borrar valores catastrales");
+      await this.service.deleteAccountValores(cuenta);
       this.mensaje.showToast("Cuenta eliminada correctamente");
       this.modalController.getTop().then(resp => {
         this.getAccounts(this.rol);
@@ -161,6 +174,7 @@ export class SyncGestorPage implements OnInit {
       await this.service.getAccoutsToSyncGestor();
       await this.service.getAccoutsToSyncCartaInvitacion();
       await this.service.getAccountsToSyncInspeccion();
+      await this.service.getAccountsToSyncValores();
       this.loading.dismiss()
       //this.mensaje.showToast('Gestiones sincronizadas correctamente')
     }
@@ -170,6 +184,7 @@ export class SyncGestorPage implements OnInit {
       await this.service.getAccoutsToSyncGestor();
       await this.service.getAccoutsToSyncCartaInvitacion();
       await this.service.getAccountsToSyncInspeccion();
+      await this.service.getAccountsToSyncValores();
       this.loading.dismiss()
       //this.mensaje.showToast('Gestiones legales sicronizadas correctamente')
     }
@@ -180,8 +195,9 @@ export class SyncGestorPage implements OnInit {
       await this.service.getAccoutsToSyncReductor();
       await this.service.getAccoutsToSyncCartaInvitacion();
       await this.service.getAccountsToSyncInspeccion();
+      await this.service.getAccountsToSyncValores();
       this.loading.dismiss()
-    } 
+    }
     // else if (this.rol == '8') {
     //   console.log("Entra Carta Invitacion");
     //   await this.service.getAccoutsToSyncCartaInvitacion();

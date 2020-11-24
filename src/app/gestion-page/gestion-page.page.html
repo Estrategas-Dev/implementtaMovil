@@ -62,6 +62,12 @@
                 <img src="../../assets/img/correo.png">
                 <ion-button (click)="cartaInvitacion()" expand="block" color="primary">Entrega carta invitación</ion-button>
 
+                <div *ngIf="valores">
+                    <img src="../../assets/img/billete-de-dolar.png">
+                    <ion-button (click)="valoresCatastrales()" expand="block" color="success">Valores Catastrales</ion-button>
+                </div>
+
+
                 <!-- <img src="../../assets/img/inspeccion.png">
                 <ion-button (click)="inspeccion()" expand="block" color="warning">Clandestino</ion-button> -->
 
@@ -78,6 +84,11 @@
                 <ion-button (click)="gestionGestor()" expand="block" color="tertiary">Gestión Visita</ion-button>
                 <img src="../../assets/img/correo.png">
                 <ion-button (click)="cartaInvitacion()" expand="block" color="primary">Entrega carta invitación</ion-button>
+                <div *ngIf="valores">
+                    <img src="../../assets/img/billete-de-dolar.png">
+                    <ion-button (click)="valoresCatastrales()" expand="block" color="success">Valores Catastrales</ion-button>
+                </div>
+
 
             </div>
         </div>
@@ -106,6 +117,11 @@
 
                 <!-- <img src="../../assets/img/inspeccion.png">
                 <ion-button (click)="inspeccion()" expand="block" color="warning">Clandestino</ion-button> -->
+
+                <div *ngIf="valores">
+                    <img src="../../assets/img/billete-de-dolar.png">
+                    <ion-button (click)="valoresCatastrales()" expand="block" color="success">Valores Catastrales</ion-button>
+                </div>
 
             </div>
         </div>

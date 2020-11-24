@@ -7,6 +7,10 @@ import { MessagesService } from "../services/messages.service";
 import { InAppBrowser } from "@ionic-native/in-app-browser/ngx";
 import { Geolocation } from "@ionic-native/geolocation/ngx";
 import { Clipboard } from '@ionic-native/clipboard/ngx';
+import { GestionValorescatastralesPage } from '../gestion-valorescatastrales/gestion-valorescatastrales.page';
+import { GestionValorescatastralesNoasignacionPage } from '../gestion-valorescatastrales-noasignacion/gestion-valorescatastrales-noasignacion.page';
+import { GestionNoasignacionPage } from '../gestion-noasignacion/gestion-noasignacion.page';
+
 
 @Component({
   selector: "app-main-list",
@@ -15,7 +19,7 @@ import { Clipboard } from '@ionic-native/clipboard/ngx';
 })
 export class MainListPage implements OnInit {
   ngOnInit() {
-
+    this.checkProfile();
   }
   account: any[];
   findText: string = "";
@@ -27,6 +31,7 @@ export class MainListPage implements OnInit {
   argumento = null;
   refrescar = null;
   routerSubscription:any;
+  modulosExternos: boolean = false;
   constructor(
     private mensaje: MessagesService,
     private iab: InAppBrowser,
@@ -37,12 +42,22 @@ export class MainListPage implements OnInit {
     private service: RestService,
     public loadingCtrl: LoadingController,
     private clipboard: Clipboard,
-    private activateRoute: ActivatedRoute
+    private activateRoute: ActivatedRoute,
+    private modalController: ModalController
 
   ) { 
 
   }
 
+  async checkProfile() {
+    let modulosNoAsignacion = await this.storage.get("ModulosNoAsignacion");
+
+    if( modulosNoAsignacion == 'Activado') {
+      this.modulosExternos= true;
+    }
+    console.log("valores", this.modulosExternos);
+
+  }
 
   ionViewDidEnter() {
     this.refresh();
@@ -111,6 +126,40 @@ export class MainListPage implements OnInit {
     this.router.navigate(["/detail"]);
 
   }
+
+
+  async mostrarModulos() {
+    console.log("Mostrar modulos de gestion sin asignacion");
+    const modal = await this.modalController.create({
+      component: GestionNoasignacionPage
+    });
+    await modal.present();
+    modal.onDidDismiss().then(data => {
+      console.log("trata de salir");
+      this.router.navigate(['home/main-list']);
+    })
+  }
+
+
+  // async valoresCatastrales() {
+  //   console.log("Entrando a carta valores catastrales sin asignacion");
+  //   const modal = await this.modalController.create({
+  //     component: GestionValorescatastralesNoasignacionPage,
+  //     // componentProps: {
+  //     //  Data:Data }
+
+  //   });
+
+  //   await modal.present();
+  //   modal.onDidDismiss().then(data => {
+  //     //console.log(data)
+  //     console.log('trata de salir')
+
+  //     this.router.navigate(['/home/main-list']);
+  //   })
+
+  // }
+
   async getDetail(accountNumber) {
     console.log("this is account to be saved: " + accountNumber);
     await this.storage.set("accountNumber", accountNumber);
@@ -162,6 +211,7 @@ export class MainListPage implements OnInit {
     await this.loading.present();
     await this.getInfo();
     await this.getAccountInfo();
+    await this.checkProfile();
     this.loading.dismiss()
   }
   async getPagadas() {

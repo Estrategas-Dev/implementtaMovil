@@ -1,35 +1,93 @@
-<ion-header color="light">
+<ion-header>
     <ion-toolbar>
-        <ion-segment color="secondary">
-
-
-            <ion-segment-button checked (click)="isActivated(1)">
-                <ion-icon name="home"></ion-icon>
-                <ion-label style="font-size:8px"><small>Dirección Predio</small></ion-label>
-            </ion-segment-button>
-
-            <ion-segment-button checked (click)="isActivated(2)">
-                <ion-icon name="mail"></ion-icon>
-                <ion-label style="font-size:8px"><small>Dirección Notificación</small></ion-label>
-            </ion-segment-button>
-
-            <ion-segment-button checked (click)="isActivated(3)">
-                <ion-icon name="map"></ion-icon>
-                <ion-label style="font-size:8px"><small>Mapas</small></ion-label>
-            </ion-segment-button>
-
-
-
-        </ion-segment>
+        <ion-title>Datos de contacto</ion-title>
     </ion-toolbar>
 </ion-header>
+
 <ion-content>
-
-    <div *ngIf="predio">
-
-
+    <!-- Propietario -->
+    <ion-list>
         <ion-list>
-            <ion-list inset *ngFor="let item of infoAccount">
+            <h1>Propietario</h1>
+            <ion-item>
+                <ion-label position="floating">Nombre del propietario:</ion-label>
+                <ion-input [(ngModel)]="nombrePropietario" (ionInput)="isChanged()"></ion-input>
+            </ion-item>
+
+            <ion-item>
+                <ion-label position="floating">Número de teléfono propietario:</ion-label>
+                <ion-input (ionInput)="isChanged()" [(ngModel)]="telefonoPropietario"></ion-input>
+
+            </ion-item>
+
+            <ion-item>
+                <ion-label position="floating">Número de celular propietario:</ion-label>
+                <ion-input (ionInput)="isChanged()" [(ngModel)]="celularPropietario"> </ion-input>
+
+            </ion-item>
+            <ion-item>
+                <ion-label position="floating">Correo electronico propietario:</ion-label>
+                <ion-input (ionInput)="isChanged()" [(ngModel)]="correoPropietario"></ion-input>
+            </ion-item>
+            <ion-item>
+                <ion-label>
+                    <p>Fecha de localizacion</p>
+                </ion-label>
+                <ion-datetime [(ngModel)]="fechaLocalizacion" (ionChange)="isChanged()" min={{fechaActual}}></ion-datetime>
+            </ion-item>
+            <ion-button (click)="saveConfirm(1)" color="secondary">
+                <ion-icon name="save"></ion-icon> Guardar cambios
+            </ion-button>
+
+            <!-- Usuario -->
+
+            <h1>
+                Usuario
+            </h1>
+
+            <ion-item>
+                <ion-label position="floating">Nombre del usuario:</ion-label>
+                <ion-input [(ngModel)]="nombreUsuario" (ionInput)="isChanged()"></ion-input>
+            </ion-item>
+
+
+
+            <ion-item>
+                <ion-label position="floating">Número de teléfono usuario:</ion-label>
+                <ion-input (ionInput)="isChanged()" [(ngModel)]="telefonoUsuario"></ion-input>
+
+            </ion-item>
+
+            <ion-item>
+                <ion-label position="floating">Número de celular usuario:</ion-label>
+                <ion-input (ionInput)="isChanged()" [(ngModel)]="celularUsuario"></ion-input>
+
+            </ion-item>
+            <ion-item>
+                <ion-label position="floating">Correo electronico usuario:</ion-label>
+                <ion-input (ionInput)="isChanged()" [(ngModel)]="correoUsuario"></ion-input>
+
+            </ion-item>
+
+            <ion-button (click)="saveConfirm(2)" color="secondary">
+                <ion-icon name="save"></ion-icon> Guardar cambios
+            </ion-button>
+
+        </ion-list>
+    </ion-list>
+
+
+    <ion-button *ngIf="mostrarCamposDomicilios == false" color="tertiary" expand="block" (click)="mostrarDomicilio()">Mostrar campos domicilio</ion-button>
+    <ion-button *ngIf="mostrarCamposDomicilios" color="danger" expand="block" (click)="ocultarDomicilio()">Ocultar campos domicilio</ion-button>
+
+
+    <!-- Domicilios -->
+    <div *ngIf="mostrarCamposDomicilios">
+        <h1>
+            Domicilio
+        </h1>
+        <ion-list>
+            <ion-list>
                 <ion-item>
                     <ion-label position="floating">Calle:</ion-label>
                     <ion-input [(ngModel)]="callePredio" (ionInput)="detectedChanges()"></ion-input>
@@ -116,11 +174,16 @@
         <ion-button color="secondary" expand="block" (click)="saveChanges(1)">
             <ion-icon name="save"></ion-icon>Guardar cambios</ion-button>
         <ion-button color="secondary" expand="block" (click)="getDirection(1)">Obtener dirección Auto</ion-button>
-    </div>
-    <div *ngIf="notificacion">
+
+
+        <!-- Domicilios de notificacion -->
+
+        <h1>
+            Domicilio de notificación
+        </h1>
 
         <ion-list>
-            <ion-list inset *ngFor="let item of infoAccount">
+            <ion-list>
                 <ion-item>
                     <ion-label position="floating">Calle:</ion-label>
                     <ion-input [(ngModel)]="calleNotificacion" (ionInput)="detectedChanges()"></ion-input>
@@ -197,28 +260,10 @@
                     <ion-label position="floating">Referencias:</ion-label>
                     <ion-textarea [(ngModel)]="referenciaNotificacion" (ionInput)="detectedChanges()"></ion-textarea>
                 </ion-item>
-
-
-
-
             </ion-list>
         </ion-list>
         <ion-button color="secondary" expand="block" (click)="saveChanges(2)">
             <ion-icon name="save"></ion-icon>Guardar cambios</ion-button>
         <ion-button color="secondary" expand="block" (click)="getDirection(2)">Obtener dirección Auto</ion-button>
-
     </div>
-    <div *ngIf="mapa">
-        <br>
-        <br>
-        <br>
-
-        <ion-button color="secondary" expand="block" (click)="goArcgis()">Ver mapa Arcgis</ion-button>
-        <ion-button color="secondary" expand="block" (click)="openLink()">Ver indicaciones Google Maps</ion-button>
-
-    </div>
-
-
-
-
 </ion-content>

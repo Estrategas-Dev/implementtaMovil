@@ -51,6 +51,9 @@
         </ion-refresher-content>
     </ion-refresher>
 
+    <!-- <ion-button *ngIf="valores" color="light" expand="block" (click)="valoresCatastrales()">Valores catastrales</ion-button> -->
+    <ion-button *ngIf="modulosExternos" color="light" expand="block" (click)="mostrarModulos()"> Modulos sin asignación </ion-button>
+
     <div *ngIf="account">
         <ion-virtual-scroll [items]="account | filtro : findText ">
             <ion-item-sliding *virtualItem="let item">

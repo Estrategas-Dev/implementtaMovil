@@ -11,6 +11,7 @@ import { runInThisContext } from 'vm';
 import { GestionCartaInvitacionPage } from '../gestion-carta-invitacion/gestion-carta-invitacion.page';
 import { NavController } from '@ionic/angular';
 import { GestionInspeccionPage } from '../gestion-inspeccion/gestion-inspeccion.page';
+import { GestionValorescatastralesPage } from '../gestion-valorescatastrales/gestion-valorescatastrales.page';
 
 @Component({
   selector: 'app-gestion-page',
@@ -23,6 +24,7 @@ export class GestionPagePage implements OnInit {
   callcenter: boolean = false;
   reductor: boolean = false;
   carta: boolean = false;
+  valores: boolean = false;
 
   constructor(private modalController: ModalController, private storage: Storage, private platform: Platform, private router: Router, private firebase: UsersFirebaseService, private nav: NavController) { }
 
@@ -36,7 +38,6 @@ export class GestionPagePage implements OnInit {
   async checkRole() {
     this.firebase.getUserInfoAccount().subscribe(user => {
       console.log(user)
-
     })
 
 
@@ -45,8 +46,13 @@ export class GestionPagePage implements OnInit {
 
     let profile = await this.storage.get("IdRol")
     let EstatusCartaInvitacion = await this.storage.get("EstatusCartaInvitacion");
+    let estatusValoresCatastrales = await this.storage.get("estatusValores");
     if (EstatusCartaInvitacion == 'Activado') {
       this.carta = true
+    }
+
+    if( estatusValoresCatastrales == 'Activado') {
+      this.valores= true;
     }
 
     console.log("this is the profile :" + profile)
@@ -98,10 +104,11 @@ export class GestionPagePage implements OnInit {
   }
 
 
-  async inspeccion() {
-    console.log("Entrando a inspeccion");
+
+  async valoresCatastrales() {
+    console.log("Entrando a carta valores catastrales");
     const modal = await this.modalController.create({
-      component: GestionInspeccionPage,
+      component: GestionValorescatastralesPage,
       // componentProps: {
       //  Data:Data }
 
@@ -114,7 +121,27 @@ export class GestionPagePage implements OnInit {
 
       this.router.navigate(['/home/main-list']);
     })
+
   }
+
+
+  // async inspeccion() {
+  //   console.log("Entrando a inspeccion");
+  //   const modal = await this.modalController.create({
+  //     component: GestionInspeccionPage,
+  //     // componentProps: {
+  //     //  Data:Data }
+
+  //   });
+
+  //   await modal.present();
+  //   modal.onDidDismiss().then(data => {
+  //     //console.log(data)
+  //     console.log('trata de salir')
+
+  //     this.router.navigate(['/home/main-list']);
+  //   })
+  // }
 
 
   async gestionAbogado() {

@@ -41,6 +41,10 @@ const routes: Routes = [
   { path: 'reload-photos-date', loadChildren: './reload-photos-date/reload-photos-date.module#ReloadPhotosDatePageModule' },
   { path: 'gestion-carta-invitacion', loadChildren: './gestion-carta-invitacion/gestion-carta-invitacion.module#GestionCartaInvitacionPageModule' },
   { path: 'gestion-inspeccion', loadChildren: './gestion-inspeccion/gestion-inspeccion.module#GestionInspeccionPageModule' },
+  { path: 'gestion-valorescatastrales', loadChildren: './gestion-valorescatastrales/gestion-valorescatastrales.module#GestionValorescatastralesPageModule' },
+  { path: 'gestion-valorescatastrales-noasignacion', loadChildren: './gestion-valorescatastrales-noasignacion/gestion-valorescatastrales-noasignacion.module#GestionValorescatastralesNoasignacionPageModule' },
+  { path: 'gestion-noasignacion', loadChildren: './gestion-noasignacion/gestion-noasignacion.module#GestionNoasignacionPageModule' },
+  { path: 'contact-detail', loadChildren: './contact-detail/contact-detail.module#ContactDetailPageModule' },
 
 
 

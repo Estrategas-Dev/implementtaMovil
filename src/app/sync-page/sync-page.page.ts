@@ -199,7 +199,9 @@ export class SyncPagePage implements OnInit {
       await this.storage.set("IdRol", this.data[0].idRol);
       await this.storage.set("TipoPlazaServicio", this.data[0].TipoPlazaServicio);
       await this.storage.set("EstatusCartaInvitacion", this.data[0].EstatusCartaInvitacion);
+      await this.storage.set("estatusValores", this.data[0].EstatusValores);
       await this.storage.set("rutaArcgis", this.data[0].rutaArcgis);
+      await this.storage.set("ModulosNoAsignacion", this.data[0].ModulosNoAsignacion);
       console.log("TipoPlazaServicio" , this.storage.get("TipoPlazaServicio"));
       console.log("Ruta Arcgis: " , this.storage.get("rutaArcgis"));
 

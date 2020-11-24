@@ -15,6 +15,7 @@ import { AngularFirestore } from "@angular/fire/firestore";
 import { UsersFirebaseService } from "../services/users-firebase.service";
 import { Router } from "@angular/router";
 import { AuthService } from '../services/auth.service';
+import { ContactDetailPage } from '../contact-detail/contact-detail.page';
 
 
 @Component({
@@ -108,16 +109,9 @@ export class GestionInspeccionPage implements OnInit {
     //this.obtenerIdAspUser();
   }
 
- // @ViewChild('CampoCuenta') cuentaFoco;
+  // @ViewChild('CampoCuenta') cuentaFoco;
 
   async ngOnInit() {
-    let active = await this.storage.get("ActivateApp");
-    if (active != 1) { 
-      this.mensaje.showAlert(
-        "Debes activar la aplicación para poder sincronizar"
-      );
-      this.router.navigate(["home/config-page"])
-    }
     await this.platform.ready();
     await this.getInfoAccount();
     this.getFechaActual();
@@ -125,16 +119,16 @@ export class GestionInspeccionPage implements OnInit {
   }
 
   ionViewDidEnter() {
-    this.refresh();
+    //this.refresh();
     console.log('Entra a el didenter')
   }
 
- async refresh() {
-    // let usuario = await this.storage.get("Email");
-    // let password = await this.storage.get("Password");
-    // this.authService.login(usuario, password);
-    this.exit();
-  }
+  // async refresh() {
+  //   // let usuario = await this.storage.get("Email");
+  //   // let password = await this.storage.get("Password");
+  //   // this.authService.login(usuario, password);
+  //   this.exit();
+  // }
 
 
   async obtenerIdAspUser() {
@@ -143,13 +137,13 @@ export class GestionInspeccionPage implements OnInit {
     return idAspUserObtenido;
   }
 
-  // ionViewWillLeave() {
-  //   if (this.detectedChanges) {
-  //     this.mensaje.showAlert(
-  //       "La gestión no se guardará, tendras que capturar de nuevo"
-  //     );
-  //   }
-  // }
+  ionViewWillLeave() {
+    if (this.detectedChanges) {
+      this.mensaje.showAlert(
+        "La gestión no se guardará, tendras que capturar de nuevo"
+      );
+    }
+  }
 
   sliderOpts = {
     zoom: true,
@@ -196,7 +190,7 @@ export class GestionInspeccionPage implements OnInit {
   }
 
 
-  async verificarCuenta( event ) {
+  async verificarCuenta(event) {
     console.log("La cuenta es la ", this.cuenta);
     let cuentaInvestigada = this.cuenta
     // llamar al api con el store para sabes si esta cuenta esta o no en el padron 
@@ -299,73 +293,79 @@ export class GestionInspeccionPage implements OnInit {
 
   // --------------------------------------------------------------------------------------------------------------------
 
+  // exit() {
+  //   // Damos por hecho que la informacion ya se guardo correctamente en la tabla de gestionInspeccion por ende borrarmos toda la informacion de los campos asi como los campos de las imagenes
+  //   this.cuenta = '';
+  //   this.clave = '';
+  //   this.medidor = '';
+  //   this.idTipoClandestino = 0; // obligatorio
+  //   this.idContratada = 0; // obligatorio si idTipoClandestino es igual a 1
+  //   this.descripcionClandestino = ''; // obligatorio si idTipoClandestino = 2 en adelante
+  //   this.tipoServicioImplementta = null; // Traido desde el implementta
+  //   this.idTipoServicioDetectado = 0;
+  //   this.idCondicionesPredio = 0; // obligatorio
+  //   this.descripcionCondicionesPredio = '';
+  //   this.idInstalaciones = 0;
+  //   this.idTomaMaterial = 0;
+  //   this.diametro = '';
+  //   this.estadoDescarga = 0;
+  //   this.serieMedidor = '';
+  //   this.lecturaMedidor = 0;
+  //   this.idMarcaMedidor = 0;
+  //   this.diametroMedidor = '';
+  //   this.observacion = ''; // obligatorio
+
+  //   //atributos generales 
+  //   this.latitud = 0;
+  //   this.longitud = 0;
+  //   this.image = "";
+  //   this.fechaCaptura = "";
+  //   //this.idAspuser = "";
+
+  //   //userInfo: any;
+  //   this.imgs = '';
+  //   this.imgs = [{ imagen: "assets/img/imgs.jpg" }];
+  //   this.takePhoto = false;
+  //   this.indicadorImagen = 0;
+  //   this.isPhoto = false;
+  //   this.idTareaGestor = 0;
+  //   this.account = '';
+  //   this.fechaActual = '';
+  //   //this.infoAccount = '';
+  //   //idAccountSqlite: number;
+  //   this.tareaAsignada = '';
+  //   this.infoImage = [];
+  //   this.detectedChanges = false;
+
+
+
+  //   // Activar o desactivar campos segun validaciones
+  //   this.activaContratada = false;
+  //   this.activaDescripcionClandestino = false;
+  //   this.activaDescripcionCondicionesPredio = false;
+  //   this.activaTomaMaterial = false;
+  //   this.activaCamposMedidor = false;
+  //   this.activaDescargaConectada = false;
+
+
+  //   //Validacion de campos obligatorios
+  //   this.resultClandestinoValidation = false;
+  //   this.resultContratadaValidation = false;
+  //   this.resultDescripcionValidation = false;
+  //   this.resultDescCondicionPredio = false;
+  //   this.resultObservacion = false;
+
+  //   // arreglo de la cuenta que se trae del implementta
+  //   this.cuentaInformacion = '';
+  //   this.cuentaPadron = undefined;
+  //   //this.cuentaFoco.setFocus();
+  // }
+
   exit() {
-    // Damos por hecho que la informacion ya se guardo correctamente en la tabla de gestionInspeccion por ende borrarmos toda la informacion de los campos asi como los campos de las imagenes
-    this.cuenta = '';
-    this.clave = '';
-    this.medidor = '';
-    this.idTipoClandestino = 0; // obligatorio
-    this.idContratada = 0; // obligatorio si idTipoClandestino es igual a 1
-    this.descripcionClandestino = ''; // obligatorio si idTipoClandestino = 2 en adelante
-    this.tipoServicioImplementta = null; // Traido desde el implementta
-    this.idTipoServicioDetectado = 0;
-    this.idCondicionesPredio = 0; // obligatorio
-    this.descripcionCondicionesPredio = '';
-    this.idInstalaciones = 0;
-    this.idTomaMaterial = 0;
-    this.diametro = '';
-    this.estadoDescarga = 0;
-    this.serieMedidor = '';
-    this.lecturaMedidor = 0;
-    this.idMarcaMedidor = 0;
-    this.diametroMedidor = '';
-    this.observacion = ''; // obligatorio
-
-    //atributos generales 
-    this.latitud = 0;
-    this.longitud = 0;
-    this.image = "";
-    this.fechaCaptura = "";
-    //this.idAspuser = "";
-    
-    //userInfo: any;
-    this.imgs = '';
-    this.imgs = [{ imagen: "assets/img/imgs.jpg" }];
-    this.takePhoto = false;
-    this.indicadorImagen = 0;
-    this.isPhoto = false;
-    this.idTareaGestor = 0;
-    this.account = '';
-    this.fechaActual = '';
-    //this.infoAccount = '';
-    //idAccountSqlite: number;
-    this.tareaAsignada = '';
-    this.infoImage = [];
-    this.detectedChanges = false;
-
-
-
-    // Activar o desactivar campos segun validaciones
-    this.activaContratada = false;
-    this.activaDescripcionClandestino = false;
-    this.activaDescripcionCondicionesPredio = false;
-    this.activaTomaMaterial = false;
-    this.activaCamposMedidor = false;
-    this.activaDescargaConectada = false;
-
-
-    //Validacion de campos obligatorios
-    this.resultClandestinoValidation = false;
-    this.resultContratadaValidation = false;
-    this.resultDescripcionValidation = false;
-    this.resultDescCondicionPredio = false;
-    this.resultObservacion = false;
-
-    // arreglo de la cuenta que se trae del implementta
-    this.cuentaInformacion = '';
-    this.cuentaPadron = undefined;
-    //this.cuentaFoco.setFocus();
+    this.modalController.dismiss();
   }
+
+
 
   async takePic(type) {
     let tipo;
@@ -480,7 +480,7 @@ export class GestionInspeccionPage implements OnInit {
       this.idUser = await this.storage.get('IdAspUser');
       let data = {
         cuenta: this.cuenta,
-        clave: this.clave,
+        clave: this.clave.toLocaleUpperCase(),
         medidor: this.medidor,
         tipoClandestino: this.idTipoClandestino,
         contratada: this.idContratada,
@@ -602,6 +602,28 @@ export class GestionInspeccionPage implements OnInit {
   }
 
 
+
+  async datosContacto() {
+    if(this.cuenta == '') {
+      this.mensaje.showAlert("Para mostrar el formulario de contacto primero debes capturar el campo cuenta");
+    } else  {
+      console.log("Entrando al formulario de contacto de la inspeccion");
+      const modal = await this.modalController.create({
+        component: ContactDetailPage,
+        componentProps: {
+         account:this.cuenta 
+        }
+      });
+  
+      await modal.present();
+      modal.onDidDismiss().then(data => {
+        //console.log(data)
+        console.log('trata de salir')
+  
+        this.router.navigate(['/home/main-list']);
+      })
+    }
+  }
 
 
 

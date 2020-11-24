@@ -24,6 +24,7 @@ export class QuerysService {
     let tablePropietario = `CREATE TABLE IF NOT EXISTS  propietario (id INTEGER PRIMARY KEY AUTOINCREMENT, cuenta TEXT, nombre TEXT, telefono TEXT, celular TEXT , correo TEXT, fecha TEXT, fechaCaptura text, idaspUser text, idRol text, type INTEGER NOT NULL DEFAULT 0, cargado INTEGER NOT NULL DEFAULT 0 )`;
     let tableReductor = `CREATE TABLE IF NOT EXISTS gestionReductor (id INTEGER PRIMARY KEY AUTOINCREMENT,account TEXT,idTarea INTEGER,idDescripcion INTEGER, idObservaciones INTEGER,idaspuser TEXT,lectura TEXT,conclusiones TEXT, personaContacto TEXT, telefonoContacto TEXT,fechaPromesa TEXT, fechaCaptura TEXT, fechaProximaRev TEXT, latitud TEXT, longitud TEXT, niple INTEGER, horaIni TEXT, horaFin TEXT, idTipoServicio INTEGER, idEstatusToma INTEGER, idTipoToma INTEGER, descripcionTomaDirecta TEXT, idDescripcionMulta INTEGER, idDetalle INTEGER, idMedidorTapado INTEGER, idTipoReductor INTEGER, noCincho TEXT, idEstatusRequerimiento INTEGER, cargado INTEGER NOT NULL DEFAULT 0  )`;
     let tableCarta = `CREATE TABLE IF NOT EXISTS gestionCartaInvitacion (id INTEGER PRIMARY KEY AUTOINCREMENT,account TEXT,idTarea INTEGER,idaspuser TEXT,fechaCaptura TEXT,latitud TEXT, longitud TEXT,cargado INTEGER NOT NULL DEFAULT 0  )`;
+    let tableValores = `CREATE TABLE IF NOT EXISTS gestionValoresCatastrales (id INTEGER PRIMARY KEY AUTOINCREMENT, account TEXT, supConstruccion TEXT, supTerreno TEXT, valConstruccion TEXT, valTerreno TEXT, valCatastral TEXT, idTipoSuelo INTEGER, observacion TEXT, idAspUser TEXT, fechaCaptura TEXT, latitud TEXT, longitud TEXT, cargado INTEGER NOT NULL DEFAULT 0 )` ;
     let tableInspeccion = `CREATE TABLE IF NOT EXISTS gestionInspeccion (id INTEGER PRIMARY KEY AUTOINCREMENT, account TEXT, clave TEXT, serieMedidor TEXT, idTipoClandestino INTEGER, idContratada INTEGER, descripcionClandestino TEXT, idTipoServicioDetectado INTEGER, idCondicionPredio INTEGER, descripcionCondicionPredio TEXT, idInstalacionesEncontradas INTEGER, idTomaMaterial INTEGER, diametroToma TEXT, serieMedidorDetectado TEXT, lecturaMedidor TEXT, idMarcaMedidor INTEGER, diametroMedidor TEXT, idEstadoDescarga INTEGER, observacion TEXT, idTarea INTEGER, idaspuser TEXT, fechaCaptura TEXT, latitud TEXT, longitud TEXT, cargado INTEGER NOT NULL DEFAULT 0  )`
     let tableDomicilios = `CREATE TABLE IF NOT EXISTS domicilios(id INTEGER PRIMARY KEY AUTOINCREMENT, cuenta TEXT,calle TEXT, manzana TEXT, lote TEXT, numExt  TEXT, numInterior TEXT, colonia TEXT, poblacion TEXT, cp TEXT, entreCalle1 TEXT, entreCalle2 TEXT,referencia TEXT, fechaCaptura text, idaspUser text, idRol text, type INTEGER NOT NULL DEFAULT 0, cargado INTEGER NOT NULL DEFAULT 0)`;
     let tables = {
@@ -35,6 +36,7 @@ export class QuerysService {
       tablePropietario,
       tableReductor,
       tableCarta,
+      tableValores,
       tableInspeccion,
       tableDomicilios
     };
