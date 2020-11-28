@@ -518,6 +518,66 @@ export class RestService {
     let sqlDelete = "DELETE from implementta";
     this.db.executeSql(sqlDelete, []);
   }
+
+
+  deleteGestionesGestor() {
+    let sqlDeleteGestor = "DELETE from gestionGestor";
+    this.db.executeSql(sqlDeleteGestor, []);
+  }
+
+  deleteGestionesCarta() {
+    let sqlDeleteCarta = "DELETE from gestionCartaInvitacion";
+    this.db.executeSql(sqlDeleteCarta, []);
+  }
+  
+  deleteAbogado() {
+    let sqlDeleteAbogado = "DELETE from gestionAbogado";
+    this.db.executeSql(sqlDeleteAbogado, []);
+  }
+
+  deleteReductores() {
+    let sqlDeleteReductores = "DELETE from gestionReductor";
+    this.db.executeSql(sqlDeleteReductores, []);
+  }
+
+  deleteInspeccion() {
+    let sqlDeleteInspeccion = "DELETE from gestionInspeccion";
+    this.db.executeSql(sqlDeleteInspeccion, []);
+  }
+
+  deleteValoresCatastrales() {
+    let sqlDeleteValores = "DELETE from gestionValoresCatastrales";
+    this.db.executeSql(sqlDeleteValores, []);
+  };
+
+  deleteDomicilios() {
+    let sqlDeleteDomciilios = "DELETE from domicilios";
+    this.db.executeSql(sqlDeleteDomciilios, []);
+  }
+
+  deleteDatos() {
+    let sqlDeletePropietarios = "DELETE from propietario";
+    this.db.executeSql(sqlDeletePropietarios, []);
+  }
+
+  deleteFotos() {
+    let sqlDeleteFotos = "DELETE from capturaFotos";
+    this.db.executeSql(sqlDeleteFotos, []);
+  }
+
+  deleteInfo() {
+    this.deleteVisit();
+    this.deleteAbogado();
+    this.deleteGestionesGestor();
+    this.deleteGestionesCarta();
+    this.deleteReductores();
+    this.deleteInspeccion();
+    this.deleteValoresCatastrales();
+    this.deleteDomicilios();
+    this.deleteDatos();
+    this.deleteFotos();
+  }
+
   setVisit(data: any) {
     // sincroniza las cuentas  a la base interna sqlite
 

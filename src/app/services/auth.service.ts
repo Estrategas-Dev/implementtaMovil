@@ -4,6 +4,8 @@ import { Router } from '@angular/router';
 import { Storage } from '@ionic/storage';
 import { AngularFirestore } from "@angular/fire/firestore";
 import { MessagesService } from './messages.service';
+import { RestService } from './rest.service';
+import { rejects } from 'assert';
 
 
 
@@ -14,7 +16,7 @@ import { MessagesService } from './messages.service';
 export class AuthService {
   userInfo: any
 
-  constructor(public AFauth: AngularFireAuth, public router: Router, private storage: Storage, private db: AngularFirestore, private mensaje: MessagesService) {
+  constructor(public AFauth: AngularFireAuth, public router: Router, private storage: Storage, private db: AngularFirestore, private mensaje: MessagesService, private restService:RestService) {
 
   }
 
@@ -22,39 +24,50 @@ export class AuthService {
     return new Promise((resolve, rejected) => {
       this.AFauth.auth.signInWithEmailAndPassword(email, password).then(user => {
         const id = user.user.uid
-
-        let createSusbcribe =
-          this.getUserInfo(id).subscribe(async user => {
+        let createSusbcribe = this.getUserInfo(id).subscribe(async user => {
             this.userInfo = user
             console.log(this.userInfo)
-            console.log(this.userInfo.IMEI)
-            if (this.userInfo.isActive) {
-              console.log(this.userInfo.isActive)
-              if (this.userInfo.IMEI == '') {
+            console.log(this.userInfo.email)
+            if (this.userInfo.isActive) { // Usuario activado
+              console.log("Usuario activado",this.userInfo.isActive)
+              if (this.userInfo.IMEI == '') { 
+                console.log("Es un usuario nuevo o se le ha borrado el id");
                 createSusbcribe.unsubscribe();
                 this.saveUserInfoStorage(this.userInfo);
                 await this.storage.set("idFireBase", id)
                 await this.storage.set("ActivateApp", "0");
-                
                 resolve(user)
-              } else {
-                let imeiLocal = await this.storage.get("IMEI")
-                let user = await this.storage.get("Nombre")
-                if (this.userInfo.IMEI == imeiLocal) {
+              } 
+              else { 
+                console.log("El usuario no es nuevo o se le ha borado el id");
+                let emailLocal = await this.storage.get("Email");
+                let nombreUser = await this.storage.get("Nombre")
+                console.log("El email del usuario con la sesion anterior es ", emailLocal);
+                console.log("El usuario con la sesion anterior es ", nombreUser);
+                if (this.userInfo.email == emailLocal) {
+                  console.log("Misma sesion del usuario en turno, correo en el storage mismo al correo ingresado");
                   createSusbcribe.unsubscribe();
-                  this.mensaje.showAlert("Bienvenido " + user);
+                  this.mensaje.showAlert("Bienvenid@ " + nombreUser);
                   this.saveUserInfoStorage(this.userInfo);
-                  resolve(user)
-                } else {
+                  resolve(nombreUser)
+                } 
+                else {
+                  console.log("Correo en el storage diferente al ingresado, puede ser null el correo en el storage");
                   createSusbcribe.unsubscribe();
-                  this.mensaje.showAlert("Este usuario ha iniciado sesión en el dispositivo con Id: <strong>" + this.userInfo.IMEI + '</strong> con fecha <strong>' + this.userInfo.lastSession + '</strong>')
-
-                  this.logout();
-                  rejected("Error");
+                  this.saveUserInfoStorage(this.userInfo);
+                  let nombreUsuario = await this.storage.get("Nombre")
+                  await this.storage.set("idFireBase", id)
+                  await this.storage.set("ActivateApp", "0");
+                  await this.storage.set("total", null);
+                  await this.storage.set("FechaSync", null);
+                  this.restService.deleteInfo();
+                  console.log(nombreUsuario);
+                  resolve(nombreUsuario)
                 }
                 createSusbcribe.unsubscribe();
-              }
-            } else {
+              } // no ha ingresado por primera vez
+            } // this.userinfo is active
+            else {
               this.mensaje.showAlert('Tu usario está desactivado');
               this.logout();
               // rejected("Error");
@@ -69,7 +82,12 @@ export class AuthService {
 
   }
 
+
+
+
+
   saveUserInfoStorage(userInfo: any) {
+    console.log("Guardar los datos del usuario en el storage");
     this.storage.set('Nombre', userInfo.name);
     this.storage.set('Email', userInfo.email);
     this.storage.set('IdAspUser', userInfo.idaspuser);

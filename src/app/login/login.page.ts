@@ -41,7 +41,7 @@ export class LoginPage implements OnInit {
       message: 'Iniciando sesión...'
     });
     await this.loading.present();
-    this.authService.login(this.email, this.password).then(async res => {
+    await this.authService.login(this.email, this.password).then(async res => {
 
       console.log(res)
       //this.router.navigateByUrl('/home',{ skipLocationChange: false });

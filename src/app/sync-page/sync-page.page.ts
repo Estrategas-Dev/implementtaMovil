@@ -170,7 +170,7 @@ export class SyncPagePage implements OnInit {
   async sync() {/////////////////////////sincronizacion todos los perfiles
     this.progress = true;
     let active = await this.storage.get("ActivateApp");
-    if (active == "1") {
+    // if (active == "1") {
       this.deleteTable();
 
       this.loading = await this.loadingCtrl.create({
@@ -226,11 +226,11 @@ export class SyncPagePage implements OnInit {
       // navigator.app.loadUrl("file:///android_asset/www/index.html");
       // setTimeout(document.location.href ='index.html',2000)
       //document.location.href = 'index.html';
-    } else {
-      this.mensaje.showAlert(
-        "Debes activar la aplicación para poder sincronizar"
-      );
-    }
+    // } else {
+    //   this.mensaje.showAlert(
+    //     "Debes activar la aplicación para poder sincronizar"
+    //   );
+    // }
   }
 
   async setTableVisit(data) {
