@@ -261,16 +261,26 @@ export class SyncPagePage implements OnInit {
   viewSync() {
     this.activeSync = !this.activeSync;
   }
+  // async getChecador() {
+  //   let active = await this.storage.get("ActivateApp");
+  //   if (active == "1") {
+  //     this.router.navigateByUrl("/checador-home");
+  //   } else {
+  //     this.mensaje.showAlert(
+  //       "Debes activar la aplicación para poder checar tu asistencia"
+  //     );
+  //   }
+  // }
+
   async getChecador() {
     let active = await this.storage.get("ActivateApp");
-    if (active == "1") {
-      this.router.navigateByUrl("/checador-home");
-    } else {
-      this.mensaje.showAlert(
-        "Debes activar la aplicación para poder checar tu asistencia"
-      );
-    }
+    console.log(active);
+    this.router.navigateByUrl("/checador-home");
   }
+
+
+
+
   async getCountPhotos() {
     this.totalFotos = await this.service.getCountPhotos();
     this.totalSincronizados = await this.service.getCountPhotosSync();

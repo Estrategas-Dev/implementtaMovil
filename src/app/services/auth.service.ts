@@ -35,7 +35,7 @@ export class AuthService {
                 createSusbcribe.unsubscribe();
                 this.saveUserInfoStorage(this.userInfo);
                 await this.storage.set("idFireBase", id)
-                await this.storage.set("ActivateApp", "0");
+                await this.storage.set("ActivateApp", "1");
                 resolve(user)
               } 
               else { 
@@ -57,7 +57,7 @@ export class AuthService {
                   this.saveUserInfoStorage(this.userInfo);
                   let nombreUsuario = await this.storage.get("Nombre")
                   await this.storage.set("idFireBase", id)
-                  await this.storage.set("ActivateApp", "0");
+                  await this.storage.set("ActivateApp", "1");
                   await this.storage.set("total", null);
                   await this.storage.set("FechaSync", null);
                   this.restService.deleteInfo();

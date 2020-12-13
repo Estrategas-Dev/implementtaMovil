@@ -10,6 +10,7 @@ import { UsersConfigPage } from '../users-config/users-config.page';
 import { MessagesService } from '../services/messages.service';
 import { Camera, CameraOptions } from '@ionic-native/camera/ngx';
 import { WebView } from '@ionic-native/ionic-webview/ngx';
+import { InAppBrowser } from '@ionic-native/in-app-browser/ngx';
 
 @Component({
   selector: 'app-config-page',
@@ -24,7 +25,7 @@ export class ConfigPagePage implements OnInit {
 
   constructor(private uniqueDeviceID: UniqueDeviceID, private db: AngularFirestore, private modalController: ModalController,
     private storage: Storage, private auth: AuthService, private loadingCtrl: LoadingController, private mensaje: MessagesService,
-    private camera: Camera, private webview: WebView) {
+    private camera: Camera, private webview: WebView, private iab: InAppBrowser) {
 
   }
 
@@ -53,6 +54,13 @@ export class ConfigPagePage implements OnInit {
   exit() {
     this.auth.logout();
   }
+
+  irSoporte() {
+    let url = "https://implementtasoporte.web.app/"
+    this.iab.create(url, "_system", { location: 'yes', zoom: 'yes' });
+  }
+
+
 
 
   async activate() {

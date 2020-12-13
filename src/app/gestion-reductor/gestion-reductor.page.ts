@@ -188,12 +188,12 @@ export class GestionReductorPage implements OnInit {
 
     let options: CameraOptions = {
       quality: 40,
+      correctOrientation: true,
       destinationType: this.camera.DestinationType.FILE_URI,
       sourceType: this.camera.PictureSourceType.CAMERA,
       encodingType: this.camera.EncodingType.JPEG,
-      targetHeight: 1000,
-      targetWidth: 1000,
-      saveToPhotoAlbum: true
+      mediaType: this.camera.MediaType.PICTURE
+      // ,saveToPhotoAlbum: true
     };
     this.camera
       .getPicture(options)
