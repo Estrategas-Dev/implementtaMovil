@@ -15,6 +15,88 @@
 
 <ion-content padding>
 
+
+    <ion-card>
+        <ion-card-content>
+            <ion-item>
+                <ion-label>
+                    <p>Tipo de servicio</p>
+                    <p> {{tipoServicioImplementta}} </p>
+                </ion-label>
+            </ion-item>
+
+            <ion-item *ngIf="tipoServicioImplementta == 'C' ">
+                <ion-label>
+                    <p>Cambiar servicio</p>
+                    <p>
+                        <ion-select interface="popover" placeholder="Selecciona uno" [(ngModel)]="idTipoServicio">
+                            <ion-select-option value='2'>Comercial a Residencial</ion-select-option>
+                            <ion-select-option value='3'>Comercial a Industrial </ion-select-option>
+                            <ion-select-option value='4'>Comercial a Gobierno </ion-select-option>
+                            <ion-select-option value='5'>No aplica</ion-select-option>
+                        </ion-select>
+                    </p>
+                </ion-label>
+            </ion-item>
+
+            <ion-item *ngIf="tipoServicioImplementta == 'I' ">
+                <ion-label>
+                    <p>Cambiar servicio</p>
+                    <p>
+                        <ion-select interface="popover" placeholder="Selecciona uno" [(ngModel)]="idTipoServicio">
+                            <ion-select-option value='2'>Industrial a Residencial</ion-select-option>
+                            <ion-select-option value='1'>Industrial a Comercial </ion-select-option>
+                            <ion-select-option value='4'>Industrial a Gobierno </ion-select-option>
+                            <ion-select-option value='5'>No aplica</ion-select-option>
+                        </ion-select>
+                    </p>
+                </ion-label>
+            </ion-item>
+
+            <ion-item *ngIf="tipoServicioImplementta == 'G' ">
+                <ion-label>
+                    <p>Cambiar servicio</p>
+                    <p>
+                        <ion-select interface="popover" placeholder="Selecciona uno" [(ngModel)]="idTipoServicio">
+                            <ion-select-option value='2'>Gobierno a Residencial</ion-select-option>
+                            <ion-select-option value='1'>Gobierno a Comercial </ion-select-option>
+                            <ion-select-option value='3'>Gobierno a Industrial </ion-select-option>
+                            <ion-select-option value='5'>No aplica</ion-select-option>
+                        </ion-select>
+                    </p>
+                </ion-label>
+            </ion-item>
+
+            <ion-item *ngIf="tipoServicioImplementta == 'R' ">
+                <ion-label>
+                    <p>Cambiar servicio</p>
+                    <p>
+                        <ion-select interface="popover" placeholder="Selecciona uno" [(ngModel)]="idTipoServicio">
+                            <ion-select-option value='1'>Residencial a Comercial</ion-select-option>
+                            <ion-select-option value='3'>Residencial a Industrial </ion-select-option>
+                            <ion-select-option value='4'>Residencial a Gobierno </ion-select-option>
+                            <ion-select-option value='5'>No aplica</ion-select-option>
+                        </ion-select>
+                    </p>
+                </ion-label>
+            </ion-item>
+
+            <ion-item *ngIf="tipoServicioImplementta == 'Sin especificar' ">
+                <ion-label>
+                    <p>Cambiar servicio</p>
+                    <p>
+                        <ion-select interface="popover" placeholder="Selecciona uno" [(ngModel)]="idTipoServicio">
+                            <ion-select-option value='1'>Comercial</ion-select-option>
+                            <ion-select-option value='3'>Residencial </ion-select-option>
+                            <ion-select-option value='4'>Industrial </ion-select-option>
+                            <ion-select-option value='5'>Gobierno</ion-select-option>
+                        </ion-select>
+                    </p>
+                </ion-label>
+            </ion-item>
+        </ion-card-content>
+    </ion-card>
+
     <ion-slides [options]="sliderOpts">
         <ion-slide *ngFor="let img of imgs">
             <img src={{img.imagen}} class="imagen">

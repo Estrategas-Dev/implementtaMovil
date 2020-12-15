@@ -993,15 +993,16 @@ export class RestService {
     console.log("llego el query string");
     this.updateAccountGestionada(data.id);
     let sql =
-      "INSERT INTO gestionCartaInvitacion (account, idTarea, idaspuser, fechaCaptura, latitud, longitud)" +
-      "values(?,?,?,?,?,?)"
+      "INSERT INTO gestionCartaInvitacion (account, idTarea, idaspuser, fechaCaptura, latitud, longitud, idTipoServicio)" +
+      "values(?,?,?,?,?,?,?)"
     return this.db.executeSql(sql, [
       data.account,
       data.idTarea,
       data.idaspuser,
       data.fechaCaptura,
       data.latitud,
-      data.longitud
+      data.longitud,
+      data.idTipoServicio
     ])
   }
 
@@ -1560,9 +1561,10 @@ export class RestService {
         let fechaCaptura = arrayCarta[0].fechaCaptura;
         let idAspUser = arrayCarta[0].idaspuser;
         let idTarea = arrayCarta[0].idTarea;
+        let idTipoServicio = arrayCarta[0].idTipoServicio;
 
         let id = arrayCarta[0].id;
-        let sqlString = `'${account}',${latitud},${longitud},'${fechaCaptura}','${idAspUser}',${idTarea},${idPlaza}`;
+        let sqlString = `'${account}',${latitud},${longitud},'${fechaCaptura}','${idAspUser}',${idTarea},${idPlaza},${idTipoServicio}`;
         console.log(sqlString);
         await this.accountSyncCartas(sqlString, id);
         this.mensaje.showToast("Sincronizacion de la cuenta correctamente");
@@ -1885,9 +1887,10 @@ export class RestService {
       let fechaCaptura = arrayCartas[i].fechaCaptura;
       let idAspUser = arrayCartas[i].idaspuser;
       let idTarea = arrayCartas[i].idTarea;
+      let idTipoServicio = arrayCartas[i].idTipoServicio;
 
       let id = arrayCartas[i].id;
-      let sqlString = `'${account}',${latitud},${longitud},'${fechaCaptura}','${idAspUser}',${idTarea},${idPlaza}`;
+      let sqlString = `'${account}',${latitud},${longitud},'${fechaCaptura}','${idAspUser}',${idTarea},${idPlaza},${idTipoServicio}`;
       console.log(sqlString);
       await this.accountSyncCartas(sqlString, id);
 

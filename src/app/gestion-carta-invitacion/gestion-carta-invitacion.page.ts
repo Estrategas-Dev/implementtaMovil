@@ -35,6 +35,8 @@ export class GestionCartaInvitacionPage implements OnInit {
   fechaPromesaPago: string = '1999-09-09';
   detectedChanges: boolean = false;
   infoImage:any[];
+  idTipoServicio:number = 0;
+  tipoServicioImplementta: string = '';
 
 
   constructor(private mensaje: MessagesService, private camera: Camera, private storage: Storage, private webview: WebView,
@@ -83,6 +85,7 @@ export class GestionCartaInvitacionPage implements OnInit {
     this.infoAccount = await this.service.getInfoAccount(this.account);
     this.idAccountSqlite = this.infoAccount[0].id;
     this.idTareaGestor = this.infoAccount[0].id_tarea;
+    this.tipoServicioImplementta = this.infoAccount[0].tipoServicio;
     let gestionada = this.infoAccount[0].gestionada;
     this.tareaAsignada = this.infoAccount[0].tareaAsignada;
     // if (idRol == '2') {
@@ -192,6 +195,7 @@ export class GestionCartaInvitacionPage implements OnInit {
           fechaCaptura: this.fechaCaptura,
           latitud: this.latitud,
           longitud: this.longitud,
+          idTipoServicio: this.idTipoServicio,
           id: this.idAccountSqlite
         }
 
