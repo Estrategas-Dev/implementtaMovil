@@ -6,6 +6,7 @@ import { AngularFirestore } from "@angular/fire/firestore";
 import { MessagesService } from './messages.service';
 import { RestService } from './rest.service';
 import { rejects } from 'assert';
+import { UniqueDeviceID } from '@ionic-native/unique-device-id/ngx';
 
 
 
@@ -16,7 +17,8 @@ import { rejects } from 'assert';
 export class AuthService {
   userInfo: any
 
-  constructor(public AFauth: AngularFireAuth, public router: Router, private storage: Storage, private db: AngularFirestore, private mensaje: MessagesService, private restService:RestService) {
+  constructor(public AFauth: AngularFireAuth, public router: Router, private storage: Storage, private db: AngularFirestore, 
+    private mensaje: MessagesService, private restService:RestService, private uniqueDeviceId:UniqueDeviceID) {
 
   }
 
@@ -34,12 +36,13 @@ export class AuthService {
                 console.log("Es un usuario nuevo o se le ha borrado el id");
                 createSusbcribe.unsubscribe();
                 this.saveUserInfoStorage(this.userInfo);
-                await this.storage.set("idFireBase", id)
-                await this.storage.set("ActivateApp", "1");
+                await this.storage.set("idFireBase", id);
+                await this.storage.set("ActivateApp", 1);
+                this.generaImei(id);
                 resolve(user)
               } 
               else { 
-                console.log("El usuario no es nuevo o se le ha borado el id");
+                console.log("El usuario no es nuevo o no se le ha borado el id");
                 let emailLocal = await this.storage.get("Email");
                 let nombreUser = await this.storage.get("Nombre")
                 console.log("El email del usuario con la sesion anterior es ", emailLocal);
@@ -83,6 +86,31 @@ export class AuthService {
   }
 
 
+ generaImei(id) {
+    console.log("General el id tomando el idFirebase " + id);
+    this.saveDataCell(id);
+  }
+
+
+  async saveDataCell(id) {
+    let name = await this.storage.get("Nombre");
+    this.storage.set("IMEI", id);
+    let dateDay = new Date().toISOString();
+    let date: Date = new Date(dateDay);
+    let ionicDate = new Date(Date.UTC(date.getFullYear(), date.getMonth(), date.getDate(), date.getHours(), date.getMinutes(), date.getSeconds()));
+    let fecha = ionicDate.toISOString();
+    this.storage.set('LastSession', fecha);
+    this.db.collection('usersImplementta').doc(id).update({
+      IMEI: id,
+      lastSession: fecha,
+      isActive: true
+    });
+    this.db.collection('SessionRecords').doc(name + '-' + fecha).set({
+      IMEI: id,
+      lastSession: fecha,
+      user: name
+    })
+  }
 
 
 
