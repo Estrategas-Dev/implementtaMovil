@@ -218,6 +218,9 @@ export class GestionInspeccionPage implements OnInit {
     } else if (event.detail.value == 2 || event.detail.value == 3 || event.detail.value == 4 || event.detail.value == 5 || event.detail.value == 6 || event.detail.value == 7) {
       this.activaContratada = false;
       this.activaDescripcionClandestino = true;
+    } else if( event.detail.value == 8) {
+      this.activaContratada = false;
+      this.activaDescripcionClandestino = false;
     }
   }
 
