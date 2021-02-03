@@ -104,9 +104,9 @@ export class GestionCartaInvitacionPage implements OnInit {
  async takePic(type) {
     let tipo
     if (type == 1) {
-      tipo = "Evidencia"
+      tipo = "Entrega de carta invitación evidencia"
     } else if (type == 2) {
-      tipo = "Predio"
+      tipo = "Entrega de carta invitación predio"
     } else if (type == 3) {
       tipo = "Acta circunstanciada"
     } else if (type == 4) {
@@ -225,7 +225,7 @@ export class GestionCartaInvitacionPage implements OnInit {
       if(this.imgs[i].imagen == img) {
         this.imgs.splice(i, 1);
       } else {
-        console.log("No hay coincidencias");
+        console.log("No hay coincidencias...");
       }
     }
     //borrara la foto trayendo la imagen de la tabla y mandando a llamar al metodo delete del restservice
