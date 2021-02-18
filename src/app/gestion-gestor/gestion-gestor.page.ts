@@ -63,7 +63,7 @@ export class GestionGestorPage implements OnInit {
   takePhoto: boolean;
   resultVisitValidation: boolean = false
   nCaracteristica: boolean = false;
-  
+
   isAgua: boolean = false;
   idTipoServicio: number = 0;
   idTipoToma: number = 0;
@@ -72,10 +72,10 @@ export class GestionGestorPage implements OnInit {
   isEstatusToma: boolean = false;
   isTipoToma: boolean = false;
 
-  tipoServicioImplementta:string;
+  tipoServicioImplementta: string;
   infoImage: any[];
 
-  
+
   constructor(
     private storage: Storage,
     private service: RestService,
@@ -149,11 +149,11 @@ export class GestionGestorPage implements OnInit {
       this.modalController.dismiss();
     }
   }
-  
+
   exit() {
     this.modalController.dismiss();
   }
- async takePic(type) {
+  async takePic(type) {
     let tipo;
     if (type == 1) {
       tipo = "Evidencia";
@@ -294,17 +294,6 @@ export class GestionGestorPage implements OnInit {
   }
 
   async validaDatosGestion() {
-    let account = this.account;
-    this.loading = await this.loadingController.create({
-      message: "Obteniendo la ubicación de esta gestión y guardando...."
-    });
-    await this.loading.present();
-    const position = await this.geolocation.getCurrentPosition();
-
-    // this.loading.dismiss();
-    console.log(position);
-    this.latitud = position.coords.latitude;
-    this.longitud = position.coords.longitude;
 
     if (
       this.idMotivoNoPago == 0 ||
@@ -339,61 +328,149 @@ export class GestionGestorPage implements OnInit {
       this.mensaje.showAlert("Verifica los campos marcados con * y que minimo haya una foto capturada");
       this.loading.dismiss();
     } else {
-      /*    this.loading = await this.loadingController.create({
-           message: "Guardando la gestión..."
-         });
-         await this.loading.present(); */
-      //   let sqlString =`'${account}',${this.idEstatus},'${this.observaciones}','${this.fechaPromesaPago}','${this.latitud}','${this.longitud}','${this.fechaCaptura}','${idAspUser}',${idTarea},'${this.fechaAsignacion}','${this.fechaVencimiento}'${this.idMotivoNoPago},'${this.motivoNoPago}',${this.idSolucionPlanteada},${this.idExpectativasContribuyente},'${this.otraExpectativaContribuyente}',${this.idCaracteristicaPredio},'${this.otraCaracteristicaPredio}',${this.idServiciosNoPago}`
-      var dateDay = new Date().toISOString();
-      let date: Date = new Date(dateDay);
-      let ionicDate = new Date(
-        Date.UTC(
-          date.getFullYear(),
-          date.getMonth(),
-          date.getDate(),
-          date.getHours(),
-          date.getMinutes(),
-          date.getSeconds()
-        )
-      );
 
-      this.fechaCaptura = ionicDate.toISOString();
-      let fecha = this.fechaPromesaPago.split("T");
-      let dateString = fecha[0];
-      let newDate = new Date(dateString).toISOString();
-      console.log(dateString);
-      console.log(newDate);
 
-      let data = {
-        account: account,
-        idEstatus: this.idEstatus,
-        observaciones: this.observaciones,
-        fechaPromesaPago: newDate,
-        latitud: this.latitud,
-        longitud: this.longitud,
-        fechaCaptura: this.fechaCaptura,
-        idAspuser: this.idAspuser,
-        idTareaGestor: this.idTareaGestor,
-        fechaAsignacion: this.fechaAsignacion,
-        fechaVencimiento: this.fechaVencimiento,
-        idMotivoNoPago: this.idMotivoNoPago,
-        motivoNoPago: this.motivoNoPago,
-        idSolucionPlanteada: this.idSolucionPlanteada,
-        idExpectativasContribuyente: this.idExpectativasContribuyente,
-        otraExpectativaContribuyente: this.otraExpectativaContribuyente,
-        idCaracteristicaPredio: this.idCaracteristicaPredio,
-        otraCaracteristicaPredio: this.otraCaracteristicaPredio,
-        idServiciosNoPago: this.idServiciosNoPago,
-        idTipoServicio: this.idTipoServicio,
-        idEstatusToma: this.idEstatusToma,
-        idTipoToma: this.idTipoToma,
-        id: this.idAccountSqlite
-      };
-      console.log(data);
-      await this.gestionGestor(data);
-      this.loading.dismiss();
-      this.exit();
-    }
+      let account = this.account;
+      this.loading = await this.loadingController.create({
+        message: "Obteniendo la ubicación de esta gestión y guardando...."
+      });
+
+      await this.loading.present();
+
+
+      this.geolocation.getCurrentPosition().then(async (resp) => {
+
+        if (resp) {
+          this.latitud = resp.coords.latitude;
+          this.longitud = resp.coords.longitude
+          console.log("La latitud es", this.latitud);
+          console.log("La longitud es ", this.longitud);
+          this.loading.dismiss();
+
+
+          this.loading = await (this.loadingController.create({
+            message: 'Guardando la gestión...'
+          }));
+
+          await this.loading.present();
+
+          var dateDay = new Date().toISOString();
+          let date: Date = new Date(dateDay);
+          let ionicDate = new Date(
+            Date.UTC(
+              date.getFullYear(),
+              date.getMonth(),
+              date.getDate(),
+              date.getHours(),
+              date.getMinutes(),
+              date.getSeconds()
+            )
+          );
+
+          this.fechaCaptura = ionicDate.toISOString();
+          let fecha = this.fechaPromesaPago.split("T");
+          let dateString = fecha[0];
+          let newDate = new Date(dateString).toISOString();
+          console.log(dateString);
+          console.log(newDate);
+
+          let data = {
+            account: account,
+            idEstatus: this.idEstatus,
+            observaciones: this.observaciones,
+            fechaPromesaPago: newDate,
+            latitud: this.latitud,
+            longitud: this.longitud,
+            fechaCaptura: this.fechaCaptura,
+            idAspuser: this.idAspuser,
+            idTareaGestor: this.idTareaGestor,
+            fechaAsignacion: this.fechaAsignacion,
+            fechaVencimiento: this.fechaVencimiento,
+            idMotivoNoPago: this.idMotivoNoPago,
+            motivoNoPago: this.motivoNoPago,
+            idSolucionPlanteada: this.idSolucionPlanteada,
+            idExpectativasContribuyente: this.idExpectativasContribuyente,
+            otraExpectativaContribuyente: this.otraExpectativaContribuyente,
+            idCaracteristicaPredio: this.idCaracteristicaPredio,
+            otraCaracteristicaPredio: this.otraCaracteristicaPredio,
+            idServiciosNoPago: this.idServiciosNoPago,
+            idTipoServicio: this.idTipoServicio,
+            idEstatusToma: this.idEstatusToma,
+            idTipoToma: this.idTipoToma,
+            id: this.idAccountSqlite
+          };
+          console.log(data);
+          await this.gestionGestor(data);
+          this.loading.dismiss();
+          this.exit();
+
+        } // if
+      }).catch(async (error) => {
+        console.log("No se pudo obtener la geolocalizacion " + error);
+        this.latitud = this.infoAccount[0].latitud;
+        this.longitud = this.infoAccount[0].longitud;
+        console.log(`La latitud de implementta es ${this.latitud} y la longitud de implementta es ${this.longitud}`);
+        this.loading.dismiss();
+
+        this.loading = await this.loadingController.create({
+          message: 'Guardando la gestión...'
+        });
+
+        await this.loading.present();
+
+        var dateDay = new Date().toISOString();
+        let date: Date = new Date(dateDay);
+        let ionicDate = new Date(
+          Date.UTC(
+            date.getFullYear(),
+            date.getMonth(),
+            date.getDate(),
+            date.getHours(),
+            date.getMinutes(),
+            date.getSeconds()
+          )
+        );
+
+        this.fechaCaptura = ionicDate.toISOString();
+        let fecha = this.fechaPromesaPago.split("T");
+        let dateString = fecha[0];
+        let newDate = new Date(dateString).toISOString();
+        console.log(dateString);
+        console.log(newDate);
+
+        let data = {
+          account: account,
+          idEstatus: this.idEstatus,
+          observaciones: this.observaciones,
+          fechaPromesaPago: newDate,
+          latitud: this.latitud,
+          longitud: this.longitud,
+          fechaCaptura: this.fechaCaptura,
+          idAspuser: this.idAspuser,
+          idTareaGestor: this.idTareaGestor,
+          fechaAsignacion: this.fechaAsignacion,
+          fechaVencimiento: this.fechaVencimiento,
+          idMotivoNoPago: this.idMotivoNoPago,
+          motivoNoPago: this.motivoNoPago,
+          idSolucionPlanteada: this.idSolucionPlanteada,
+          idExpectativasContribuyente: this.idExpectativasContribuyente,
+          otraExpectativaContribuyente: this.otraExpectativaContribuyente,
+          idCaracteristicaPredio: this.idCaracteristicaPredio,
+          otraCaracteristicaPredio: this.otraCaracteristicaPredio,
+          idServiciosNoPago: this.idServiciosNoPago,
+          idTipoServicio: this.idTipoServicio,
+          idEstatusToma: this.idEstatusToma,
+          idTipoToma: this.idTipoToma,
+          id: this.idAccountSqlite
+        };
+        console.log(data);
+        await this.gestionGestor(data);
+        this.loading.dismiss();
+        this.exit();
+
+      }); // catch
+
+    } // else
   }  // validaDatosGestion
 
   async gestionGestor(data) {
@@ -516,7 +593,7 @@ export class GestionGestorPage implements OnInit {
   //   }
   // }
 
-  
+
   async getIdPlaza() {
     let tipoPlaza = await this.storage.get("TipoPlazaServicio");
     console.log(tipoPlaza);
@@ -548,16 +625,16 @@ export class GestionGestorPage implements OnInit {
     console.log(img);
     console.log(this.imgs);
 
-    for (let i = 0; i< this.imgs.length; i++) {
+    for (let i = 0; i < this.imgs.length; i++) {
       console.log(this.imgs[i].imagen);
-      if(this.imgs[i].imagen == img) {
+      if (this.imgs[i].imagen == img) {
         this.imgs.splice(i, 1);
       } else {
         console.log("No hay coincidencias");
       }
     }
     //borrara la foto trayendo la imagen de la tabla y mandando a llamar al metodo delete del restservice
-     this.infoImage = await this.service.getImageLocal(img);
+    this.infoImage = await this.service.getImageLocal(img);
     console.log(this.infoImage[0]);
   }
 
