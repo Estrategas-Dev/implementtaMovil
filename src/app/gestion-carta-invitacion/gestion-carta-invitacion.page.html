@@ -94,6 +94,21 @@
                     </p>
                 </ion-label>
             </ion-item>
+
+            <div *ngIf="muestraCampoNumeroMedidor">
+                <ion-item>
+                    <ion-label>
+                        <p>
+                            Numero de medidor
+                        </p>
+                    </ion-label>
+                    <ion-input class="myCustomSelect" interface="popover" [(ngModel)]="numeroMedidor">
+                    </ion-input>
+                </ion-item>
+            </div>
+
+
+
         </ion-card-content>
     </ion-card>
 

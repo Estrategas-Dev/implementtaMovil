@@ -37,12 +37,16 @@ export class GestionCartaInvitacionPage implements OnInit {
   infoImage: any[];
   idTipoServicio: number = 0;
   tipoServicioImplementta: string = '';
+  muestraCampoNumeroMedidor: boolean = false;
+  numeroMedidor:string = '';
+
 
 
   constructor(private mensaje: MessagesService, private camera: Camera, private storage: Storage, private webview: WebView,
     private modalController: ModalController, private service: RestService, private loadingController: LoadingController, private geolocation: Geolocation) {
     this.takePhoto = false;
     this.imgs = [{ imagen: 'assets/img/imgs.jpg' }]
+    this.ObtenerCampoNumeroMedidor();
   }
 
   sliderOpts = {
@@ -52,6 +56,14 @@ export class GestionCartaInvitacionPage implements OnInit {
     centeredSlides: true
   };
 
+  async ObtenerCampoNumeroMedidor () {
+    let numMedidor = await this.storage.get("campoNumeroMedidor")
+    if( numMedidor === 'Activado' ){
+      this.muestraCampoNumeroMedidor = true;
+    } else {
+      this.muestraCampoNumeroMedidor = false;
+    }
+  }
 
   ngOnInit() {
     this.getInfoAccount();
@@ -204,6 +216,7 @@ export class GestionCartaInvitacionPage implements OnInit {
             latitud: this.latitud,
             longitud: this.longitud,
             idTipoServicio: this.idTipoServicio,
+            numeroMedidor: this.numeroMedidor,
             id: this.idAccountSqlite
           }
 
@@ -247,6 +260,7 @@ export class GestionCartaInvitacionPage implements OnInit {
             latitud: this.latitud,
             longitud: this.longitud,
             idTipoServicio: this.idTipoServicio,
+            numeroMedidor: this.numeroMedidor,
             id: this.idAccountSqlite
           }
 

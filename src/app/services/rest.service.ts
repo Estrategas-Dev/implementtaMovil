@@ -989,12 +989,13 @@ export class RestService {
     ]);
   }
 
+  // Metodo que inserta la informacion capturada a la tabla interna gestionCartaInvitacion
   gestionCartaInvitacion(data) {
     console.log("llego el query string");
     this.updateAccountGestionada(data.id);
     let sql =
-      "INSERT INTO gestionCartaInvitacion (account, idTarea, idaspuser, fechaCaptura, latitud, longitud, idTipoServicio)" +
-      "values(?,?,?,?,?,?,?)"
+      "INSERT INTO gestionCartaInvitacion (account, idTarea, idaspuser, fechaCaptura, latitud, longitud, idTipoServicio, numeroMedidor)" +
+      "values(?,?,?,?,?,?,?,?)"
     return this.db.executeSql(sql, [
       data.account,
       data.idTarea,
@@ -1002,7 +1003,8 @@ export class RestService {
       data.fechaCaptura,
       data.latitud,
       data.longitud,
-      data.idTipoServicio
+      data.idTipoServicio,
+      data.numeroMedidor
     ])
   }
 
@@ -1826,6 +1828,7 @@ export class RestService {
   }
 
 
+  // Metodo donde se empieza a sincronizar las cuentas, lo manda a llamar sync gestor page
   async getAccoutsToSyncCartaInvitacion() {
     console.log("getAccoutsToSyncCartaInvitacion")
 
@@ -1858,6 +1861,7 @@ export class RestService {
 
   avanceCartas = 0;
 
+  // metodo que hace la revision de lo enviado
   envioCartas(arrayCartas) {
     console.log("envioCartas");
     console.log(this.avanceCartas);
@@ -1876,7 +1880,7 @@ export class RestService {
     }
   }
 
-
+  // metodo que obtiene la informacion y empieza a sincronizar los registros
   async sendCartas(i, arrayCartas) {
     let idPlaza = await this.storage.get("IdPlaza");
 
@@ -1888,9 +1892,10 @@ export class RestService {
       let idAspUser = arrayCartas[i].idaspuser;
       let idTarea = arrayCartas[i].idTarea;
       let idTipoServicio = arrayCartas[i].idTipoServicio;
+      let numeroMedidor = arrayCartas[i].numeroMedidor;
 
       let id = arrayCartas[i].id;
-      let sqlString = `'${account}',${latitud},${longitud},'${fechaCaptura}','${idAspUser}',${idTarea},${idPlaza},${idTipoServicio}`;
+      let sqlString = `'${account}',${latitud},${longitud},'${fechaCaptura}','${idAspUser}',${idTarea},${idPlaza},${idTipoServicio},'${numeroMedidor}'`;
       console.log(sqlString);
       await this.accountSyncCartas(sqlString, id);
 

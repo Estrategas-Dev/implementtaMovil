@@ -167,65 +167,74 @@ export class SyncPagePage implements OnInit {
   async deleteTable() {
     await this.service.deleteVisit();
   }
+
+
+  // Este metodo es el que manda a traer el metodo getVisit() del restService que es el que hace la peticion de los atos al sql 
   async sync() {/////////////////////////sincronizacion todos los perfiles
     this.progress = true;
     let active = await this.storage.get("ActivateApp");
     // if (active == "1") {
-      this.deleteTable();
+    this.deleteTable();
 
-      this.loading = await this.loadingCtrl.create({
-        message: "Sincronizando cuentas desde el servidor de implementta..."
-      });
-      await this.loading.present();
+    this.loading = await this.loadingCtrl.create({
+      message: "Sincronizando cuentas desde el servidor de implementta..."
+    });
+    await this.loading.present();
 
-      const idaspuser = await this.storage.get("IdAspUser");
-      const idplaza = await this.storage.get("IdPlaza");
-      this.data = await this.service.getVisit(idaspuser, idplaza);
-      this.total = this.data.length;
-      if (this.data == 0) {
-        this.loading.dismiss();
-        return;
-      }
-      if (this.total == 0) {
-        this.mensaje.showAlert("No tienes cuentas para sincronizar");
-        this.loading.dismiss();
-        return;
-      }
-      this.storage.set("total", this.total);
-      console.log("Datos a almacenar en implementta ", this.data);
-      console.log("numMedidor", this.data[0].numMedidor);
-      await this.setTableVisit(this.data);
+    const idaspuser = await this.storage.get("IdAspUser");
+    const idplaza = await this.storage.get("IdPlaza");
 
-      await this.storage.set("IdRol", this.data[0].idRol);
-      await this.storage.set("TipoPlazaServicio", this.data[0].TipoPlazaServicio);
-      await this.storage.set("EstatusCartaInvitacion", this.data[0].EstatusCartaInvitacion);
-      await this.storage.set("estatusValores", this.data[0].EstatusValores);
-      await this.storage.set("rutaArcgis", this.data[0].rutaArcgis);
-      await this.storage.set("ModulosNoAsignacion", this.data[0].ModulosNoAsignacion);
-      console.log("TipoPlazaServicio" , this.storage.get("TipoPlazaServicio"));
-      console.log("Ruta Arcgis: " , this.storage.get("rutaArcgis"));
-
-      var dateDay = new Date().toISOString();
-      let date: Date = new Date(dateDay);
-      let ionicDate = new Date(
-        Date.UTC(
-          date.getFullYear(),
-          date.getMonth(),
-          date.getDate(),
-          date.getHours(),
-          date.getMinutes(),
-          date.getSeconds()
-        )
-      );
-
-      let fecha = ionicDate.toISOString();
-      this.storage.set("FechaSync", fecha);
-      await this.setVersionAndDate(fecha);
+    this.data = await this.service.getVisit(idaspuser, idplaza);
+    this.total = this.data.length;
+    
+    if (this.data == 0) {
       this.loading.dismiss();
-      this.router.navigateByUrl('home/main-list')
-      // navigator.app.loadUrl("file:///android_asset/www/index.html");
-      // setTimeout(document.location.href ='index.html',2000)
-      //document.location.href = 'index.html';
+      return;
+    }
+    
+    if (this.total == 0) {
+      this.mensaje.showAlert("No tienes cuentas para sincronizar");
+      this.loading.dismiss();
+      return;
+    }
+
+    this.storage.set("total", this.total);
+    console.log("Datos a almacenar en implementta ", this.data);
+    console.log("numMedidor", this.data[0].numMedidor);
+    await this.setTableVisit(this.data);
+
+    await this.storage.set("IdRol", this.data[0].idRol);
+    await this.storage.set("TipoPlazaServicio", this.data[0].TipoPlazaServicio);
+    await this.storage.set("EstatusCartaInvitacion", this.data[0].EstatusCartaInvitacion);
+    await this.storage.set("estatusValores", this.data[0].EstatusValores);
+    await this.storage.set("rutaArcgis", this.data[0].rutaArcgis);
+    await this.storage.set("ModulosNoAsignacion", this.data[0].ModulosNoAsignacion);
+    await this.storage.set("campoNumeroMedidor", this.data[0].campoNumeroMedidor);
+    //console.log("TipoPlazaServicio", this.storage.get("TipoPlazaServicio"));
+    //console.log("Ruta Arcgis: ", this.storage.get("rutaArcgis"));
+    //console.log("El campo numero de medidor esta ", this.storage.get("campoNumeroMedidor"));
+
+    var dateDay = new Date().toISOString();
+    let date: Date = new Date(dateDay);
+    let ionicDate = new Date(
+      Date.UTC(
+        date.getFullYear(),
+        date.getMonth(),
+        date.getDate(),
+        date.getHours(),
+        date.getMinutes(),
+        date.getSeconds()
+      )
+    );
+
+    let fecha = ionicDate.toISOString();
+    this.storage.set("FechaSync", fecha);
+    await this.setVersionAndDate(fecha);
+    this.loading.dismiss();
+    this.router.navigateByUrl('home/main-list')
+    // navigator.app.loadUrl("file:///android_asset/www/index.html");
+    // setTimeout(document.location.href ='index.html',2000)
+    //document.location.href = 'index.html';
     // } else {
     //   this.mensaje.showAlert(
     //     "Debes activar la aplicación para poder sincronizar"
@@ -233,6 +242,7 @@ export class SyncPagePage implements OnInit {
     // }
   }
 
+  
   async setTableVisit(data) {
     let cont = 0;
     for (let i = 0; i < data.length; i++) {
