@@ -186,12 +186,12 @@ export class SyncPagePage implements OnInit {
 
     this.data = await this.service.getVisit(idaspuser, idplaza);
     this.total = this.data.length;
-    
+
     if (this.data == 0) {
       this.loading.dismiss();
       return;
     }
-    
+
     if (this.total == 0) {
       this.mensaje.showAlert("No tienes cuentas para sincronizar");
       this.loading.dismiss();
@@ -207,6 +207,7 @@ export class SyncPagePage implements OnInit {
     await this.storage.set("TipoPlazaServicio", this.data[0].TipoPlazaServicio);
     await this.storage.set("EstatusCartaInvitacion", this.data[0].EstatusCartaInvitacion);
     await this.storage.set("estatusValores", this.data[0].EstatusValores);
+    await this.storage.set("EstatusInspeccion", this.data[0].EstatusInspeccion);
     await this.storage.set("rutaArcgis", this.data[0].rutaArcgis);
     await this.storage.set("ModulosNoAsignacion", this.data[0].ModulosNoAsignacion);
     await this.storage.set("campoNumeroMedidor", this.data[0].campoNumeroMedidor);
@@ -242,7 +243,7 @@ export class SyncPagePage implements OnInit {
     // }
   }
 
-  
+
   async setTableVisit(data) {
     let cont = 0;
     for (let i = 0; i < data.length; i++) {

@@ -6,127 +6,94 @@
 
 <ion-content>
 
-    <div *ngIf="!carta">
+    <div class="pattern">
+        <div class="perfil" *ngIf="gestor">
 
-        <div class="pattern">
-            <div class="perfil" *ngIf="gestor">
+            <img src="../../assets/img/gestor.png">
+            <ion-button (click)="gestionGestor()" expand="block" color="success">Gestión Visita</ion-button>
 
-                <img src="../../assets/img/gestor.png">
-                <ion-button (click)="gestionGestor()" expand="block" color="success">Gestión Visita</ion-button>
-
+            <div *ngIf="carta">
+                <img src="../../assets/img/correo.png">
+                <ion-button (click)="cartaInvitacion()" expand="block" color="primary">Entrega carta invitación</ion-button>
             </div>
-        </div>
 
-
-        <div class="pattern">
-            <div class="perfil" *ngIf="abogado">
-
-                <img src="../../assets/img/abogado.png">
-                <ion-button (click)="gestionAbogado()" expand="block" color="success">Gestión Legal</ion-button>
-                <img src="../../assets/img/gestor.png">
-                <ion-button (click)="gestionGestor()" expand="block" color="tertiary">Gestión Visita</ion-button>
-
+            <div *ngIf="valores">
+                <img src="../../assets/img/billete-de-dolar.png">
+                <ion-button (click)="valoresCatastrales()" expand="block" color="success">Valores Catastrales</ion-button>
             </div>
-        </div>
 
-        <div class="pattern">
-            <div class="perfil" *ngIf="callcenter">
-                <img src="../../assets/img/call.png">
-                <ion-button (click)="gestionCall()" expand="block" color="tertiary">Gestión CallCenter</ion-button>
+            <div *ngIf="inspeccionMostrar">
+                <img class="imagen-inspeccion" src="../../assets/img/inspeccion.jpg">
+                <ion-button (click)="inspeccion()" expand="block" color="tertiary">Inspección</ion-button>
             </div>
-        </div>
 
-        <div class="pattern">
-            <div class="perfil" *ngIf="reductor">
-
-                <img src="../../assets/img/reductor.png">
-                <ion-button (click)="gestionReductor()" expand="block" color="success">Gestión Reductores</ion-button>
-
-                <img src="../../assets/img/gestor.png">
-                <ion-button (click)="gestionGestor()" expand="block" color="tertiary">Gestión Visita</ion-button>
-
-                <img src="../../assets/img/abogado.png">
-                <ion-button (click)="gestionAbogado()" expand="block" color="tertiary">Gestión Legal</ion-button>
-
-            </div>
         </div>
     </div>
 
-    <div *ngIf="carta">
-        <div class="pattern">
-            <div class="perfil" *ngIf="gestor">
 
-                <img src="../../assets/img/gestor.png">
-                <ion-button (click)="gestionGestor()" expand="block" color="success">Gestión Visita</ion-button>
+    <div class="pattern">
+        <div class="perfil" *ngIf="abogado">
 
+            <img src="../../assets/img/abogado.png">
+            <ion-button (click)="gestionAbogado()" expand="block" color="success">Gestión Legal</ion-button>
+            <img src="../../assets/img/gestor.png">
+            <ion-button (click)="gestionGestor()" expand="block" color="tertiary">Gestión Visita</ion-button>
+
+            <div *ngIf="carta">
                 <img src="../../assets/img/correo.png">
                 <ion-button (click)="cartaInvitacion()" expand="block" color="primary">Entrega carta invitación</ion-button>
-
-                <div *ngIf="valores">
-                    <img src="../../assets/img/billete-de-dolar.png">
-                    <ion-button (click)="valoresCatastrales()" expand="block" color="success">Valores Catastrales</ion-button>
-                </div>
-
-
-                <!-- <img src="../../assets/img/inspeccion.png">
-                <ion-button (click)="inspeccion()" expand="block" color="warning">Clandestino</ion-button> -->
-
             </div>
-        </div>
 
-
-        <div class="pattern">
-            <div class="perfil" *ngIf="abogado">
-
-                <img src="../../assets/img/abogado.png">
-                <ion-button (click)="gestionAbogado()" expand="block" color="success">Gestión Legal</ion-button>
-                <img src="../../assets/img/gestor.png">
-                <ion-button (click)="gestionGestor()" expand="block" color="tertiary">Gestión Visita</ion-button>
-                <img src="../../assets/img/correo.png">
-                <ion-button (click)="cartaInvitacion()" expand="block" color="primary">Entrega carta invitación</ion-button>
-                <div *ngIf="valores">
-                    <img src="../../assets/img/billete-de-dolar.png">
-                    <ion-button (click)="valoresCatastrales()" expand="block" color="success">Valores Catastrales</ion-button>
-                </div>
-
-
+            <div *ngIf="valores">
+                <img src="../../assets/img/billete-de-dolar.png">
+                <ion-button (click)="valoresCatastrales()" expand="block" color="success">Valores Catastrales</ion-button>
             </div>
-        </div>
 
-        <div class="pattern">
-            <div class="perfil" *ngIf="callcenter">
-                <img src="../../assets/img/call.png">
-                <ion-button (click)="gestionCall()" expand="block" color="tertiary">Gestión CallCenter</ion-button>
+            <div *ngIf="inspeccionMostrar">
+                <img class="imagen-inspeccion" src="../../assets/img/inspeccion.jpg">
+                <ion-button (click)="inspeccion()" expand="block" color="tertiary">Inspección</ion-button>
             </div>
+
         </div>
-
-        <div class="pattern">
-            <div class="perfil" *ngIf="reductor">
-
-                <img src="../../assets/img/reductor.png">
-                <ion-button (click)="gestionReductor()" expand="block" color="success">Gestión Reductores</ion-button>
-
-                <img src="../../assets/img/gestor.png">
-                <ion-button (click)="gestionGestor()" expand="block" color="tertiary">Gestión Visita</ion-button>
-
-                <img src="../../assets/img/abogado.png">
-                <ion-button (click)="gestionAbogado()" expand="block" color="tertiary">Gestión Legal</ion-button>
-
-                <img src="../../assets/img/correo.png">
-                <ion-button (click)="cartaInvitacion()" expand="block" color="primary">Entrega carta invitación</ion-button>
-
-                <!-- <img src="../../assets/img/inspeccion.png">
-                <ion-button (click)="inspeccion()" expand="block" color="warning">Clandestino</ion-button> -->
-
-                <div *ngIf="valores">
-                    <img src="../../assets/img/billete-de-dolar.png">
-                    <ion-button (click)="valoresCatastrales()" expand="block" color="success">Valores Catastrales</ion-button>
-                </div>
-
-            </div>
-        </div>
-
     </div>
+
+    <div class="pattern">
+        <div class="perfil" *ngIf="callcenter">
+            <img src="../../assets/img/call.png">
+            <ion-button (click)="gestionCall()" expand="block" color="tertiary">Gestión CallCenter</ion-button>
+        </div>
+    </div>
+
+    <div class="pattern">
+        <div class="perfil" *ngIf="reductor">
+
+            <img src="../../assets/img/reductor.png">
+            <ion-button (click)="gestionReductor()" expand="block" color="success">Gestión Reductores</ion-button>
+
+            <img src="../../assets/img/gestor.png">
+            <ion-button (click)="gestionGestor()" expand="block" color="tertiary">Gestión Visita</ion-button>
+
+            <img src="../../assets/img/abogado.png">
+            <ion-button (click)="gestionAbogado()" expand="block" color="tertiary">Gestión Legal</ion-button>
+
+            <div *ngIf="carta">
+                <img src="../../assets/img/correo.png">
+                <ion-button (click)="cartaInvitacion()" expand="block" color="primary">Entrega carta invitación</ion-button>
+            </div>
+
+            <div *ngIf="valores">
+                <img src="../../assets/img/billete-de-dolar.png">
+                <ion-button (click)="valoresCatastrales()" expand="block" color="success">Valores Catastrales</ion-button>
+            </div>
+
+            <div *ngIf="inspeccionMostrar">
+                <img class="imagen-inspeccion" src="../../assets/img/inspeccion.jpg">
+                <ion-button (click)="inspeccion()" expand="block" color="tertiary">Inspección</ion-button>
+            </div>
+
+        </div>
+    </div>
+
 
 
 

@@ -1,0 +1,271 @@
+<ion-header>
+    <ion-toolbar color="secondary">
+        <ion-title>Inspección agua</ion-title>
+        <ion-buttons slot="end">
+            <ion-button color="tertiary">
+                <ion-icon name="information-circle"></ion-icon>
+            </ion-button>
+            <ion-button color="tertiary" (click)="exit()">
+                <ion-icon name="close"></ion-icon>
+            </ion-button>
+        </ion-buttons>
+    </ion-toolbar>
+</ion-header>
+
+<ion-content>
+
+    <ion-card color="light">
+        <ion-card-content>
+            <ion-item>
+                <ion-label>
+                    <p>Cuenta</p>
+                </ion-label>
+                <ion-input class="myCustomSelect" interface="popover" [(ngModel)]="cuentaCapturada"></ion-input>
+            </ion-item>
+            <ion-item>
+                <ion-label>
+                    <p>Clave</p>
+                </ion-label>
+                <ion-input class="myCustomSelect" interface="popover" [(ngModel)]="clave"></ion-input>
+            </ion-item>
+            <ion-item>
+                <ion-label>
+                    <p>Orden de inspección</p>
+                </ion-label>
+                <ion-input class="myCustomSelect" interface="popover" [(ngModel)]="ordenInspeccion"></ion-input>
+            </ion-item>
+            <ion-item>
+                <ion-label>
+                    <p>Numero de medidor</p>
+                </ion-label>
+                <ion-input class="myCustomSelect" interface="popover" [(ngModel)]="numeroMedidor"></ion-input>
+            </ion-item>
+        </ion-card-content>
+    </ion-card>
+
+
+    <ion-card color="light">
+        <ion-card-content>
+            <ion-item>
+                <ion-label>
+                    <p>Tipo de servicio actual</p>
+                    <ion-text color="primary"> {{tipoServicioImplementta}} </ion-text>
+                </ion-label>
+            </ion-item>
+            <ion-item>
+                <ion-label>
+                    <p>
+                        Cambiar el tipo de servicio
+                    </p>
+                    <p>
+                        <ion-select class="myCustomSelect" interface="popover" placeholder="Selecciona uno" [(ngModel)]="idTipoServicio">
+                            <ion-select-option value="1">Comercial</ion-select-option>
+                            <ion-select-option value="2">Residencial</ion-select-option>
+                            <ion-select-option value="3">Industrial</ion-select-option>
+                            <ion-select-option value="4">Gobierno</ion-select-option>
+                            <ion-select-option value="5">No aplica</ion-select-option>
+                        </ion-select>
+                    </p>
+                </ion-label>
+            </ion-item>
+            <ion-item>
+                <ion-label>
+                    <p> Pozo de CONAGUA </p>
+                </ion-label>
+                <ion-input class="myCustomSelect" interface="popover" [(ngModel)]="pozoConagua"></ion-input>
+            </ion-item>
+
+            <ion-item>
+                <ion-label>
+                    <p>
+                        Hallazgos
+                    </p>
+                    <p>
+                        <ion-select class="myCustomSelect" interface="popover" placeholder="Selecciona uno" [(ngModel)]="idTipoHallazgo" (ionChange)="resultHallazgo($event)">
+                            <ion-select-option value="1">Toma sin registro</ion-select-option>
+                            <ion-select-option value="2">Derivación sin registro</ion-select-option>
+                            <ion-select-option value="3">Drenaje sin registro</ion-select-option>
+                            <ion-select-option value="4">Medidor descompuesto</ion-select-option>
+                            <ion-select-option value="5">Medidor alterado</ion-select-option>
+                            <ion-select-option value="6">Diferencia de diametro</ion-select-option>
+                            <ion-select-option value="7">Otros</ion-select-option>
+                            <ion-select-option value="8">Sin observaciones</ion-select-option>
+                        </ion-select>
+                    </p>
+                </ion-label>
+            </ion-item>
+
+            <div *ngIf="activaOtrosHallazgos">
+                <ion-item>
+                    <ion-label>
+                        <p>
+                            Especifique otro hallazgo
+                        </p>
+                    </ion-label>
+                    <ion-textarea rows="5" [(ngModel)]="otroHallazgo"></ion-textarea>
+                </ion-item>
+            </div>
+        </ion-card-content>
+
+    </ion-card>
+
+    <ion-grid>
+        <ion-row>
+            <ion-col size=12 class="ion-text-center">
+                <ion-button color="light" *ngIf="!mostrarInspectores" (click)="muestraInspectores()">Cargar lista de inspectores</ion-button>
+                <!-- <ion-button color="danger" *ngIf="mostrarInspectores" (click)="ocultaInspectores()">Ocultar lista de inspectores</ion-button> -->
+            </ion-col>
+        </ion-row>
+    </ion-grid>
+
+
+
+    <!-- <div *ngIf="inspectores">
+        <ion-card>
+            <ion-card-header>
+                <ion-card-title>
+                    <ion-label>Inspectores</ion-label>
+                </ion-card-title>
+            </ion-card-header>
+            <ion-card-content>
+                <ion-list>
+                    <ion-item *ngFor="let gestor of nombreInspectores" (click)="guardarInspector($event, gestor.nombre)">
+                        <ion-chip color="primary">
+                            <ion-avatar>
+                                <img src="../../assets/img/avatar.png" alt="">
+                            </ion-avatar>
+                            <ion-label> {{gestor.nombre}} </ion-label>
+                        </ion-chip>
+                    </ion-item>
+                </ion-list>
+            </ion-card-content>
+        </ion-card>
+    </div> -->
+
+    <ion-card color="light" *ngIf="mostrarInspectores">
+        <ion-card-header>
+            <ion-card-subtitle>
+                <ion-label>Inspectores de la visita</ion-label>
+            </ion-card-subtitle>
+        </ion-card-header>
+        <ion-card-content>
+            <ion-item>
+                <ion-label>
+                    <p>
+                        Inspector 1
+                    </p>
+                    <p>
+                        <ion-text color="primary"> {{nombreInspectorLogueado}} </ion-text>
+                    </p>
+                </ion-label>
+            </ion-item>
+            <ion-item>
+                <ion-label>
+                    <p>
+                        Inspector 2
+                    </p>
+                    <p>
+                        <ion-select class="myCustomSelect" interface="popover" placeholder="Selecciona uno" [(ngModel)]="inspector2">
+                            <ion-select-option [value]="inspector.id" *ngFor="let inspector of nombreInspectores"> {{inspector.nombre}} </ion-select-option>
+                        </ion-select>
+                    </p>
+                </ion-label>
+            </ion-item>
+
+            <ion-item>
+                <ion-label>
+                    <p>
+                        Inspector 3
+                    </p>
+                    <p>
+                        <ion-select class="myCustomSelect" interface="popover" placeholder="Selecciona uno" [(ngModel)]="inspector3">
+                            <ion-select-option [value]="inspector.id" *ngFor="let inspector of nombreInspectores"> {{inspector.nombre}} </ion-select-option>
+                        </ion-select>
+                    </p>
+                </ion-label>
+            </ion-item>
+
+            <ion-item>
+                <ion-label>
+                    <p>
+                        Inspector 4
+                    </p>
+                    <p>
+                        <ion-select class="myCustomSelect" interface="popover" placeholder="Selecciona uno" [(ngModel)]="inspector4">
+                            <ion-select-option [value]="inspector.id" *ngFor="let inspector of nombreInspectores"> {{inspector.nombre}} </ion-select-option>
+                        </ion-select>
+                    </p>
+                </ion-label>
+            </ion-item>
+
+        </ion-card-content>
+    </ion-card>
+
+
+    <ion-card>
+        <ion-card-content>
+            <ion-item>
+                <ion-label>
+                    <p>
+                        Observación del contribuyente
+                    </p>
+                </ion-label>
+                <ion-textarea rows="5" [(ngModel)]="observacion"></ion-textarea>
+            </ion-item>
+        </ion-card-content>
+    </ion-card>
+
+
+
+    <ion-slides [options]="sliderOpts">
+        <ion-slide *ngFor="let img of imgs">
+            <img src={{img.imagen}} class="imagen">
+            <ion-fab-button padding size="small" (click)="deletePhoto(img.imagen)" *ngIf="img.imagen != 'assets/img/imgs.jpg'" color="danger">
+                <ion-icon name="trash"></ion-icon>
+            </ion-fab-button>
+        </ion-slide>
+    </ion-slides>
+
+
+    <ion-item text-center>
+        <ion-label>
+            <p>
+                Fotos de la visita
+            </p>
+
+
+            <ion-grid>
+                <ion-row>
+                    <ion-col text-center>
+                        <ion-button expand="block" color="primary" (click)="takePic(4)">
+                            <ion-icon name="camera"></ion-icon>
+                        </ion-button>
+                        <ion-label>Acta</ion-label>
+                    </ion-col>
+
+                    <ion-col text-center>
+                        <ion-button expand="block" color="warning" (click)="takePic(1)">
+                            <ion-icon name="camera"></ion-icon>
+                        </ion-button>
+                        <ion-label>Evidencia</ion-label>
+                    </ion-col>
+
+                </ion-row>
+
+            </ion-grid>
+        </ion-label>
+    </ion-item>
+
+
+    <ion-grid>
+        <ion-row>
+            <ion-col size=12 class="ion-text-center">
+                <ion-button color="success" expand="block" (click)="verify()">Terminar</ion-button>
+            </ion-col>
+        </ion-row>
+    </ion-grid>
+
+
+
+
+</ion-content>

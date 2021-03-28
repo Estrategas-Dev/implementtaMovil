@@ -141,25 +141,6 @@ export class MainListPage implements OnInit {
   }
 
 
-  // async valoresCatastrales() {
-  //   console.log("Entrando a carta valores catastrales sin asignacion");
-  //   const modal = await this.modalController.create({
-  //     component: GestionValorescatastralesNoasignacionPage,
-  //     // componentProps: {
-  //     //  Data:Data }
-
-  //   });
-
-  //   await modal.present();
-  //   modal.onDidDismiss().then(data => {
-  //     //console.log(data)
-  //     console.log('trata de salir')
-
-  //     this.router.navigate(['/home/main-list']);
-  //   })
-
-  // }
-
   async getDetail(accountNumber) {
     console.log("this is account to be saved: " + accountNumber);
     await this.storage.set("accountNumber", accountNumber);

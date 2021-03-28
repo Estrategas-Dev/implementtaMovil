@@ -107,6 +107,12 @@ export class SyncGestorPage implements OnInit {
       this.modalController.getTop().then(resp => {
         this.getAccounts(this.rol);
       })
+    } else if (rol === 'Inspeccion') {
+      console.log('entra a inspeccion agua');
+      await this.service.getAccountToSyncInspeccionAgua(cuenta);
+      this.modalController.getTop().then(resp => {
+        this.getAccounts(this.rol);
+      })
     }
 
   }
@@ -158,6 +164,14 @@ export class SyncGestorPage implements OnInit {
       this.modalController.getTop().then(resp => {
         this.getAccounts(this.rol);
       })
+    } else if (rol === 'Inspeccion') {
+      console.log("Entra a borrar inspeccion agua");
+      await this.service.deleteAccountsInspeccionAgua(cuenta);
+      this.mensaje.showToast("Cuenta eliminada corectamente");
+      this.modalController.getTop().then(resp => {
+        this.getAccounts(this.rol);
+      })
+
     }
   }
 
@@ -175,6 +189,7 @@ export class SyncGestorPage implements OnInit {
       await this.service.getAccoutsToSyncCartaInvitacion();
       await this.service.getAccountsToSyncInspeccion();
       await this.service.getAccountsToSyncValores();
+      await this.service.getAccountsToSyncInspeccionAgua();
       this.loading.dismiss()
       //this.mensaje.showToast('Gestiones sincronizadas correctamente')
     }
@@ -185,6 +200,7 @@ export class SyncGestorPage implements OnInit {
       await this.service.getAccoutsToSyncCartaInvitacion();
       await this.service.getAccountsToSyncInspeccion();
       await this.service.getAccountsToSyncValores();
+      await this.service.getAccountsToSyncInspeccionAgua();
       this.loading.dismiss()
       //this.mensaje.showToast('Gestiones legales sicronizadas correctamente')
     }
@@ -196,6 +212,7 @@ export class SyncGestorPage implements OnInit {
       await this.service.getAccoutsToSyncCartaInvitacion();
       await this.service.getAccountsToSyncInspeccion();
       await this.service.getAccountsToSyncValores();
+      await this.service.getAccountsToSyncInspeccionAgua();
       this.loading.dismiss()
     }
     // else if (this.rol == '8') {

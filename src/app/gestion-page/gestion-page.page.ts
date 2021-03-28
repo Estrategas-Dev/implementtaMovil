@@ -12,6 +12,8 @@ import { GestionCartaInvitacionPage } from '../gestion-carta-invitacion/gestion-
 import { NavController } from '@ionic/angular';
 import { GestionInspeccionPage } from '../gestion-inspeccion/gestion-inspeccion.page';
 import { GestionValorescatastralesPage } from '../gestion-valorescatastrales/gestion-valorescatastrales.page';
+import { InspeccionAguaPage } from '../inspeccion-agua/inspeccion-agua.page';
+import { InspeccionPredioPage } from '../inspeccion-predio/inspeccion-predio.page';
 
 @Component({
   selector: 'app-gestion-page',
@@ -25,6 +27,7 @@ export class GestionPagePage implements OnInit {
   reductor: boolean = false;
   carta: boolean = false;
   valores: boolean = false;
+  inspeccionMostrar: boolean = false;
 
   constructor(private modalController: ModalController, private storage: Storage, private platform: Platform, private router: Router, private firebase: UsersFirebaseService, private nav: NavController) { }
 
@@ -47,12 +50,17 @@ export class GestionPagePage implements OnInit {
     let profile = await this.storage.get("IdRol")
     let EstatusCartaInvitacion = await this.storage.get("EstatusCartaInvitacion");
     let estatusValoresCatastrales = await this.storage.get("estatusValores");
+    let estatusInspeccion = await this.storage.get("EstatusInspeccion");
     if (EstatusCartaInvitacion == 'Activado') {
       this.carta = true
     }
 
-    if( estatusValoresCatastrales == 'Activado') {
-      this.valores= true;
+    if (estatusValoresCatastrales == 'Activado') {
+      this.valores = true;
+    }
+
+    if( estatusInspeccion == 'Activado') {
+      this.inspeccionMostrar = true;
     }
 
     console.log("this is the profile :" + profile)
@@ -106,7 +114,6 @@ export class GestionPagePage implements OnInit {
 
 
   async valoresCatastrales() {
-    console.log("Entrando a carta valores catastrales");
     const modal = await this.modalController.create({
       component: GestionValorescatastralesPage,
       // componentProps: {
@@ -124,24 +131,42 @@ export class GestionPagePage implements OnInit {
 
   }
 
+  async inspeccion() {
+    // checar si tenemos en el storage el estatus de si es plaza de agua o predio y de ahi mandar al page correspondiente
+    let estatusPlaza = await this.storage.get('TipoPlazaServicio');
 
-  // async inspeccion() {
-  //   console.log("Entrando a inspeccion");
-  //   const modal = await this.modalController.create({
-  //     component: GestionInspeccionPage,
-  //     // componentProps: {
-  //     //  Data:Data }
+    if (estatusPlaza === 'Agua') {
 
-  //   });
+      // es agua la plaza
+      console.log("Es una plaza de agua");
+      const modal = await this.modalController.create({
+        component: InspeccionAguaPage
+      });
 
-  //   await modal.present();
-  //   modal.onDidDismiss().then(data => {
-  //     //console.log(data)
-  //     console.log('trata de salir')
+      modal.present()
 
-  //     this.router.navigate(['/home/main-list']);
-  //   })
-  // }
+      modal.onDidDismiss().then( data => {
+        //console.log(data)
+        console.log('trata de salir')
+
+        this.router.navigate(['/home/main-list']);
+      })
+
+    } else {
+      const modal = await this.modalController.create({
+        component: InspeccionPredioPage
+      });
+
+      modal.present()
+
+      modal.onDidDismiss().then( data => {
+        console.log("Saliendo de inspección predio");
+
+        this.router.navigate(['/home/main-list']);
+      })
+    }
+
+  }
 
 
   async gestionAbogado() {

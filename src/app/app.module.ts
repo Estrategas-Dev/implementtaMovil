@@ -38,6 +38,7 @@ import { InAppBrowser } from "@ionic-native/in-app-browser/ngx";
 import { Network } from "@ionic-native/network/ngx";
 import { File } from "@ionic-native/file/ngx";
 
+
 @NgModule({
   declarations: [AppComponent, CustomTag],
   entryComponents: [CustomTag],

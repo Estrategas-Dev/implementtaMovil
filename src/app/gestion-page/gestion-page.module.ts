@@ -14,6 +14,8 @@ import { TasksLawyerPage } from '../tasks-lawyer/tasks-lawyer.page';
 import { GestionCartaInvitacionPage } from '../gestion-carta-invitacion/gestion-carta-invitacion.page';
 import { GestionInspeccionPage } from '../gestion-inspeccion/gestion-inspeccion.page';
 import { GestionValorescatastralesPage } from '../gestion-valorescatastrales/gestion-valorescatastrales.page';
+import { InspeccionAguaPage } from '../inspeccion-agua/inspeccion-agua.page';
+import { InspeccionPredioPage } from '../inspeccion-predio/inspeccion-predio.page';
 
 
 const routes: Routes = [
@@ -45,10 +47,14 @@ const routes: Routes = [
     path: '',
     component: GestionValorescatastralesPage
   },
-  // {
-  //   path: '',
-  //   component: GestionInspeccionPage
-  // },
+  {
+    path: '',
+    component: InspeccionAguaPage // Modulo de gestión para inspección
+  },
+  {
+    path: '',
+    component: InspeccionPredioPage // Modulo de gestión para inspección
+  },
   {
     path: '',
     component: TasksLawyerPage
@@ -62,6 +68,6 @@ const routes: Routes = [
     IonicModule,
     RouterModule.forChild(routes),
   ],
-  declarations: [GestionPagePage,GestionGestorPage,GestionReductorPage,GestionAbogadoPage,GestionCallPage,TasksLawyerPage,GestionCartaInvitacionPage,GestionValorescatastralesPage]
+  declarations: [GestionPagePage,GestionGestorPage,GestionReductorPage,GestionAbogadoPage,GestionCallPage,TasksLawyerPage,GestionCartaInvitacionPage,GestionValorescatastralesPage,InspeccionAguaPage,InspeccionPredioPage]
 })
 export class GestionPagePageModule {}

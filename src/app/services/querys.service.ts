@@ -27,6 +27,7 @@ export class QuerysService {
     let tableValores = `CREATE TABLE IF NOT EXISTS gestionValoresCatastrales (id INTEGER PRIMARY KEY AUTOINCREMENT, account TEXT, supConstruccion TEXT, supTerreno TEXT, valConstruccion TEXT, valTerreno TEXT, valCatastral TEXT, idTipoSuelo INTEGER, observacion TEXT, idAspUser TEXT, fechaCaptura TEXT, latitud TEXT, longitud TEXT, cargado INTEGER NOT NULL DEFAULT 0 )` ;
     let tableInspeccion = `CREATE TABLE IF NOT EXISTS gestionInspeccion (id INTEGER PRIMARY KEY AUTOINCREMENT, account TEXT, clave TEXT, serieMedidor TEXT, idTipoClandestino INTEGER, idContratada INTEGER, descripcionClandestino TEXT, idTipoServicioDetectado INTEGER, idCondicionPredio INTEGER, descripcionCondicionPredio TEXT, idInstalacionesEncontradas INTEGER, idTomaMaterial INTEGER, diametroToma TEXT, serieMedidorDetectado TEXT, lecturaMedidor TEXT, idMarcaMedidor INTEGER, diametroMedidor TEXT, idEstadoDescarga INTEGER, observacion TEXT, idTarea INTEGER, idaspuser TEXT, fechaCaptura TEXT, latitud TEXT, longitud TEXT, cargado INTEGER NOT NULL DEFAULT 0  )`
     let tableDomicilios = `CREATE TABLE IF NOT EXISTS domicilios(id INTEGER PRIMARY KEY AUTOINCREMENT, cuenta TEXT,calle TEXT, manzana TEXT, lote TEXT, numExt  TEXT, numInterior TEXT, colonia TEXT, poblacion TEXT, cp TEXT, entreCalle1 TEXT, entreCalle2 TEXT,referencia TEXT, fechaCaptura text, idaspUser text, idRol text, type INTEGER NOT NULL DEFAULT 0, cargado INTEGER NOT NULL DEFAULT 0)`;
+    let tableInspeccionAgua = `CREATE TABLE IF NOT EXISTS gestionInspeccionAgua (id INTEGER PRIMARY KEY AUTOINCREMENT, account TEXT, cuenta TEXT, clave TEXT, ordenInspeccion TEXT, numeroMedidor TEXT, pozoConagua TEXT, idTipoServicio INTEGER, idHallazgo INTEGER, otroHallazgo TEXT, idAspUser TEXT, inspector2 TEXT, inspector3 TEXT, inspector4 TEXT, idTarea INTEGER,  fechaCaptura TEXT, latitud TEXT, longitud TEXT, cargado INTEGER NOT NULL DEFAULT 0  )`
     let tables = {
       tableImplementta,
       tableAbogado,
@@ -38,7 +39,8 @@ export class QuerysService {
       tableCarta,
       tableValores,
       tableInspeccion,
-      tableDomicilios
+      tableDomicilios,
+      tableInspeccionAgua
     };
     return tables;
   }

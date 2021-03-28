@@ -45,6 +45,8 @@ const routes: Routes = [
   { path: 'gestion-valorescatastrales-noasignacion', loadChildren: './gestion-valorescatastrales-noasignacion/gestion-valorescatastrales-noasignacion.module#GestionValorescatastralesNoasignacionPageModule' },
   { path: 'gestion-noasignacion', loadChildren: './gestion-noasignacion/gestion-noasignacion.module#GestionNoasignacionPageModule' },
   { path: 'contact-detail', loadChildren: './contact-detail/contact-detail.module#ContactDetailPageModule' },
+  { path: 'inspeccion-agua', loadChildren: './inspeccion-agua/inspeccion-agua.module#InspeccionAguaPageModule' },
+  { path: 'inspeccion-predio', loadChildren: './inspeccion-predio/inspeccion-predio.module#InspeccionPredioPageModule' },
 
 
 
