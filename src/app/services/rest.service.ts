@@ -80,6 +80,8 @@ export class RestService {
     "https://implementta.net/andro/ImplementtaMovil.aspx?query=sp_NombresGestoresInspeccion"
   apiurl20 =
     "https://implementta.net/andro/ImplementtaMovil.aspx?query=sp_RegistroInspeccionAgua";
+  apiurl21 =
+    "https://implementta.net/andro/ImplementtaMovil.aspx?query=sp_RegistroInspeccionPredio";
 
 
   loading: any;
@@ -989,6 +991,35 @@ export class RestService {
     ]);
   }
 
+  gestionInspeccionPredio(data) {
+    this.updateAccountGestionada(data.id);
+
+    let sql =
+      "INSERT INTO gestionInspeccionPredio(account, claveCatastral, nombreContribuyente, direccion, orden, usoSuelo, observaciones, avaluo, idAspUser, inspector2, inspector3, inspector4, idTarea,  fechaCaptura, latitud, longitud)" +
+      "VALUES(?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)";
+
+    return this.db.executeSql(sql, [
+      data.account,
+      data.claveCatastral,
+      data.nombreContribuyente,
+      data.direccion,
+      data.orden,
+      data.usoSuelo,
+      data.observaciones,
+      data.avaluo,
+      data.idAspUser,
+      data.inspector2,
+      data.inspector3,
+      data.inspector4,
+      data.idTarea,
+      data.fechaCaptura,
+      data.latitud,
+      data.longitud
+    ]);
+  }
+
+
+
   gestionGestor(data) {
     this.updateAccountGestionada(data.id);
     console.log("llego el query string");
@@ -1129,7 +1160,8 @@ export class RestService {
               UNION SELECT account, fechaCaptura, idTarea, 'CARTA INVITACION' as rol  from gestionCartaInvitacion where cargado = 0
               UNION SELECT account, fechaCaptura, idTarea, 'Inspeccion clandestino' as rol from gestionInspeccion where cargado = 0
               UNION SELECT account, fechaCaptura, 'Gestion' as idtarea, 'Valores catastrales' as rol from gestionValoresCatastrales where cargado = 0 
-              UNION SELECT account, fechaCaptura, idTarea, 'Inspeccion' as rol from gestionInspeccionAgua where cargado = 0`;
+              UNION SELECT account, fechaCaptura, idTarea, 'Inspeccion' as rol from gestionInspeccionAgua where cargado = 0
+              UNION SELECT account, fechaCaptura, idTarea, 'Inspeccion predio' as rol from gestionInspeccionPredio where cargado = 0`;
 
     return this.db
       .executeSql(sql, [])
@@ -1151,7 +1183,8 @@ export class RestService {
     UNION SELECT account, fechaCaptura, idTarea, 'CARTA INVITACION' as rol  from gestionCartaInvitacion where cargado = 0
     UNION SELECT account, fechaCaptura, idTarea, 'Inspeccion clandestino' as rol from gestionInspeccion where cargado = 0
     UNION SELECT account, fechaCaptura, 'Gestion' as idtarea, 'Valores catastrales' as rol from gestionValoresCatastrales where cargado = 0
-    UNION SELECT account, fechaCaptura, idTarea, 'Inspeccion' as rol from gestionInspeccionAgua where cargado = 0`;
+    UNION SELECT account, fechaCaptura, idTarea, 'Inspeccion' as rol from gestionInspeccionAgua where cargado = 0
+    UNION SELECT account, fechaCaptura, idTarea, 'Inspeccion predio' as rol from gestionInspeccionPredio where cargado = 0`;
 
     return this.db
       .executeSql(sql, [])
@@ -1171,7 +1204,8 @@ export class RestService {
     UNION SELECT account, fechaCaptura, idTarea, 'CARTA INVITACION' as rol  from gestionCartaInvitacion where cargado = 0
     UNION SELECT account, fechaCaptura, idTarea, 'Inspeccion clandestino' as rol from gestionInspeccion where cargado = 0
     UNION SELECT account, fechaCaptura, 'Gestion' as idtarea, 'Valores catastrales' as rol from gestionValoresCatastrales where cargado = 0
-    UNION SELECT account, fechaCaptura, idTarea, 'Inspeccion' as rol from gestionInspeccionAgua where cargado = 0`;
+    UNION SELECT account, fechaCaptura, idTarea, 'Inspeccion' as rol from gestionInspeccionAgua where cargado = 0
+    UNION SELECT account, fechaCaptura, idTarea, 'Inspeccion predio' as rol from gestionInspeccionPredio where cargado = 0`;
     return this.db
       .executeSql(sql, [])
       .then(response => {
@@ -1286,6 +1320,24 @@ export class RestService {
       arrayDeleteValores.push(result0.rows.item(i));
     }
     if (arrayDeleteValores.length == 0) {
+      this.mensaje.showToastSync("No se pudo eliminar la cuenta, no se guardo la gestión correctamente");
+    } else {
+      this.updateGestionadaDelete(cuenta);
+      console.log(`Borrando cuenta ${cuenta}`);
+      return this.db.executeSql(sql, [cuenta]);
+    }
+  }
+
+
+  async deleteAccountsInspeccionPredio(cuenta) {
+    let sql = 'DELETE FROM gestionInspeccionPredio where account = ?';
+    let sql_0 = "SELECT * FROM gestionInspeccionPredio where account =?";
+    let arrayGestionInspeccionPredio = [];
+    const result0 = await this.db.executeSql(sql_0, [cuenta]);
+    for (let i = 0; i < result0.rows.length; i++) {
+      arrayGestionInspeccionPredio.push(result0.rows.item(i));
+    }
+    if (arrayGestionInspeccionPredio.length == 0) {
       this.mensaje.showToastSync("No se pudo eliminar la cuenta, no se guardo la gestión correctamente");
     } else {
       this.updateGestionadaDelete(cuenta);
@@ -1592,6 +1644,55 @@ export class RestService {
     }
   }
 
+
+  async getAccountToSyncInspeccionPredio(cuenta) {
+    let idPlaza = await this.storage.get("IdPlaza");
+    console.log("Sincronizando una sola cuenta al servidor");
+    try {
+      let arrayInspeccionPredio = [];
+      let sql = "SELECT * FROM gestionInspeccionPredio where cargado = 0 and account = ?"
+
+      const result = await this.db.executeSql(sql, [cuenta]);
+
+      for (let i = 0; i < result.rows.length; i++) {
+        arrayInspeccionPredio.push(result.rows.item(i));
+      }
+
+      if (arrayInspeccionPredio.length === 0) {
+        this.mensaje.showToastSync("Error en la cuenta, no se guardo la gestión correctamente");
+      } else {
+        console.log(arrayInspeccionPredio);
+        let account = arrayInspeccionPredio[0].account;
+        let claveCatastral = arrayInspeccionPredio[0].claveCatastral;
+        let nombreContribuyente = arrayInspeccionPredio[0].nombreContribuyente;
+        let direccion = arrayInspeccionPredio[0].direccion;
+        let orden = arrayInspeccionPredio[0].orden;
+        let usoSuelo = arrayInspeccionPredio[0].usoSuelo;
+        let observaciones = arrayInspeccionPredio[0].observaciones;
+        let avaluo = arrayInspeccionPredio[0].avaluo;
+        let idAspUser = arrayInspeccionPredio[0].idAspUser;
+        let inspector2 = arrayInspeccionPredio[0].inspector2;
+        let inspector3 = arrayInspeccionPredio[0].inspector3;
+        let inspector4 = arrayInspeccionPredio[0].inspector4;
+        let idTarea = arrayInspeccionPredio[0].idTarea;
+        let fechaCaptura = arrayInspeccionPredio[0].fechaCaptura;
+        let latitud = arrayInspeccionPredio[0].latitud;
+        let longitud = arrayInspeccionPredio[0].longitud;
+        let id = arrayInspeccionPredio[0].id;
+  
+        let sql = `'${account}','${claveCatastral}','${nombreContribuyente}','${direccion}','${orden}','${usoSuelo}','${observaciones}','${avaluo}','${idAspUser}','${inspector2}','${inspector3}','${inspector4}',${idTarea},'${fechaCaptura}',${latitud},${longitud},${idPlaza}`;
+        console.log("idplaza", idPlaza);
+        console.log(sql);
+
+        await this.accountSyncInspeccionPredio(sql, id)
+        this.mensaje.showToast("Sincronizacion de la cuenta correctamente");
+        return Promise.resolve("Executed query");
+      }
+    } catch (error_1) {
+      return Promise.reject(error_1);
+    }
+  }
+
   async getAccountToSyncInspeccionAgua(cuenta) {
     let idPlaza = await this.storage.get("IdPlaza");
     console.log("Sincronizando una sola cuenta al servidor");
@@ -1679,6 +1780,80 @@ export class RestService {
       return Promise.reject(error_1);
     }
   }
+
+  async getAccountsToSyncInspeccionPredio() {
+    console.log("getAccountsToSyncInspeccionPredio");
+    try {
+      let arrayGestionesInspeccionPredio = [];
+      let sql = "SELECT * FROM gestionInspeccionPredio where cargado = 0";
+      const result = await this.db.executeSql(sql, []);
+      console.log(result);
+      for (let i = 0; i < result.rows.length; i++) {
+        arrayGestionesInspeccionPredio.push(result.rows.item(i));
+      }
+      if (arrayGestionesInspeccionPredio.length == 0) {
+        this.mensaje.showToast('Sin registros para sincronizar');
+      } else {
+        this.avanceGestionesInspeccionPredio = 0;
+        this.envioGestionesInspeccionPredio(arrayGestionesInspeccionPredio)
+      }
+    } catch (error_1) {
+      return Promise.reject(error_1);
+    }
+  }
+
+  avanceGestionesInspeccionPredio = 0;
+
+
+  envioGestionesInspeccionPredio(arrayGestionesInspeccionPredio) {
+    console.log("envioGestionesInspeccionPredio");
+    console.log(this.avanceGestionesInspeccionPredio);
+
+    if (this.avanceGestionesInspeccionPredio === arrayGestionesInspeccionPredio.length) {
+      this.mensaje.showToastLarge('Sincronizacion de sus gestiones correctas');
+    } else {
+      this.sendGestionesInspeccionPredio(this.avanceGestionesInspeccionPredio, arrayGestionesInspeccionPredio).then(resp => {
+        if (resp) {
+          this.avanceGestionesInspeccionPredio++;
+          this.envioGestionesInspeccionPredio(arrayGestionesInspeccionPredio);
+        } else {
+          this.envioGestionesInspeccionPredio(arrayGestionesInspeccionPredio);
+        }
+      })
+    }
+  }
+
+  async sendGestionesInspeccionPredio(i, arrayGestionesInspeccionPredio) {
+    let idPlaza = await this.storage.get("IdPlaza");
+
+    return new Promise(async (resolve) => {
+      let account = arrayGestionesInspeccionPredio[i].account;
+      let claveCatastral = arrayGestionesInspeccionPredio[i].claveCatastral;
+      let nombreContribuyente = arrayGestionesInspeccionPredio[i].nombreContribuyente;
+      let direccion = arrayGestionesInspeccionPredio[i].direccion;
+      let orden = arrayGestionesInspeccionPredio[i].orden;
+      let usoSuelo = arrayGestionesInspeccionPredio[i].usoSuelo;
+      let observaciones = arrayGestionesInspeccionPredio[i].observaciones;
+      let avaluo = arrayGestionesInspeccionPredio[i].avaluo;
+      let idAspUser = arrayGestionesInspeccionPredio[i].idAspUser;
+      let inspector2 = arrayGestionesInspeccionPredio[i].inspector2;
+      let inspector3 = arrayGestionesInspeccionPredio[i].inspector3;
+      let inspector4 = arrayGestionesInspeccionPredio[i].inspector4;
+      let idTarea = arrayGestionesInspeccionPredio[i].idTarea;
+      let fechaCaptura = arrayGestionesInspeccionPredio[i].fechaCaptura;
+      let latitud = arrayGestionesInspeccionPredio[i].latitud;
+      let longitud = arrayGestionesInspeccionPredio[i].longitud;
+      let id = arrayGestionesInspeccionPredio[i].id;
+
+      let sql = `'${account}','${claveCatastral}','${nombreContribuyente}','${direccion}','${orden}','${usoSuelo}','${observaciones}','${avaluo}','${idAspUser}','${inspector2}','${inspector3}','${inspector4}',${idTarea},'${fechaCaptura}',${latitud},${longitud},${idPlaza}`;
+      console.log("idplaza", idPlaza);
+      console.log(sql);
+      await this.accountSyncInspeccionPredio(sql, id)
+      resolve('Execute Query successfully');
+    })
+  }
+
+
 
   async getAccountsToSyncInspeccionAgua() {
     console.log("getAccountsInspeccionAgua");
@@ -2255,6 +2430,26 @@ export class RestService {
     });
   }
 
+
+  async accountSyncInspeccionPredio(query, id) {
+    return new Promise(resolve => {
+      this.http.post(this.apiurl21 + " " + query, null).subscribe(
+        async data => {
+          await this.updateAccountSyncInspeccionPredio(id);
+          console.log(data);
+          resolve(data);
+        },
+        err => {
+          this.mensaje.showAlert(
+            "Hubo un error en la red, verifica e intentalo de nuevo " + err
+          );
+          this.loadingCtrl.dismiss();
+          console.log(err);
+        }
+      );
+    });
+  }
+
   async accountSyncInspeccionAgua(query, id) {
     return new Promise(resolve => {
       this.http.post(this.apiurl20 + " " + query, null).subscribe(
@@ -2406,6 +2601,11 @@ export class RestService {
 
   updateAccountSyncInspeccionAgua(id) {
     let sql = "UPDATE gestionInspeccionAgua SET cargado = 1 where id = ?";
+    return this.db.executeSql(sql, [id]);
+  }
+
+  updateAccountSyncInspeccionPredio(id) {
+    let sql = "UPDATE gestionInspeccionPredio SET cargado = 1 where id = ?";
     return this.db.executeSql(sql, [id]);
   }
 

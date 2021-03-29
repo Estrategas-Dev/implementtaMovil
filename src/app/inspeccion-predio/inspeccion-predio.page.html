@@ -1,9 +1,199 @@
 <ion-header>
-  <ion-toolbar>
-    <ion-title>inspeccion-predio</ion-title>
-  </ion-toolbar>
+    <ion-toolbar color="danger">
+        <ion-title>Inspección predio</ion-title>
+        <ion-buttons slot="end">
+            <ion-button color="tertiary">
+                <ion-icon name="information-circle"></ion-icon>
+            </ion-button>
+            <ion-button color="tertiary" (click)="exit()">
+                <ion-icon name="close"></ion-icon>
+            </ion-button>
+        </ion-buttons>
+    </ion-toolbar>
 </ion-header>
 
 <ion-content>
+
+    <ion-card color="light">
+        <ion-card-content>
+            <ion-item>
+                <ion-label>
+                    <p>Clave catastral</p>
+                </ion-label>
+                <ion-input class="myCustomSelect" interface="popover" [(ngModel)]="claveCatastral"></ion-input>
+            </ion-item>
+
+            <ion-item>
+                <ion-label>
+                    <p>Nombre del contribuyente</p>
+                </ion-label>
+                <ion-input class="myCustomSelect" interface="popover" [(ngModel)]="nombreContribuyente"></ion-input>
+            </ion-item>
+
+            <ion-item>
+                <ion-label>
+                    <p>Dirección</p>
+                </ion-label>
+                <ion-input class="myCustomSelect" interface="popover" [(ngModel)]="direccion"></ion-input>
+            </ion-item>
+
+            <ion-item>
+                <ion-label>
+                    <p>Ordén de visita</p>
+                </ion-label>
+                <ion-input class="myCustomSelect" interface="popover" [(ngModel)]="orden"></ion-input>
+            </ion-item>
+
+            <ion-item>
+                <ion-label>
+                    <p>Uso de suelo</p>
+                </ion-label>
+                <ion-input class="myCustomSelect" interface="popover" [(ngModel)]="usoSuelo"></ion-input>
+            </ion-item>
+
+            <ion-item>
+                <ion-label>
+                    <p>Observaciones</p>
+                </ion-label>
+                <ion-input class="myCustomSelect" interface="popover" [(ngModel)]="observaciones"></ion-input>
+            </ion-item>
+
+        </ion-card-content>
+    </ion-card>
+
+
+
+    <ion-grid>
+        <ion-row>
+            <ion-col size=12 class="ion-text-center">
+                <ion-button color="light" *ngIf="!mostrarInspectores" (click)="muestraInspectores()">Cargar lista de inspectores</ion-button>
+                <!-- <ion-button color="danger" *ngIf="mostrarInspectores" (click)="ocultaInspectores()">Ocultar lista de inspectores</ion-button> -->
+            </ion-col>
+        </ion-row>
+    </ion-grid>
+
+
+
+
+    <ion-card color="light" *ngIf="mostrarInspectores">
+        <ion-card-header>
+            <ion-card-subtitle>
+                <ion-label>Inspectores de la visita</ion-label>
+            </ion-card-subtitle>
+        </ion-card-header>
+        <ion-card-content>
+            <ion-item>
+                <ion-label>
+                    <p>
+                        Inspector 1
+                    </p>
+                    <p>
+                        <ion-text color="primary"> {{nombreInspectorLogueado}} </ion-text>
+                    </p>
+                </ion-label>
+            </ion-item>
+            <ion-item>
+                <ion-label>
+                    <p>
+                        Inspector 2
+                    </p>
+                    <p>
+                        <ion-select class="myCustomSelect" interface="popover" placeholder="Selecciona uno" [(ngModel)]="inspector2">
+                            <ion-select-option [value]="inspector.id" *ngFor="let inspector of nombreInspectores"> {{inspector.nombre}} </ion-select-option>
+                        </ion-select>
+                    </p>
+                </ion-label>
+            </ion-item>
+
+            <ion-item>
+                <ion-label>
+                    <p>
+                        Inspector 3
+                    </p>
+                    <p>
+                        <ion-select class="myCustomSelect" interface="popover" placeholder="Selecciona uno" [(ngModel)]="inspector3">
+                            <ion-select-option [value]="inspector.id" *ngFor="let inspector of nombreInspectores"> {{inspector.nombre}} </ion-select-option>
+                        </ion-select>
+                    </p>
+                </ion-label>
+            </ion-item>
+
+            <ion-item>
+                <ion-label>
+                    <p>
+                        Inspector 4
+                    </p>
+                    <p>
+                        <ion-select class="myCustomSelect" interface="popover" placeholder="Selecciona uno" [(ngModel)]="inspector4">
+                            <ion-select-option [value]="inspector.id" *ngFor="let inspector of nombreInspectores"> {{inspector.nombre}} </ion-select-option>
+                        </ion-select>
+                    </p>
+                </ion-label>
+            </ion-item>
+
+        </ion-card-content>
+    </ion-card>
+
+    <ion-card>
+        <ion-card-content>
+            <ion-item>
+                <ion-label>
+                    <p>Avaluó</p>
+                </ion-label>
+                <ion-input class="myCustomSelect" interface="popover" [(ngModel)]="avaluo"></ion-input>
+            </ion-item>
+        </ion-card-content>
+    </ion-card>
+
+
+    <ion-slides [options]="sliderOpts">
+        <ion-slide *ngFor="let img of imgs">
+            <img src={{img.imagen}} class="imagen">
+            <ion-fab-button padding size="small" (click)="deletePhoto(img.imagen)" *ngIf="img.imagen != 'assets/img/imgs.jpg'" color="danger">
+                <ion-icon name="trash"></ion-icon>
+            </ion-fab-button>
+        </ion-slide>
+    </ion-slides>
+
+
+    <ion-item text-center>
+        <ion-label>
+            <p>
+                Fotos de la visita
+            </p>
+
+
+            <ion-grid>
+                <ion-row>
+                    <ion-col text-center>
+                        <ion-button expand="block" color="primary" (click)="takePic(4)">
+                            <ion-icon name="camera"></ion-icon>
+                        </ion-button>
+                        <ion-label>Acta</ion-label>
+                    </ion-col>
+
+                    <ion-col text-center>
+                        <ion-button expand="block" color="warning" (click)="takePic(1)">
+                            <ion-icon name="camera"></ion-icon>
+                        </ion-button>
+                        <ion-label>Evidencia</ion-label>
+                    </ion-col>
+
+                </ion-row>
+
+            </ion-grid>
+        </ion-label>
+    </ion-item>
+
+
+    <ion-grid>
+        <ion-row>
+            <ion-col size=12 class="ion-text-center">
+                <ion-button color="success" expand="block" (click)="verify()">Terminar</ion-button>
+            </ion-col>
+        </ion-row>
+    </ion-grid>
+
+
 
 </ion-content>

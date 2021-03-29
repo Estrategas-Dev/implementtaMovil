@@ -113,6 +113,12 @@ export class SyncGestorPage implements OnInit {
       this.modalController.getTop().then(resp => {
         this.getAccounts(this.rol);
       })
+    } else if (rol === 'Inspeccion predio') {
+      console.log('entra a inspeccion predio');
+      await this.service.getAccountToSyncInspeccionPredio(cuenta);
+      this.modalController.getTop().then(resp => {
+        this.getAccounts(this.rol);
+      })
     }
 
   }
@@ -171,6 +177,13 @@ export class SyncGestorPage implements OnInit {
       this.modalController.getTop().then(resp => {
         this.getAccounts(this.rol);
       })
+    } else if (rol === 'Inspeccion predio') {
+      console.log("Entra a borrar inspeccion predio");
+      await this.service.deleteAccountsInspeccionPredio(cuenta);
+      this.mensaje.showToast("Cuenta eliminada corectamente");
+      this.modalController.getTop().then(resp => {
+        this.getAccounts(this.rol);
+      })
 
     }
   }
@@ -190,6 +203,7 @@ export class SyncGestorPage implements OnInit {
       await this.service.getAccountsToSyncInspeccion();
       await this.service.getAccountsToSyncValores();
       await this.service.getAccountsToSyncInspeccionAgua();
+      await this.service.getAccountsToSyncInspeccionPredio();
       this.loading.dismiss()
       //this.mensaje.showToast('Gestiones sincronizadas correctamente')
     }
@@ -201,6 +215,7 @@ export class SyncGestorPage implements OnInit {
       await this.service.getAccountsToSyncInspeccion();
       await this.service.getAccountsToSyncValores();
       await this.service.getAccountsToSyncInspeccionAgua();
+      await this.service.getAccountsToSyncInspeccionPredio();
       this.loading.dismiss()
       //this.mensaje.showToast('Gestiones legales sicronizadas correctamente')
     }
@@ -213,6 +228,7 @@ export class SyncGestorPage implements OnInit {
       await this.service.getAccountsToSyncInspeccion();
       await this.service.getAccountsToSyncValores();
       await this.service.getAccountsToSyncInspeccionAgua();
+      await this.service.getAccountsToSyncInspeccionPredio();
       this.loading.dismiss()
     }
     // else if (this.rol == '8') {

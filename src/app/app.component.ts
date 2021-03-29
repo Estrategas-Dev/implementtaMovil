@@ -84,8 +84,9 @@ export class AppComponent {
         await db.executeSql(table.tableCarta, [])
         await db.executeSql(table.tableValores, []);
         await db.executeSql(table.tableInspeccion, []);
-        await db.executeSql(table.tableDomicilios, [])
-        await db.executeSql(table.tableInspeccionAgua);
+        await db.executeSql(table.tableDomicilios, []);
+        await db.executeSql(table.tableInspeccionAgua, []);
+        await db.executeSql(table.tableInspeccionPredio, []);
       })
       .catch(e => console.log(e));
   }
