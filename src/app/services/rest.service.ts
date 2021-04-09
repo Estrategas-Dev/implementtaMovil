@@ -1025,8 +1025,8 @@ export class RestService {
     console.log("llego el query string");
 
     let sql =
-      "INSERT INTO gestionGestor(account,idEstatus,observaciones,fechaPromesaPago,latitud,longitud,fechaCaptura,idAspuser,idTarea,fechaAsignacion,fechaVencimiento,idMotivoNoPago,motivoNoPago,idSolucionPlanteada,idExpectativasContribuyente,otraExpectativaContribuyente,idCaracteristicaPredio,otraCaracteristicaPredio,idServiciosNoPago,idTipoServicio,idEstatusToma,idTipoToma)" +
-      "values(?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)";
+      "INSERT INTO gestionGestor(account,idEstatus,observaciones,fechaPromesaPago,latitud,longitud,fechaCaptura,idAspuser,idTarea,fechaAsignacion,fechaVencimiento,idMotivoNoPago,motivoNoPago,idSolucionPlanteada,idExpectativasContribuyente,otraExpectativaContribuyente,idCaracteristicaPredio,otraCaracteristicaPredio,idServiciosNoPago,idTipoServicio,idEstatusToma,idTipoToma,numeroMedidor)" +
+      "values(?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)";
     return this.db.executeSql(sql, [
       data.account,
       data.idEstatus,
@@ -1049,7 +1049,8 @@ export class RestService {
       data.idServiciosNoPago,
       data.idTipoServicio,
       data.idEstatusToma,
-      data.idTipoToma
+      data.idTipoToma,
+      data.numeroMedidor
     ]);
   }
 
@@ -2167,8 +2168,9 @@ export class RestService {
       let idTipoServicio = arrayGestiones[i].idTipoServicio;
       let idEstatusToma = arrayGestiones[i].idEstatusToma;
       let idTipoToma = arrayGestiones[i].idTipoToma;
+      let numeroMedidor = arrayGestiones[i].numeroMedidor;
       let id = arrayGestiones[i].id;
-      let sqlString = `'${account}',${idEstatus},'${observaciones}','${fechaPromesaPago}',${latitud},${longitud},'${fechaCaptura}','${idAspUser}',${idTarea},'${fechaAsignacion}','${fechaVencimiento}',${idMotivoNoPago},'${motivoNoPago}',${idSolucionPlanteada},${idExpectativasContribuyente},'${otraExpectativaContribuyente}',${idCaracteristicaPredio},'${otraCaracteristicaPredio}',${idServiciosNoPago},${idPlaza},${idTipoServicio},${idEstatusToma},${idTipoToma}`;
+      let sqlString = `'${account}',${idEstatus},'${observaciones}','${fechaPromesaPago}',${latitud},${longitud},'${fechaCaptura}','${idAspUser}',${idTarea},'${fechaAsignacion}','${fechaVencimiento}',${idMotivoNoPago},'${motivoNoPago}',${idSolucionPlanteada},${idExpectativasContribuyente},'${otraExpectativaContribuyente}',${idCaracteristicaPredio},'${otraCaracteristicaPredio}',${idServiciosNoPago},${idPlaza},${idTipoServicio},${idEstatusToma},${idTipoToma},'${numeroMedidor}'`;
 
       await this.accountSyncGestor(sqlString, id);
 

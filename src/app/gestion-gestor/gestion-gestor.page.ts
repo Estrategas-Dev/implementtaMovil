@@ -48,7 +48,7 @@ export class GestionGestorPage implements OnInit {
   infoAccount: any[];
   image: string = "";
   activateMotivo: boolean = false;
-  activateResult: boolean = true;
+  activateResult: boolean = true; // para validar si se puso predio no localizado no mostrar los campos de captura
   detectedChanges: boolean = false;
   isPhoto: boolean = false;
   isMotive: boolean = false;
@@ -74,6 +74,7 @@ export class GestionGestorPage implements OnInit {
 
   tipoServicioImplementta: string;
   infoImage: any[];
+  numeroMedidor: string = '';
 
 
   constructor(
@@ -397,6 +398,7 @@ export class GestionGestorPage implements OnInit {
             idTipoServicio: this.idTipoServicio,
             idEstatusToma: this.idEstatusToma,
             idTipoToma: this.idTipoToma,
+            numeroMedidor: this.numeroMedidor,
             id: this.idAccountSqlite
           };
           console.log(data);
@@ -461,6 +463,7 @@ export class GestionGestorPage implements OnInit {
           idTipoServicio: this.idTipoServicio,
           idEstatusToma: this.idEstatusToma,
           idTipoToma: this.idTipoToma,
+          numeroMedidor: this.numeroMedidor,
           id: this.idAccountSqlite
         };
         console.log(data);

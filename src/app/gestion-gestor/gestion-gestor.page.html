@@ -52,6 +52,7 @@
 
         </ion-label>
     </ion-item>
+
     <div *ngIf="activateResult">
         <ion-card>
             <ion-card-content>
@@ -102,7 +103,8 @@
                         <!-- <p *ngIf="isDescripcion" style="color :red">Campo obligatorio</p> -->
 
                     </ion-label>
-                    <ion-textarea rows="5" [(ngModel)]="motivoNoPago" (ionChange)="activateDescripcion()"></ion-textarea>
+                    <ion-textarea rows="5" [(ngModel)]="motivoNoPago" (ionChange)="activateDescripcion()">
+                    </ion-textarea>
                 </ion-item>
             </ion-card-content>
         </ion-card>
@@ -273,12 +275,22 @@
                             </ion-label>
                         </ion-item>
                     </div>
+
+                    <ion-item>
+                        <ion-label>
+                            <p>Numero de medidor</p>
+                        </ion-label>
+                        <ion-input class="myCustomSelect" interface="popover" [(ngModel)]="numeroMedidor"></ion-input>
+                    </ion-item>
+
                 </ion-card-content>
             </ion-card>
-        </div>
 
+        </div>
+        <!-- isAgua -->
     </div>
     <!-- activatedResult -->
+
 
     <ion-card>
         <ion-card-content>
