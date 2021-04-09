@@ -1416,8 +1416,9 @@ export class RestService {
         let idTipoServicio = arrayGestion[0].idTipoServicio;
         let idEstatusToma = arrayGestion[0].idEstatusToma;
         let idTipoToma = arrayGestion[0].idTipoToma;
+        let numeroMedidor = arrayGestion[0].numeroMedidor;
         let id = arrayGestion[0].id;
-        let sqlString = `'${account}',${idEstatus},'${observaciones}','${fechaPromesaPago}',${latitud},${longitud},'${fechaCaptura}','${idAspUser}',${idTarea},'${fechaAsignacion}','${fechaVencimiento}',${idMotivoNoPago},'${motivoNoPago}',${idSolucionPlanteada},${idExpectativasContribuyente},'${otraExpectativaContribuyente}',${idCaracteristicaPredio},'${otraCaracteristicaPredio}',${idServiciosNoPago},${idPlaza},${idTipoServicio},${idEstatusToma},${idTipoToma}`;
+        let sqlString = `'${account}',${idEstatus},'${observaciones}','${fechaPromesaPago}',${latitud},${longitud},'${fechaCaptura}','${idAspUser}',${idTarea},'${fechaAsignacion}','${fechaVencimiento}',${idMotivoNoPago},'${motivoNoPago}',${idSolucionPlanteada},${idExpectativasContribuyente},'${otraExpectativaContribuyente}',${idCaracteristicaPredio},'${otraCaracteristicaPredio}',${idServiciosNoPago},${idPlaza},${idTipoServicio},${idEstatusToma},${idTipoToma},'${numeroMedidor}'`;
 
         await this.accountSyncGestor(sqlString, id);
         //console.log(sqlString);
